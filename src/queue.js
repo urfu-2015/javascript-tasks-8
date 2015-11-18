@@ -38,4 +38,4 @@ var q = new PQ(a);
 
 var sorted = PQ.heapSort(a);
 console.log(sorted);
-console.log(expected)
+console.log(expected);
