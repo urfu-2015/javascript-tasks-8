@@ -119,9 +119,8 @@ __Встроенный объект `Map` использовать не разр
 Материалы
 ---------
 
-1. [Лекция](https://github.com/urfu-2015/javascript-lectures/8-constructors.md)
+1. [Лекция](https://github.com/urfu-2015/javascript-lectures/blob/master/8-constructors.md)
 2. [Презентация](https://rawgit.com/urfu-2015/javascript-slides/master/08-constructors/index.html#/)
-
 3. [Список структур данных](https://ru.wikipedia.org/wiki/Проект:Информационные_технологии/Списки/Список_структур_данных)
 4. [Объекты как ассоциативные массивы](https://learn.javascript.ru/object)
 5. [Преобразование объектов: toString и valueOf](https://learn.javascript.ru/object-conversion)
