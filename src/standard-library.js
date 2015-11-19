@@ -1,9 +1,10 @@
 'use strict';
 
-function Node(value) {
+function Node(value, priority) {
     this.value = value;
     this.previous = null;
     this.next = null;
+    this.priority = priority;
 };
 
 function DoublyLinkedList() {
@@ -12,8 +13,8 @@ function DoublyLinkedList() {
     this.lastItem = null;
 };
 
-DoublyLinkedList.prototype.add = function (value) {
-    var node = new Node(value);
+DoublyLinkedList.prototype.add = function (value, priority) {
+    var node = new Node(value, priority);
     if (this.length === 0) {
         this.firstItem = node;
         this.lastItem = node;
@@ -26,10 +27,10 @@ DoublyLinkedList.prototype.add = function (value) {
     return node;
 };
 
-DoublyLinkedList.prototype.insertAsFirst = function (value) {
-    var node = new Node(value);
+DoublyLinkedList.prototype.insertAsFirst = function (value, priority) {
+    var node = new Node(value, priority);
     if (this.length === 0) {
-        this.add(value);
+        this.add(value, 0);
     } else {
         node.next = this.firstItem;
         this.firstItem.previous = node;
@@ -124,7 +125,7 @@ Collection.prototype.refresh = function () {
 };
 
 Collection.prototype.insertLast = function (item) {
-    this.add(item);
+    this.add(item, 0);
     this.refresh();
 };
 
@@ -157,11 +158,15 @@ var Queue = function () {
 Queue.prototype = Object.create(DoublyLinkedList.prototype);
 
 Queue.prototype.enqueue = function (item) {
-    this.add(item);
+    this.add(item, 0);
 };
 
 Queue.prototype.dequeue = function () {
     return this.delete(0).value;
+};
+
+Queue.prototype.empty = function () {
+    this.clear();
 };
 
 var FixedArray = function (size) {
@@ -181,7 +186,7 @@ function fillFixedArray(array) {
         var size = array.length;
         array.length = 0;
         while (array.length < size) {
-            array.add(null);
+            array.add(null, 0);
         }
     }
 }
@@ -199,10 +204,10 @@ Set.prototype = Object.create(DoublyLinkedList.prototype);
 
 Set.prototype.insert = function (item) {
     if (this.length === 0) {
-        this.add(item);
+        this.add(item, 0);
     } else {
         if (!this.has(item)) {
-            this.add(item);
+            this.add(item, 0);
         }
     }
 };
@@ -256,11 +261,58 @@ Set.prototype.union = function (set) {
 };
 
 var PriorityQueue = function () {
-
+    this.length = 0;
 };
 
-var Map = function () {
+PriorityQueue.prototype = Object.create(Queue.prototype);
 
+PriorityQueue.prototype.enqueue = function (item, priority) {
+    if (this.length === 0) {
+        this.add(item, priority);
+    } else {
+        if (this.length === 1) {
+            this.firstItem.priority > priority ?
+                this.add(item, priority) : this.insertAsFirst(item, priority);
+        } else {
+            var currentNode = this.firstItem;
+            var currentPriority = this.firstItem.priority;
+            var nextPriority = this.firstItem.next.priority;
+            var hasNext = true;
+            while (hasNext) {
+                if (currentNode.next === null) {
+                    hasNext = false;
+                    this.add(item, priority);
+                } else {
+                    currentNode = currentNode.next;
+                    currentPriority = currentNode.priority;
+                    nextPriority = currentNode.next != null ?
+                        currentNode.next.priority : -1;
+                }
+                if (currentPriority >= priority && priority > nextPriority) {
+                    var node = new Node(item, priority);
+                    if (currentNode.next != null) {
+                        currentNode.next.previous = node;
+                    }
+                    node.next = currentNode.next;
+                    currentNode.next = node;
+                    node.previous = currentNode;
+                    hasNext = false;
+                    this.length++;
+                } else {
+                    if (currentPriority > priority && priority >= nextPriority) {
+                        var node = new Node(item, priority);
+                        currentNode = currentNode.next;
+                        node.previous = currentNode;
+                        node.next = currentNode.next != null ?
+                            currentNode.next : null;
+                        currentNode.next = node;
+                        hasNext = false;
+                        this.length++;
+                    }
+                }
+            }
+        }
+    }
 };
 
 exports.Collection = Collection;
