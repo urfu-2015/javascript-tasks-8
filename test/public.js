@@ -2,7 +2,7 @@ var assert = require('assert');
 var lib = require('../src/standard-library');
 
 var Collection = lib.Collection;
-var Stack = lib.Stack; // ?? ну я могу, конечно
+var Stack = lib.Stack; // ?? ну я могу, конечно. ААА ЧТО С КОДИРОВКОЙ
 var FixedArray = lib.FixedArray;
 var Queue = lib.Queue;
 var Set = lib.Set;
