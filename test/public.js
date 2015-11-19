@@ -1,9 +1,8 @@
 var assert = require('assert');
-
 var lib = require('../src/standard-library');
 
 var Collection = lib.Collection;
-var Stack = lib.Stack;
+var Stack = lib.Stack; // ?? ну я могу, конечно
 var FixedArray = lib.FixedArray;
 var Queue = lib.Queue;
 var Set = lib.Set;
@@ -232,6 +231,84 @@ describe('Standard Library', function () {
             assert.ok(set3.has('foo'));
             assert.ok(set3.has('bar'));
             assert.ok(set3.has('baz'));
+        });
+    });
+
+    describe('Priority Queue', function () {
+        it('should be empty after creation', function () {
+            var pQueue = new PriorityQueue();
+            assert.equal(pQueue.isEmpty, true);
+
+        });
+
+        it('shouldn\'t be empty after enqueue', function () {
+            var pQueue = new PriorityQueue();
+            pQueue.enqueue(1, 1);
+            assert.equal(pQueue.isEmpty, false);
+        });
+        it('should be empty after enqueue/dequeue', function () {
+            var pQueue = new PriorityQueue();
+            pQueue.enqueue(1, 1);
+            pQueue.dequeue();
+            assert.equal(pQueue.isEmpty, true);
+        });
+        it('enqueue(item, priority)/length', function () {
+            var pQueue = new PriorityQueue();
+            var pairs = [
+                ['a', 16],
+                ['b', 9],
+                ['c', 8],
+                ['d', 6],
+                ['e', 11],
+                ['f', 5],
+                ['g', 4],
+                ['h', 10],
+                ['i', 2],
+                ['j', 1]
+            ];
+            pairs.forEach(item => pQueue.enqueue(...item));
+
+            assert.equal(pQueue.length, 10);
+        });
+
+        it('dequeue', function () {
+            var pQueue = new PriorityQueue();
+            var pairs = [
+                ['a', 16],
+                ['b', 9],
+                ['c', 8],
+                ['d', 6],
+                ['e', 11],
+                ['f', 5],
+                ['g', 4],
+                ['h', 10],
+                ['i', 2],
+                ['j', 1]
+            ];
+            pairs.forEach(item => pQueue.enqueue(...item));
+            var expected = ['a', 'e', 'h', 'b', 'c', 'd', 'f', 'g', 'i', 'j'];
+            var actual = [];
+            while (!pQueue.isEmpty) {
+                actual.push(pQueue.dequeue());
+            }
+            assert.deepEqual(actual, expected);
+        });
+        it('heapSort', function () {
+            var pairs = [
+                [1, 16],
+                [4, 9],
+                [5, 8],
+                [6, 6],
+                [2, 11],
+                [7, 5],
+                [8, 4],
+                [3, 10],
+                [9, 2],
+                [10, 1]
+            ];
+            var expected = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+            var actual = PriorityQueue.heapSort(pairs);
+            assert.deepEqual(actual, expected);
         });
     });
 });

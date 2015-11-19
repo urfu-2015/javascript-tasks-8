@@ -203,13 +203,12 @@ function getSetClass() {
 
     function getHashCode(string) {
         var ret = 0;
-        for (var i = 0, len = string.length; i < len; i++) {
+        for (let i = 0, len = string.length; i < len; i++) {
             ret = (31 * ret + string.charCodeAt(i)) << 0;
         }
         return ret;
     }
 
-    //хотел написать нормальный сет, но стало лень
     class Set {
         constructor(array) {
             if (array != null && !(array instanceof Array)) {
@@ -371,7 +370,6 @@ function getPriorityQueueClass() {
             } else {
                 throw new Error('Argument must be an array');
             }
-
         }
     }
     return PriorityQueue;
