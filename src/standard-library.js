@@ -141,8 +141,8 @@ Set.prototype.has = function (item) {
 
 // возвращает множество элементов входящих в исходное множество и в
 // переданное множество (в оба сразу)
-Set.prototype.intersectSet = function (set) {
-    var intersect = new Set();
+Set.prototype.intersect = function (set) {
+    var intersectSet = new Set();
     this.collection.forEach(function (item) {
         if (set.has(item)) {
             intersectSet.insert(item);
