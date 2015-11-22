@@ -118,10 +118,7 @@ Set.prototype.remove = function (item) {
     }
 };
 Set.prototype.has = function (item) {
-    if (this.collection.indexOf(item) + 1) {
-        return true;
-    }
-    return false;
+    return (this.collection.indexOf(item) + 1) > 0;
 };
 Set.prototype.intersect = function (otherSet) {
     var result = [];
@@ -130,8 +127,7 @@ Set.prototype.intersect = function (otherSet) {
             result.push(this.collection[i]);
         }
     }
-    var newSet = new Set(result);
-    return newSet;
+    return new Set(result);
 };
 Set.prototype.union = function (otherSet) {
     var result = this.collection;
@@ -140,19 +136,74 @@ Set.prototype.union = function (otherSet) {
             result.push(otherSet.collection[i]);
         }
     }
-    var newSet = new Set(result);
-    return newSet;
+    return new Set(result);
 };
 Set.prototype.empty = function () {
     Collection.prototype.empty.call(this);
 };
 
+function findMaxPriority(collection) {
+    var keys = Object.keys(collection);
+    var max = '0';
+    for (var i in keys) {
+        if (parseInt(keys[i]) > parseInt(max)) {
+            max = keys[i];
+        }
+    }
+    return max;
+}
 var PriorityQueue = function () {
-
+    this.collection = {};
+    this.length = 0;
+};
+PriorityQueue.prototype.enqueue = function (item, priority) {
+    this.collection[priority] = this.collection[priority] || [];
+    this.collection[priority].push(item);
+    this.length += 1;
+};
+PriorityQueue.prototype.dequeue = function () {
+    var result = null;
+    if (this.length) {
+        var maxPriority = findMaxPriority(this.collection);
+        var maxPriorityArray = this.collection[maxPriority];
+        result = maxPriorityArray.shift();
+        this.length -= 1;
+        if (maxPriorityArray.length === 0) {
+            delete this.collection[maxPriority];
+        }
+    }
+    return result;
 };
 
 var Map = function () {
-
+    this.collection = {};
+    this.length = 0;
+};
+Map.prototype.addItem = function (key, item) {
+    var stringKey = JSON.stringify(key);
+    this.collection[stringKey] = item;
+    this.length += 1;
+};
+Map.prototype.removeItem = function (key) {
+    var stringKey = JSON.stringify(key);
+    if (this.collection[stringKey]) {
+        delete this.collection[stringKey];
+        this.length -= 1;
+    }
+};
+Map.prototype.getItem = function (key) {
+    var stringKey = JSON.stringify(key);
+    if (this.collection[stringKey]) {
+        return this.collection[stringKey];
+    } else {
+        return null;
+    }
+};
+Map.prototype.empty = function () {
+    for (var i in this.collection) {
+        delete this.collection[i];
+    }
+    this.length = 0;
 };
 
 exports.Collection = Collection;
