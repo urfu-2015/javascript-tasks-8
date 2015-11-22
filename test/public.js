@@ -3,7 +3,7 @@ var assert = require('assert');
 var lib = require('../src/standard-library');
 
 var Collection = lib.Collection;
-var Stack = lib.Stack;
+var Map = lib.Map;
 var FixedArray = lib.FixedArray;
 var Queue = lib.Queue;
 var Set = lib.Set;
