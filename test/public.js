@@ -234,4 +234,26 @@ describe('Standard Library', function () {
             assert.ok(set3.has('baz'));
         });
     });
+
+    describe('PriorityQueue', function () {
+        it('enqueue(item, priority)', function () {
+            var queue = new PriorityQueue();
+
+            assert.equal(queue.length, 0);
+            queue.enqueue('foo', 1);
+            queue.enqueue('bar', 3);
+            queue.enqueue('baz', 2);
+            assert.equal(queue.length, 3);
+        });
+        it('dequeue()', function () {
+            var queue = new PriorityQueue();
+
+            queue.enqueue('foo', 1);
+            queue.enqueue('bar', 3);
+            queue.enqueue('baz', 2);
+            assert.equal(queue.dequeue(), 'bar');
+            assert.equal(queue.dequeue(), 'baz');
+            assert.equal(queue.dequeue(), 'foo');
+        });
+    });
 });
