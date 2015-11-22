@@ -1,0 +1,252 @@
+
+> @ test C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8
+> mocha test/* && npm run lint
+
+
+
+  Standard Library
+    Collection
+      1) first
+      √ last
+      √ length
+      2) isEmpty
+      3) pickFirst()
+      √ pickLast()
+      4) insertFirst()
+      5) insertLast()
+      √ empty()
+    Queue
+      √ enqueue(item)
+      6) dequeue()
+    FixedArray
+      7) length
+      8) insertAt(index, item)
+      9) getAt(item)
+    Set
+      10) length / insert(item)
+      11) remove(item)
+      12) has(item)
+      13) intersect(set)
+      14) union(set)
+
+
+  5 passing (15ms)
+  14 failing
+
+  1) Standard Library Collection first:
+     AssertionError: null == 'foo'
+      at Context.<anonymous> (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\test\public.js:20:20)
+      at callFn (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runnable.js:286:21)
+      at Test.Runnable.run (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runnable.js:279:7)
+      at Runner.runTest (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:421:10)
+      at C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:528:12
+      at next (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:341:14)
+      at C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:351:7
+      at next (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:283:14)
+      at Immediate._onImmediate (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:319:5)
+
+  2) Standard Library Collection isEmpty:
+
+      AssertionError: false == true
+      + expected - actual
+
+      -false
+      +true
+      
+      at Context.<anonymous> (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\test\public.js:50:20)
+      at callFn (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runnable.js:286:21)
+      at Test.Runnable.run (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runnable.js:279:7)
+      at Runner.runTest (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:421:10)
+      at C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:528:12
+      at next (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:341:14)
+      at C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:351:7
+      at next (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:283:14)
+      at Immediate._onImmediate (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:319:5)
+
+  3) Standard Library Collection pickFirst():
+     AssertionError: null == 'foo'
+      at Context.<anonymous> (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\test\public.js:60:20)
+      at callFn (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runnable.js:286:21)
+      at Test.Runnable.run (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runnable.js:279:7)
+      at Runner.runTest (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:421:10)
+      at C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:528:12
+      at next (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:341:14)
+      at C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:351:7
+      at next (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:283:14)
+      at Immediate._onImmediate (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:319:5)
+
+  4) Standard Library Collection insertFirst():
+     AssertionError: null == 'foo'
+      at Context.<anonymous> (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\test\public.js:82:20)
+      at callFn (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runnable.js:286:21)
+      at Test.Runnable.run (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runnable.js:279:7)
+      at Runner.runTest (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:421:10)
+      at C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:528:12
+      at next (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:341:14)
+      at C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:351:7
+      at next (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:283:14)
+      at Immediate._onImmediate (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:319:5)
+
+  5) Standard Library Collection insertLast():
+     AssertionError: null == 'foo'
+      at Context.<anonymous> (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\test\public.js:91:20)
+      at callFn (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runnable.js:286:21)
+      at Test.Runnable.run (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runnable.js:279:7)
+      at Runner.runTest (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:421:10)
+      at C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:528:12
+      at next (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:341:14)
+      at C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:351:7
+      at next (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:283:14)
+      at Immediate._onImmediate (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:319:5)
+
+  6) Standard Library Queue dequeue():
+
+      AssertionError: 'foo' == 'bar'
+      + expected - actual
+
+      -foo
+      +bar
+      
+      at Context.<anonymous> (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\test\public.js:126:20)
+      at callFn (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runnable.js:286:21)
+      at Test.Runnable.run (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runnable.js:279:7)
+      at Runner.runTest (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:421:10)
+      at C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:528:12
+      at next (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:341:14)
+      at C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:351:7
+      at next (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:283:14)
+      at Immediate._onImmediate (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:319:5)
+
+  7) Standard Library FixedArray length:
+
+      AssertionError: 0 == 5
+      + expected - actual
+
+      -0
+      +5
+      
+      at Context.<anonymous> (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\test\public.js:135:20)
+      at callFn (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runnable.js:286:21)
+      at Test.Runnable.run (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runnable.js:279:7)
+      at Runner.runTest (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:421:10)
+      at C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:528:12
+      at next (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:341:14)
+      at C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:351:7
+      at next (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:283:14)
+      at Immediate._onImmediate (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:319:5)
+
+  8) Standard Library FixedArray insertAt(index, item):
+     ReferenceError: size is not defined
+      at FixedArray.insertAt (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\src\standard-library.js:70:17)
+      at C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\test\public.js:142:21
+      at Function._throws (assert.js:297:5)
+      at Function.assert.doesNotThrow (assert.js:328:11)
+      at Context.<anonymous> (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\test\public.js:141:20)
+      at callFn (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runnable.js:286:21)
+      at Test.Runnable.run (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runnable.js:279:7)
+      at Runner.runTest (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:421:10)
+      at C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:528:12
+      at next (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:341:14)
+      at C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:351:7
+      at next (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:283:14)
+      at Immediate._onImmediate (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:319:5)
+
+  9) Standard Library FixedArray getAt(item):
+     ReferenceError: size is not defined
+      at FixedArray.insertAt (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\src\standard-library.js:70:17)
+      at Context.<anonymous> (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\test\public.js:153:17)
+      at callFn (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runnable.js:286:21)
+      at Test.Runnable.run (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runnable.js:279:7)
+      at Runner.runTest (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:421:10)
+      at C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:528:12
+      at next (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:341:14)
+      at C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:351:7
+      at next (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:283:14)
+      at Immediate._onImmediate (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:319:5)
+
+  10) Standard Library Set length / insert(item):
+
+      AssertionError: 3 == 2
+      + expected - actual
+
+      -3
+      +2
+      
+      at Context.<anonymous> (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\test\public.js:174:20)
+      at callFn (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runnable.js:286:21)
+      at Test.Runnable.run (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runnable.js:279:7)
+      at Runner.runTest (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:421:10)
+      at C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:528:12
+      at next (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:341:14)
+      at C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:351:7
+      at next (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:283:14)
+      at Immediate._onImmediate (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:319:5)
+
+  11) Standard Library Set remove(item):
+
+      AssertionError: 1 == 0
+      + expected - actual
+
+      -1
+      +0
+      
+      at Context.<anonymous> (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\test\public.js:186:20)
+      at callFn (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runnable.js:286:21)
+      at Test.Runnable.run (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runnable.js:279:7)
+      at Runner.runTest (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:421:10)
+      at C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:528:12
+      at next (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:341:14)
+      at C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:351:7
+      at next (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:283:14)
+      at Immediate._onImmediate (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:319:5)
+
+  12) Standard Library Set has(item):
+
+      AssertionError: false == true
+      + expected - actual
+
+      -false
+      +true
+      
+      at Context.<anonymous> (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\test\public.js:196:20)
+      at callFn (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runnable.js:286:21)
+      at Test.Runnable.run (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runnable.js:279:7)
+      at Runner.runTest (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:421:10)
+      at C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:528:12
+      at next (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:341:14)
+      at C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:351:7
+      at next (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:283:14)
+      at Immediate._onImmediate (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:319:5)
+
+  13) Standard Library Set intersect(set):
+     TypeError: Cannot read property 'items' of undefined
+      at C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\src\standard-library.js:125:37
+      at Array.filter (native)
+      at Set.intersect (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\src\standard-library.js:123:27)
+      at Context.<anonymous> (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\test\public.js:210:29)
+      at callFn (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runnable.js:286:21)
+      at Test.Runnable.run (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runnable.js:279:7)
+      at Runner.runTest (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:421:10)
+      at C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:528:12
+      at next (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:341:14)
+      at C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:351:7
+      at next (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:283:14)
+      at Immediate._onImmediate (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:319:5)
+
+  14) Standard Library Set union(set):
+     TypeError: Cannot read property 'items' of undefined
+      at C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\src\standard-library.js:135:39
+      at Array.filter (native)
+      at Set.union (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\src\standard-library.js:133:27)
+      at Context.<anonymous> (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\test\public.js:227:29)
+      at callFn (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runnable.js:286:21)
+      at Test.Runnable.run (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runnable.js:279:7)
+      at Runner.runTest (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:421:10)
+      at C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:528:12
+      at next (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:341:14)
+      at C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:351:7
+      at next (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:283:14)
+      at Immediate._onImmediate (C:\Users\vetoshko\Documents\Code\Yandex\javascript-tasks-8\node_modules\mocha\lib\runner.js:319:5)
+
+
+
