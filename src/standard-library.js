@@ -170,9 +170,26 @@ Set.prototype.empty = function () {
 };
 
 var PriorityQueue = function () {
-
+    this.priority = [];
+    this.items = [];
 };
+PriorityQueue.prototype.enqueue = function (item, priority) {
+    this.priority.push(priority);
+    this.items.push(item);
+}
+PriorityQueue.prototype.dequeue = function () {
+    var max = Math.max.apply(null, this.priority);
+    this.items.splice(max, 1);
+    this.priority.splice(max, 1);
 
+}
+PriorityQueue.prototype.getMaxIndex = function (max) {
+    for (var i = 0; i < this.priority.length; i++) {
+        if (this.priority[i] === max) {
+            return i;
+        };
+    };
+};
 var Map = function () {
 
 };
