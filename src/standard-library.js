@@ -19,7 +19,7 @@ Object.defineProperties(Collection.prototype, {
             this.length = this.collection.length;
             this.isEmpty = this.length === 0;
             this.first = this.collection[0];
-            this.last = this.collection[this.length - 1]
+            this.last = this.collection[this.length - 1];
         }
     },
     pickFirst: {
