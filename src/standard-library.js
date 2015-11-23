@@ -104,7 +104,7 @@ Object.defineProperties(FixedArray.prototype, {
             if (index < 0 || index >= this.length) {
                 throw new RangeError;
             }
-            return this.array[index] === undefined ? null : this.collection[index];
+            return this.array[index] === undefined ? null : this.array[index];
         }
     }
 });
