@@ -99,14 +99,14 @@ FixedArray.prototype = Object.create(Object.prototype);
 
 FixedArray.prototype.insertAt = function (index, item) {
     if (index >= this.length || index < 0) {
-        throw RangeError;
+        throw RangeError();
     }
     this._data[index] = item;
 };
 
 FixedArray.prototype.getAt = function (index) {
     if (index >= this.length || index < 0) {
-        throw RangeError;
+        throw RangeError();
     }
     return this._data[index];
 };
