@@ -99,7 +99,7 @@ Object.defineProperties(FixedArray.prototype, {
             this.array[index] = item;
         }
     },
-    dequeue: {
+    getAt: {
         value: function (index) {
             if (index < 0 || index >= this.length) {
                 throw new RangeError;
@@ -161,6 +161,7 @@ Object.defineProperties(Set.prototype, {
         }
     }
 });
+
 
 var PriorityQueue = function () {
 
