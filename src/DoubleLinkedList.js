@@ -1,26 +1,29 @@
-
-var LinkedList = function() {
+var LinkedList = function () {
     this.length = 0;
     this.head = null;
     this.tail = null;
-}
-LinkedList.prototype.removeFirst = function() {
+};
+LinkedList.prototype.removeFirst = function () {
+    var current = this.head.value;
     if (this.head.next != null) {
         this.head = this.head.next;
     } else {
         this.head = null;
     }
     this.length--;
-}
-LinkedList.prototype.removeLast = function() {
+    return current;
+};
+LinkedList.prototype.removeLast = function () {
+    var current = this.tail.value;
     if (this.tail.prev != null) {
         this.tail = this.tail.prev;
     } else {
         this.tail = null;
     }
     this.length--;
-}
-LinkedList.prototype.addFirst = function(item) {
+    return current;
+};
+LinkedList.prototype.addFirst = function (item) {
     var node = {
         value: item,
         next: null,
@@ -36,8 +39,8 @@ LinkedList.prototype.addFirst = function(item) {
         current.prev = this.head;
     }
     this.length++;
-}
-LinkedList.prototype.addLast = function(item) {
+};
+LinkedList.prototype.addLast = function (item) {
     var node = {
         value: item,
         next: null,
@@ -53,12 +56,12 @@ LinkedList.prototype.addLast = function(item) {
         current.next = this.tail;
     }
     this.length++;
-}
-LinkedList.prototype.getFirst = function() {
+};
+LinkedList.prototype.getFirst = function () {
     return this.head.value;
-}
-LinkedList.prototype.getLast = function() {
+};
+LinkedList.prototype.getLast = function () {
     return this.tail.value;
-}
+};
 
 exports.LinkedList = LinkedList;
