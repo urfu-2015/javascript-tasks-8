@@ -1,45 +1,36 @@
 'use strict';
 
 var Collection = function () {
-    this.first = null;
-    this.last = null;
     this.length = 0;
     this.isEmpty = true;
     this.list = [];
 };
+Object.defineProperty(Collection, 'first', { enumerable: true, get: function () {
+    return Collection.list[0];
+}});
+Object.defineProperty(Collection, 'last', { enumerable: true, get: function () {
+    return Collection.list[Collection.list.length - 1];
+}});
 
 Collection.prototype.pickFirst = function () {
-    if (this.isEmpty) {
-        return null;
-    }
-    var first = this.list[0];
-    this.list = this.list.slice(1);
-    this.length--;
+    var first = this.list.shift() || null;
+    this.length = first === null ? 0 : this.length - 1;
     this.isEmpty = this.length === 0;
-    this.first = this.isEmpty ? null : this.list[0];
     return first;
 };
 
 Collection.prototype.pickLast = function () {
-    if (this.isEmpty) {
-        return null;
-    }
-    var last = this.list[this.length - 1];
-    this.list = this.list.slice(0, this.length - 2);
-    this.length--;
+    var last = this.list.pop() || null;
+    this.length = last === null ? 0 : this.length - 1;
     this.isEmpty = this.length === 0;
-    this.last = this.isEmpty ? null : this.list[this.length - 1];
     return last;
 };
 
 Collection.prototype.insertFirst = function (elem) {
-    if (this.isEmpty) {
-        this.isEmpty = false;
-        this.last = elem;
-    }
-    this.list = [elem].concat(this.list);
+    this.length = this.list.unshift(elem);
     this.first = elem;
-    this.length++;
+    this.isEmpty = false;
+    this.last = this.list[this.length - 1];
 };
 
 Collection.prototype.insertLast = function (elem) {
@@ -53,8 +44,6 @@ Collection.prototype.insertLast = function (elem) {
 };
 
 Collection.prototype.empty = function () {
-    this.first = null;
-    this.last = null;
     this.length = 0;
     this.isEmpty = true;
     this.list = [];
@@ -63,8 +52,14 @@ Collection.prototype.empty = function () {
 var Queue = function () {
     this.queue = [];
     this.length = 0;
-    this.isEmpty = true;
 };
+
+// Object.defineProperty(Queue, 'length', { enumerable: true, get: function () {
+//     return Queue.queue.length;
+// }});
+// Object.defineProperty(Queue, 'isEpmty', { enumerable: true, get: function () {
+//     return Queue.queue.length === 0;
+// }});
 
 Queue.prototype.enqueue = function (elem) {
     this.queue = this.queue.concat([elem]);
@@ -82,7 +77,16 @@ Queue.prototype.dequeue = function () {
     return elem;
 };
 
+Queue.prototype.empty = function () {
+    this.queue = [];
+    this.length = 0;
+    this.isEmpty = true;
+};
+
 var FixedArray = function (size) {
+    if (size === undefined && typeof size !== 'number' && size < 0) {
+        throw new TypeError('проблемы с типом size');
+    }
     this.length = size;
     this.fixedArray = [];
 };
@@ -91,7 +95,10 @@ FixedArray.prototype.insertAt = function (index, item) {
     if (index > this.length - 1) {
         throw new RangeError('Элемент за пределами указанного диапазона ');
     }
-    this.fixedArray.splice(index, 0, item);
+    if (item === undefined) {
+        throw new TypeError('проблемы с типом item');
+    }
+    this.fixedArray[index] = item;
 };
 
 FixedArray.prototype.getAt = function (index) {
@@ -106,6 +113,9 @@ var Set = function () {
     this.length = 0;
     this.elements = [];
 };
+// Object.defineProperty(Set, 'length', { enumerable: true, get: function () {
+//     return Set.elements.length;
+// }});
 
 Set.prototype.insert = function (item) {
     if (this.elements.indexOf(item) < 0) {
