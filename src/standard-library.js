@@ -76,14 +76,14 @@ FixedArray.prototype = Object.create(Collection.prototype);
 FixedArray.prototype.constructor = FixedArray;
 FixedArray.prototype.insertAt = function (index, elem) {
     if (index < 0 || index >= this.length) {
-        throw new RangeError("Out of range");
+        throw new RangeError('Out of range');
     }
     this.struct[index] = elem;
 };
 
 FixedArray.prototype.getAt = function (index) {
     if (index < 0 || index >= this.length) {
-        throw new RangeError("Out of range");
+        throw new RangeError('Out of range');
     }
     return this.struct[index];
 };
@@ -101,7 +101,7 @@ Set.prototype.constructor = Set;
 //});
 Set.prototype.has = function (elem) {
     var didFound = false;
-    this.struct.forEach(function(item) {
+    this.struct.forEach(function (item) {
         if (elem === item) {
             didFound = true;
         }
