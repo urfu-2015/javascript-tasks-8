@@ -179,9 +179,9 @@ var Set = function () {
     };
 
     this.union = function (set) {
-        // Склонировали
-        var temp_array = new Set();
         // Это легально )? Ведь я создаю экземпляр прямо внутри конструктора этого же объекта
+        var temp_array = new Set();
+        // Склонировали
         temp_array._array = this._array.splice(0);
         temp_array.length = temp_array._array.length;
         set._array.forEach(function (elem) {
