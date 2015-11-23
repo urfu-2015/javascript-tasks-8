@@ -1,12 +1,12 @@
 'use strict';
 
-var Collection = function ()  {
-        this.type = 'collection';
-        this.first = null;
-        this.last = null;
-        this._data = [];
-        this.length = 0;
-        this.isEmpty = true;
+var Collection = function () {
+    this.type = 'collection';
+    this.first = null;
+    this.last = null;
+    this._data = [];
+    this.length = 0;
+    this.isEmpty = true;
 };
 
 Collection.prototype = Object.create(Object.prototype);
@@ -28,7 +28,7 @@ Collection.prototype.pickLast = function () {
         this.isEmpty = this.length == 0;
         this.first = this.isEmpty ? null : this.first;
         this.last = this.isEmpty ? null : this._data[this.length - 1];
-        return this._data.pop()
+        return this._data.pop();
     } else {
         return undefined;
     }
@@ -82,7 +82,7 @@ var Queue = function () {
 
 Queue.prototype = Object.create(Collection.prototype);
 
-Queue.prototype.enqueue =  function (item) {
+Queue.prototype.enqueue = function (item) {
     this.insertLast(item);
 };
 
@@ -117,7 +117,7 @@ var Set = function () {
 
 Set.prototype = Object.create(Collection.prototype);
 
-Set.prototype.insert =  function (item) {
+Set.prototype.insert = function (item) {
     var elemInData = this._data.find(
         function (elem) {
             return elem === item;
@@ -156,7 +156,7 @@ Set.prototype.intersect = function (other) {
                 newSet.insert(elem);
             }
         }
-    )
+    );
     return newSet;
 };
 
@@ -169,7 +169,7 @@ Set.prototype.union = function (other) {
     );
     other._data.forEach(
         function (elem) {
-            newSet.insert(elem)
+            newSet.insert(elem);
         }
     );
     return newSet;
