@@ -234,4 +234,42 @@ describe('Standard Library', function () {
             assert.ok(set3.has('baz'));
         });
     });
+    describe('PriorityQueue', function () {
+        it('simple enqueue()', function () {
+            var prQueue = new PriorityQueue();
+            prQueue.enqueue('a', 3);
+            prQueue.enqueue('c', 1);
+            prQueue.enqueue('b', 2);
+
+            assert.equal(prQueue.length, 3);
+        });
+        it('enqueue() + dequeue()', function () {
+            var prQueue = new PriorityQueue();
+            prQueue.enqueue('a', 6);
+            prQueue.enqueue('b', 5);
+            prQueue.enqueue('c', 5);
+            prQueue.enqueue('f', 0);
+            prQueue.enqueue('e', 5);
+            prQueue.enqueue('d', 3);
+
+            assert.equal(prQueue.dequeue(), 'a');
+            assert.equal(prQueue.dequeue(), 'b');
+            assert.equal(prQueue.dequeue(), 'c');
+            assert.equal(prQueue.dequeue(), 'e');
+            assert.equal(prQueue.dequeue(), 'd');
+            assert.equal(prQueue.dequeue(), 'f');
+        });
+        it('empty()', function () {
+            var prQueue = new PriorityQueue();
+            prQueue.enqueue('a', 6);
+            prQueue.enqueue('b', 5);
+            prQueue.enqueue('c', 5);
+            prQueue.enqueue('f', 0);
+            prQueue.enqueue('d', 2);
+            prQueue.enqueue('e', 3);
+
+            prQueue.empty();
+            assert.equal(prQueue.length, 0);
+        });
+    });
 });
