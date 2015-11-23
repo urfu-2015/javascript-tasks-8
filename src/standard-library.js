@@ -117,6 +117,8 @@ Collection.prototype.refresh = function () {
         this.firstItem = null;
         this.lastItem = null;
         this.isEmpty = true;
+        this.first = null;
+        this.last = null;
     } else {
         this.first = this.firstItem.value;
         this.last = this.lastItem.value;
@@ -176,23 +178,18 @@ var FixedArray = function (size) {
 FixedArray.prototype = Object.create(DoublyLinkedList.prototype);
 
 FixedArray.prototype.insertAt = function (index, item) {
-    fillFixedArray(this);
+    if (this.firstItem === undefined) {
+        var size = this.length;
+        this.length = 0;
+        while (this.length < size) {
+            this.add(null, 0);
+        }
+    }
     var node = this.getAtIndex(index);
     node.value = item;
 };
 
-function fillFixedArray(array) {
-    if (array.firstItem === undefined) {
-        var size = array.length;
-        array.length = 0;
-        while (array.length < size) {
-            array.add(null, 0);
-        }
-    }
-}
-
 FixedArray.prototype.getAt = function (index) {
-    fillFixedArray(this);
     return this.getAtIndex(index).value;
 };
 
@@ -258,6 +255,10 @@ Set.prototype.union = function (set) {
         res.insert(this.getAtIndex(i).value);
     }
     return res;
+};
+
+Set.prototype.empty = function () {
+    this.clear();
 };
 
 var PriorityQueue = function () {
