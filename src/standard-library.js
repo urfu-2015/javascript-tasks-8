@@ -72,7 +72,7 @@ Queue.prototype.enqueue = function (item) {
 
 Queue.prototype.dequeue = function () {
     var result = this.queue.shift();
-    this.length += 1;
+    this.length -= 1;
     return result;
 };
 
