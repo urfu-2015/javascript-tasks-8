@@ -1,12 +1,27 @@
 'use strict';
 
 var Collection = function () {
-    this.first = null;
-    this.last = null;
     this.length = 0;
-    this.isEmpty = true;
     this.collection = [];
 };
+
+Object.defineProperty(Collection.prototype, 'isEmpty', {
+    get: function () {
+        return this.length == 0;
+    }
+});
+
+Object.defineProperty(Collection.prototype, 'first', {
+    get: function () {
+        return this.length > 0 ? this.collection[0] : undefined;
+    }
+});
+
+Object.defineProperty(Collection.prototype, 'last', {
+    get: function () {
+        return this.length > 0 ? this.collection[this.length - 1] : undefined;
+    }
+});
 
 Collection.prototype.pickFirst = function () {
     if (this.isEmpty) {
@@ -15,9 +30,6 @@ Collection.prototype.pickFirst = function () {
     var first = this.collection[0];
     this.collection = this.collection.slice(1);
     this.length--;
-    this.first = this.collection[0];
-    this.last = this.collection[this.length - 1];
-    this.isEmpty = this.length == 0;
     return first;
 };
 
@@ -28,9 +40,6 @@ Collection.prototype.pickLast = function () {
     var last = this.collection[this.length - 1];
     this.collection = this.collection.slice(0, this.length - 1);
     this.length--;
-    this.first = this.collection[0];
-    this.last = this.collection[this.length - 1];
-    this.isEmpty = this.length == 0;
     return last;
 };
 
@@ -39,50 +48,34 @@ Collection.prototype.insertFirst = function (element) {
     newCollection = newCollection.concat(this.collection);
     this.collection = newCollection;
     this.length++;
-    this.first = this.collection[0];
-    this.last = this.collection[this.length - 1];
-    this.isEmpty = this.length == 0;
 };
 
 Collection.prototype.insertLast = function (element) {
     this.collection.push(element);
     this.length++;
-    this.first = this.collection[0];
-    this.last = this.collection[this.length - 1];
-    this.isEmpty = this.length == 0;
 };
 
 Collection.prototype.empty = function () {
-    this.first = null;
-    this.last = null;
     this.length = 0;
-    this.isEmpty = true;
     this.collection = [];
 };
 
 var Queue = function () {
     this.length = 0;
-    this.queue = [];
 };
 
+Queue.prototype = Object.create(Collection.prototype);
+
 Queue.prototype.enqueue = function (item) {
-    this.queue = this.queue.concat([item]);
-    this.length++;
+    this.insertFirst(item);
 };
 
 Queue.prototype.dequeue = function () {
-    if (!this.length) {
-        return;
-    }
-    var item = this.queue[0];
-    this.queue = this.queue.slice(1);
-    this.length--;
-    return item;
+    return this.pickLast();
 };
 
 Queue.prototype.empty = function () {
-    this.length = 0;
-    this.queue = [];
+    this.empty();
 };
 
 var FixedArray = function (size) {
@@ -156,34 +149,34 @@ Set.prototype.union = function (set) {
 
 var PriorityQueue = function () {
     this.length = 0;
-    this.queue = new Queue();
+    this.collection = [];
 };
 
+PriorityQueue.prototype = Object.create(Collection.prototype);
+
 PriorityQueue.prototype.enqueue = function (item, priority) {
-    var queue = this.queue.queue;
+    var queue = this.collection;
     var obj = {
         item: item,
         priority: priority
     };
     if (this.length == 0 || queue[this.length - 1].priority >= priority) {
-        this.queue.enqueue(obj);
+        this.insertLast(obj);
     } else {
         for (var index = 0; index < queue.length; index++) {
             if (queue[index].priority < priority) {
                 var newQueue1 = queue.slice(0, index);
                 var newQueue2 = queue.slice(index);
-                this.queue.queue = newQueue1.concat(obj, newQueue2);
-                this.queue.length++;
+                this.collection = newQueue1.concat(obj, newQueue2);
+                this.length++;
                 break;
             }
         }
     }
-    this.length++;
 };
 
 PriorityQueue.prototype.dequeue = function () {
-    this.length--;
-    return this.queue.dequeue();
+    return this.pickFirst();
 };
 
 var Map = function () {
