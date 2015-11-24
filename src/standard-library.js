@@ -40,12 +40,18 @@ Collection.prototype.insertFirst = function (element) {
     this.array.splice(0, 0, element);
     this.first = this.array[0];
     this.length += 1;
+    if (this.isEmpty) {
+        this.last = this.array[0];
+    }
     this.isEmpty = false;
 };
 Collection.prototype.insertLast = function (element) {
-    this.array.splice(-1, 0, element);
+    this.array.push(element);
     this.length += 1;
-    this.last = this.array[this.array.length - 1];
+    this.last = this.array[this.length - 1];
+    if (this.isEmpty) {
+        this.first = this.array[this.length - 1];
+    }
     this.isEmpty = false;
 };
 Collection.prototype.empty = function () {
@@ -62,12 +68,13 @@ var Queue = function () {
 Queue.prototype = Object.create(Abstract.prototype);
 Queue.prototype.constructor = Queue;
 Queue.prototype.enqueue = function (element) {
-    this.array.splice(-1, 0, element);
+    //this.array.splice(-1, 0, element);
+    this.array.push(element);
     this.length += 1;
 };
 Queue.prototype.dequeue = function () {
-    this.array.splice(0, 1);
     this.length -= 1;
+    return this.array.splice(0, 1)[0];
 };
 Queue.prototype.empty = function () {
     this.length = 0;
@@ -105,45 +112,42 @@ var Set = function () {
 Set.prototype = Object.create(Abstract.prototype);
 Set.prototype.constructor = Set;
 Set.prototype.insert = function (item) {
-    if (this.array.indexOf(item) <= -1) {
+    //console.log(this.array.indexOf(item));
+    if (this.array.indexOf(item) === -1) {
         this.array.push(item);
+        this.length += 1;
     }
 };
 Set.prototype.remove = function (item) {
     if (this.array.indexOf(item) > -1) {
         this.array.splice(this.array.indexOf(item), 1);
+        this.length -= 1;
     }
 };
 Set.prototype.has = function (item) {
     return this.array.indexOf(item) > -1;
 };
 Set.prototype.intersect = function (set) {
-    var and = [];
+    var and = new Set();
     this.array.forEach(function (item) {
         for (var i = 0; i < set.length; i++) {
-            if (set[i] === item) {
-                and.push(item);
+            if (set.array[i] === item) {
+                and.insert(item);
                 break;
             }
         }
-    })
+    });
+    return and;
 };
 Set.prototype.union = function (set) {
-    var result = this.array.slice();
-    var bool;
-    this.array.forEach(function (noteB) {
-        bool = false;
-        set.forEach(function (noteA){
-            if (noteA.name == noteB.name) {
-                bool = true;
-            }
-        });
-
-        if (!bool) {
-            result.push(noteB);
-        }
+    var and = new Set();
+    this.array.forEach(function (item) {
+        and.insert(item);
     });
-    return result;
+    set.array.forEach(function (item) {
+        and.insert(item);
+    });
+    return and;
 };
 Set.prototype.empty = function () {
     this.length = 0;
