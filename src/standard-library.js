@@ -33,28 +33,36 @@ Collection.prototype.pickLast = function () {
         if (this.length === 0) {
             clear(this);
         } else {
-            this.last = this.collection[-1];
+            this.last = this.collection[this.length - 1];
         }
         return last;
     }
     return this.last;
 };
 Collection.prototype.insertFirst = function (item) {
-    this.collection.unshift(item);
-    this.first = this.collection[0];
-    this.length += 1;
-    if (this.isEmpty) {
-        this.isEmpty = false;
-        this.last = this.collection[0];
+    if (typeof item !== 'undefined') {
+        this.collection.unshift(item);
+        this.first = this.collection[0];
+        this.length += 1;
+        if (this.isEmpty) {
+            this.isEmpty = false;
+            this.last = this.collection[0];
+        }
+    } else {
+        return null;
     }
 };
 Collection.prototype.insertLast = function (item) {
-    this.collection.push(item);
-    this.last = this.collection[this.length];
-    this.length += 1;
-    if (this.isEmpty) {
-        this.isEmpty = false;
-        this.first = this.collection[this.length - 1];
+    if (typeof item !== 'undefined') {
+        this.collection.push(item);
+        this.last = this.collection[this.length];
+        this.length += 1;
+        if (this.isEmpty) {
+            this.isEmpty = false;
+            this.first = this.collection[this.length - 1];
+        }
+    } else {
+        return null;
     }
 };
 Collection.prototype.empty = function () {
@@ -79,7 +87,10 @@ Queue.prototype.empty = function () {
 };
 
 var FixedArray = function (size) {
-    this.collection = [];
+    if (size < 0 || size === Infinity) {
+        throw new RangeError('Некорректная длина!');
+    }
+    this.collection = new Array(size);
     this.actualLength = 0;
     this.length = size;
 };
@@ -87,7 +98,10 @@ FixedArray.prototype.insertAt = function (index, item) {
     if (index >= this.length || this.actualLength + 1 > this.length) {
         throw new RangeError('Нельзя добавить новый элемент!');
     }
-    this.collection.splice(index, 0, item);
+    if (typeof item === 'undefined') {
+        throw new Error('Нет элемента!');
+    }
+    this.collection[index] = item;
     this.actualLength += 1;
 };
 FixedArray.prototype.getAt = function (index) {
@@ -157,6 +171,12 @@ var PriorityQueue = function () {
     this.length = 0;
 };
 PriorityQueue.prototype.enqueue = function (item, priority) {
+    if (typeof priority === 'undefined' || priority < 1) {
+        priority = 1;
+    }
+    if (priority > 100) {
+        priority = 100;
+    }
     this.collection[priority] = this.collection[priority] || [];
     this.collection[priority].push(item);
     this.length += 1;
