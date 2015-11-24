@@ -80,7 +80,7 @@ FixedArray.prototype.getAt = function (index) {
     if (index >= this.length || index < 0) {
         throw new RangeError('Index ' + index + ' out of range');
     }
-    return this.container[index]
+    return this.container[index];
 };
 
 
