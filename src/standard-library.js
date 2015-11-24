@@ -1,70 +1,59 @@
 'use strict';
 
 var Collection = function () {
-    this.length = 0;
     this.isEmpty = true;
     this.list = [];
 };
 Object.defineProperty(Collection, 'first', { enumerable: true, get: function () {
-    return Collection.list[0];
+    return this.list[0];
 }});
 Object.defineProperty(Collection, 'last', { enumerable: true, get: function () {
-    return Collection.list[Collection.list.length - 1];
+    return this.list[this.list.length - 1];
+}});
+Object.defineProperty(Collection, 'length', { enumerable: true, get: function () {
+    return this.list.length;
 }});
 
 Collection.prototype.pickFirst = function () {
     var first = this.list.shift() || null;
-    this.length = first === null ? 0 : this.length - 1;
     this.isEmpty = this.length === 0;
     return first;
 };
 
 Collection.prototype.pickLast = function () {
     var last = this.list.pop() || null;
-    this.length = last === null ? 0 : this.length - 1;
     this.isEmpty = this.length === 0;
     return last;
 };
 
 Collection.prototype.insertFirst = function (elem) {
-    this.length = this.list.unshift(elem);
-    this.first = elem;
     this.isEmpty = false;
-    this.last = this.list[this.length - 1];
+    this.list.unshift(elem);
 };
 
 Collection.prototype.insertLast = function (elem) {
-    if (this.isEmpty) {
-        this.isEmpty = false;
-        this.first = elem;
-    }
+    this.isEpmty = false;
     this.list.push(elem);
-    this.length++;
-    this.last = elem;
 };
 
 Collection.prototype.empty = function () {
-    this.length = 0;
     this.isEmpty = true;
     this.list = [];
 };
 
 var Queue = function () {
     this.queue = [];
-    this.length = 0;
 };
 
-// Object.defineProperty(Queue, 'length', { enumerable: true, get: function () {
-//     return Queue.queue.length;
-// }});
-// Object.defineProperty(Queue, 'isEpmty', { enumerable: true, get: function () {
-//     return Queue.queue.length === 0;
-// }});
+Object.defineProperty(Queue, 'length', { enumerable: true, get: function () {
+    return this.queue.length;
+}});
+Object.defineProperty(Queue, 'isEpmty', { enumerable: true, get: function () {
+    return this.queue.length === 0;
+}});
 
 Queue.prototype.enqueue = function (elem) {
     this.queue = this.queue.concat([elem]);
-    this.length++;
-    this.isEmpty = this.isEmpty ? false : this.isEmpty;
 };
 
 Queue.prototype.dequeue = function () {
@@ -72,15 +61,12 @@ Queue.prototype.dequeue = function () {
         return null;
     }
     var elem = this.queue[0];
-    this.length--;
     this.queue = this.queue.slice(1);
     return elem;
 };
 
 Queue.prototype.empty = function () {
     this.queue = [];
-    this.length = 0;
-    this.isEmpty = true;
 };
 
 var FixedArray = function (size) {
