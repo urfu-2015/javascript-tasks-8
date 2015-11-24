@@ -5,45 +5,35 @@ var Collection = function () {
     this.last = undefined;
     this.container = [];
     this.length = 0;
+    this.isEmpty = true;
 };
 Collection.prototype.pickFirst = function () {
-    console.log(this.container, this.first, this.last);
     this.length--;
+    this.isEmpty = this.container.length === 0;
     this.first = this.container[1];
     this.last = this.container[this.container.length - 1];
-    console.log(this.container, this.first, this.last);
-    console.log();
     return (this.container.splice(0, 1))[0];
 };
 Collection.prototype.pickLast = function () {
-    console.log(this.container, this.first, this.last);
     this.length--;
+    this.isEmpty = this.container.length === 0;
     this.first = this.container[0];
     this.last = this.container[this.container.length - 2];
-    console.log(this.container, this.first, this.last);
-    console.log();
     return (this.container.splice(-1, 1))[0];
 };
 Collection.prototype.insertFirst = function (obj) {
-    console.log(this.container, this.first, this.last);
     this.length++;
+    this.isEmpty = this.container.length === 0;
     this.container.splice(0, 0, obj);
     this.last = this.container[this.container.length - 1];
     this.first = this.container[0];
-    console.log(this.container, this.first, this.last);
-    console.log();
 };
 Collection.prototype.insertLast = function (obj) {
-    console.log(this.container, this.first, this.last);
     this.length++;
+    this.isEmpty = this.container.length === 0;
     this.container.splice(this.container.length, 0, obj);
     this.last = this.container[this.container.length - 1];
     this.first = this.container[0];
-    console.log(this.container, this.first, this.last);
-    console.log();
-};
-Collection.prototype.isEmpty = function () {
-    return this.container.length === 0;
 };
 
 Collection.prototype.empty = function () {
