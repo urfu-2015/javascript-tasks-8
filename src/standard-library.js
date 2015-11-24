@@ -44,7 +44,7 @@ Collection.prototype.pickLast = function () {
         this.empty();
     } else {
         this.length -= 1;
-        this.first = this.elements[this.length - 1];
+        this.last = this.elements[this.length - 1];
     }
     return lastElem;
 };
@@ -129,6 +129,9 @@ Queue.prototype.dequeue = function () {
  * @this {FixedArray}
  */
 var FixedArray = function (size) {
+    if (size < 0) {
+        throw new RangeError('size should not be negative');
+    }
     this.elements = [];
     this.length = size;
 };
@@ -139,8 +142,11 @@ var FixedArray = function (size) {
  * @param {object} item элемент
  */
 FixedArray.prototype.insertAt = function (index, item) {
+    if (typeof index == 'undefined' || typeof item == 'undefined') {
+        throw new SyntaxError('wrong number of arguments');
+    }
     if (index >= this.length) {
-        throw new RangeError('Элемент за пределами массива');
+        throw new RangeError('index is out of range');
     }
     this.elements.splice(index, 0, item);
 };
@@ -151,8 +157,11 @@ FixedArray.prototype.insertAt = function (index, item) {
  * @returns {object} item элемент
  */
 FixedArray.prototype.getAt = function (index) {
+    if (index >= this.length) {
+        throw new RangeError('index is out of range');
+    }
     if (!this.elements[index]) {
-        throw new RangeError('Элемент за пределами массива');
+        return null;
     }
     return this.elements[index];
 };
@@ -299,7 +308,7 @@ var Map = function () {
  * @param {object} item элемент
  */
 Map.prototype.addItem = function (key, item) {
-    this.elements[key.toString()] = item;
+    this.elements[JSON.stringify(key)] = item;
     if (this.isEmpty) {
         this.isEmpty = false;
     }
@@ -312,15 +321,15 @@ Map.prototype.addItem = function (key, item) {
  * @preturns {object} элемент
  */
 Map.prototype.removeItem = function (key) {
-    if (!this.elements[key.toString()]) {
+    if (!this.elements[JSON.stringify(key)]) {
         return null;
     }
     if (this.length === 1) {
         this.isEmpty = true;
     }
     this.length -= 1;
-    var item = this.elements[key.toString()];
-    delete this.elements[key.toString()];
+    var item = this.elements[JSON.stringify(key)];
+    delete this.elements[JSON.stringify(key)];
     return item;
 };
 
@@ -330,10 +339,10 @@ Map.prototype.removeItem = function (key) {
  * @preturns {object} элемент
  */
 Map.prototype.getItem = function (key) {
-    if (!this.elements[key.toString()]) {
+    if (!this.elements[JSON.stringify(key)]) {
         return null;
     }
-    return this.elements[key.toString()];
+    return this.elements[JSON.stringify(key)];
 };
 
 /**
