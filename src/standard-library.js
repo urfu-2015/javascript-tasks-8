@@ -90,7 +90,11 @@ var FixedArray = function (size) {
     if (size < 0) {
         throw new RangeError('Некорректная длина!');
     }
-    this.collection = new Array(size);
+    if (size === Infinity) {
+        this.collection = [];
+    } else {
+        this.collection = new Array(size);
+    }
     this.actualLength = 0;
     this.length = size;
 };
