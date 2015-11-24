@@ -41,12 +41,18 @@ Collection.prototype.pickLast = function () {
 
 // вставляет элемент в начало колекции
 Collection.prototype.insertFirst = function (item) {
+    if (item === undefined) {
+        throw new RangeError('Missing expected parameter');
+    }
     this.collection.unshift(item);
     this._refresh();
 };
 
 // вставляет элемент в конец коллекции
 Collection.prototype.insertLast = function (item) {
+    if (item === undefined) {
+        throw new RangeError('Missing expected parameter');
+    }
     this.collection.push(item);
     this._refresh();
 };
@@ -74,8 +80,8 @@ Queue.prototype.dequeue = function () {
 };
 
 var FixedArray = function (size) {
-    if (size <= 0 || (isNaN(parseFloat(size)) && !isFinite(size))) {
-        throw new RangeError('RangeError');
+    if (size <= 0 || (isNaN(parseFloat(size)) && !isFinite(size)) || size === undefined) {
+        throw new RangeError('Parameter must be an integer greater than 0');
     }
     this.length = size;
     this.collection = [];
@@ -87,7 +93,7 @@ FixedArray.prototype.insertAt = function (index, item) {
         throw new RangeError('Parameter must be between ' + 0 + ' and ' + this.length);
     }
     if (item === undefined) {
-        throw new RangeError('Missing expected exception');
+        throw new RangeError('Missing expected parameter');
     }
     this.collection[index] = item;
 };
@@ -124,12 +130,18 @@ Set.prototype.remove = function (item) {
 
 // проверяет, входит ли элемент в множество
 Set.prototype.has = function (item) {
+    if (item === undefined) {
+        throw new RangeError('Missing expected parameter');
+    }
     return this.collection.indexOf(item) !== -1;
 };
 
 // возвращает множество элементов входящих в исходное множество и в переданное множество
 Set.prototype.intersect = function (set) {
     var res = new Set();
+    if (set === undefined) {
+        throw new RangeError('Missing expected parameter');
+    }
     this.collection.forEach(function (item) {
         if (set.has(item)) {
             res.insert(item);
@@ -140,6 +152,9 @@ Set.prototype.intersect = function (set) {
 
 // возвращает множество элементов входящих в исходное множество или в переданное множество
 Set.prototype.union = function (set) {
+    if (set === undefined) {
+        throw new RangeError('Missing expected parameter');
+    }
     var res = new Set();
     this.collection.forEach(function (item) {
         res.insert(item);
@@ -159,6 +174,9 @@ PriorityQueue.prototype.constructor = PriorityQueue;
 
 // кладёт элемент с priority (целое число в интервале от 1 до 100)
 PriorityQueue.prototype.enqueue = function (item, priority) {
+    if (item === undefined) {
+        throw new RangeError('Missing expected parameter');
+    }
     if (priority < 1 || priority > 100) {
         throw new RangeError('Parameter must be between 1 and 100');
     }
@@ -207,6 +225,9 @@ Map.prototype._keyToString = function (key) {
 
 // добавляет элемент в словарь по указанному ключу
 Map.prototype.addItem = function (key, item) {
+    if (item === undefined) {
+        throw new RangeError('Missing expected parameter');
+    }
     if (this.getItem(key) === null) {
         this.elements[this._keyToString(key)] = item;
     }
@@ -225,6 +246,9 @@ Map.prototype.removeItem = function (key) {
 
 // возвращает элемент по указанному ключу
 Map.prototype.getItem = function (key) {
+    if (key === undefined) {
+        throw new RangeError('Missing expected parameter');
+    }
     key = this._keyToString(key);
     return this.elements[key] ? this.elements[key] : null;
 };
