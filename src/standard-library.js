@@ -87,7 +87,7 @@ Queue.prototype.empty = function () {
 };
 
 var FixedArray = function (size) {
-    if (size < 0 || size === Infinity) {
+    if (size < 0) {
         throw new RangeError('Некорректная длина!');
     }
     this.collection = new Array(size);
@@ -171,8 +171,8 @@ var PriorityQueue = function () {
     this.length = 0;
 };
 PriorityQueue.prototype.enqueue = function (item, priority) {
-    if (typeof priority === 'undefined' || priority < 1) {
-        priority = 1;
+    if (typeof priority === 'undefined' || priority < 0) {
+        priority = 0;
     }
     if (priority > 100) {
         priority = 100;
