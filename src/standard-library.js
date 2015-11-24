@@ -9,27 +9,29 @@ var Collection = function () {
 Collection.prototype.pickFirst = function () {
     this.length--;
     this.first = this.container[1];
+    this.last = this.container[-1];
     return (this.container.splice(0, 1))[0];
 };
 Collection.prototype.pickLast = function () {
     this.length--;
+    this.first = this.container[0];
     this.last = this.container[-2];
     return (this.container.splice(-1, 1))[0];
 };
 Collection.prototype.insertFirst = function (obj) {
     this.length++;
-    this.container.splice(0, 1, obj);
+    this.container.splice(0, 0, obj);
     this.last = this.container[-1];
     this.first = this.container[0];
 };
 Collection.prototype.insertLast = function (obj) {
     this.length++;
-    this.container.splice(this.container.length - 1, 1, obj);
+    this.container.splice(this.container.length - 1, 0, obj);
     this.last = this.container[-1];
     this.first = this.container[0];
 };
 Collection.prototype.isEmpty = function () {
-    return this.container.length === 0;
+    return this.length === 0;
 };
 
 Collection.prototype.empty = function () {
@@ -50,7 +52,7 @@ Queue.prototype.enqueue = function (item) {
 };
 Queue.prototype.dequeue = function () {
     this.length--;
-    return this.container.unshift();
+    return this.container.shift();
 };
 Queue.prototype.empty = function () {
     this.container = [];
@@ -66,13 +68,13 @@ var FixedArray = function (size) {
 };
 
 FixedArray.prototype.insertAt = function (index, item) {
-    if (index > this.length || index < 0) {
+    if (index >= this.length || index < 0) {
         throw new RangeError('Index ' + index + ' out of range');
     }
     this.container[index] = item;
 };
 FixedArray.prototype.getAt = function (index) {
-    if (index > this.size || index < 0) {
+    if (index >= this.length || index < 0) {
         throw new RangeError('Index ' + index + ' out of range');
     }
     return this.container[index]
