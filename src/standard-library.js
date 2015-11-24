@@ -1,41 +1,32 @@
 'use strict';
 
-var BasicCollection = function (){
-    this.container = [];
-    this.length = 0;
-};
-
-BasicCollection.prototype.empty = function () {
-    this.container = [];
-    this.length = 0;
-};
-
-
 var Collection = function () {
-    this.first = null;
-    this.last = null;
+    this.first = undefined;
+    this.last = undefined;
     this.container = [];
     this.length = 0;
 };
 Collection.prototype.pickFirst = function () {
     this.length--;
     this.first = this.container[1];
-    return this.container.splice(0, 1)[0];
+    return (this.container.splice(0, 1))[0];
 };
 Collection.prototype.pickLast = function () {
     this.length--;
     this.last = this.container[-2];
-    return this.container.splice(-1, 1)[0];
+    return (this.container.splice(-1, 1))[0];
 };
 Collection.prototype.insertFirst = function (obj) {
     this.length++;
-    this.container.splice(0, 0, obj);
+    this.container.splice(0, 1, obj);
+    this.last = this.container[-1];
     this.first = this.container[0];
 };
 Collection.prototype.insertLast = function (obj) {
     this.length++;
-    this.container.splice(0, 0, obj);
+    this.container.splice(this.container.length - 1, 1, obj);
     this.last = this.container[-1];
+    this.first = this.container[0];
 };
 Collection.prototype.isEmpty = function () {
     return this.container.length === 0;
@@ -45,6 +36,9 @@ Collection.prototype.empty = function () {
     this.container = [];
     this.length = 0;
 };
+
+
+
 
 var Queue = function () {
     this.container = [];
@@ -56,21 +50,23 @@ Queue.prototype.enqueue = function (item) {
 };
 Queue.prototype.dequeue = function () {
     this.length--;
-    return this.container.pop();
+    return this.container.unshift();
 };
 Queue.prototype.empty = function () {
     this.container = [];
     this.length = 0;
 };
 
+
+
+
 var FixedArray = function (size) {
     this.container = [];
-    this.length = 0;
-    this.size = size;
+    this.length = size;
 };
 
 FixedArray.prototype.insertAt = function (index, item) {
-    if (index > this.size || index < 0) {
+    if (index > this.length || index < 0) {
         throw new RangeError('Index ' + index + ' out of range');
     }
     this.container[index] = item;
@@ -81,6 +77,8 @@ FixedArray.prototype.getAt = function (index) {
     }
     return this.container[index]
 };
+
+
 
 
 var Set = function () {
@@ -105,7 +103,7 @@ Set.prototype.has = function (item) {
 Set.prototype.intersect = function (set) {
     var result = new Set();
     for (var i = 0; i < set.length; i++) {
-        if (!this.has(set.container[i])) {
+        if (this.has(set.container[i])) {
             result.insert(set.container[i]);
         }
     }
