@@ -39,6 +39,7 @@ Collection.prototype.insertLast = function (obj) {
 Collection.prototype.empty = function () {
     this.container = [];
     this.length = 0;
+    this.isEmpty = true;
 };
 
 
