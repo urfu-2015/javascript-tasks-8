@@ -1,9 +1,14 @@
 'use strict';
 
 var Collection = function () {
-    this.length = 0;
     this.collection = [];
 };
+
+Object.defineProperty(Collection.prototype, 'length', {
+    get: function () {
+        return this.collection.length;
+    }
+});
 
 Object.defineProperty(Collection.prototype, 'isEmpty', {
     get: function () {
@@ -29,7 +34,6 @@ Collection.prototype.pickFirst = function () {
     }
     var first = this.collection[0];
     this.collection = this.collection.slice(1);
-    this.length--;
     return first;
 };
 
@@ -39,7 +43,6 @@ Collection.prototype.pickLast = function () {
     }
     var last = this.collection[this.length - 1];
     this.collection = this.collection.slice(0, this.length - 1);
-    this.length--;
     return last;
 };
 
@@ -47,21 +50,18 @@ Collection.prototype.insertFirst = function (element) {
     var newCollection = [element];
     newCollection = newCollection.concat(this.collection);
     this.collection = newCollection;
-    this.length++;
 };
 
 Collection.prototype.insertLast = function (element) {
     this.collection.push(element);
-    this.length++;
 };
 
 Collection.prototype.empty = function () {
-    this.length = 0;
     this.collection = [];
 };
 
 var Queue = function () {
-    this.length = 0;
+    this.collection = [];
 };
 
 Queue.prototype = Object.create(Collection.prototype);
@@ -101,34 +101,39 @@ FixedArray.prototype.getAt = function (index) {
 };
 
 var Set = function () {
-    this.length = 0;
-    this.set = [];
+    this.collection = [];
 };
 
+Set.prototype = Object.create(Queue.prototype);
+
+Object.defineProperty(Set.prototype, 'length', {
+    get: function () {
+        return this.collection.length;
+    }
+});
+
 Set.prototype.insert = function (item) {
-    if (this.set.indexOf(item) == -1) {
-        this.set.push(item);
-        this.length++;
+    if (this.collection.indexOf(item) == -1) {
+        this.collection.push(item);
     }
 };
 
 Set.prototype.remove = function (item) {
-    var index = this.set.indexOf(item);
+    var index = this.collection.indexOf(item);
     if (index != -1) {
-        var newSet1 = this.set.slice(0, index);
-        var newSet2 = this.set.slice(index + 1);
-        this.set = newSet1.concat(newSet2);
-        this.length--;
+        var newSet1 = this.collection.slice(0, index);
+        var newSet2 = this.collection.slice(index + 1);
+        this.collection = newSet1.concat(newSet2);
     }
 };
 
 Set.prototype.has = function (item) {
-    return this.set.indexOf(item) != -1;
+    return this.collection.indexOf(item) != -1;
 };
 
 Set.prototype.intersect = function (set) {
     var intersection = new Set();
-    this.set.forEach(function (item) {
+    this.collection.forEach(function (item) {
         if (set.has(item)) {
             intersection.insert(item);
         }
@@ -138,12 +143,14 @@ Set.prototype.intersect = function (set) {
 
 Set.prototype.union = function (set) {
     var union = new Set();
-    this.set.forEach(function (item) {
+    this.collection.forEach(function (item) {
         union.insert(item);
     });
-    set.set.forEach(function (item) {
+    for (var i = 0; i < set.length; i++) {
+        var item = set.dequeue();
         union.insert(item);
-    });
+        set.enqueue(item);
+    }
     return union;
 };
 
