@@ -281,12 +281,14 @@ describe('Standard Library', function () {
 
             assert.equal(map.length, 0);
 
+            var date = new Date();
+
             map.addItem({}, 2);
             map.addItem([], 'aaa');
-            map.addItem(new Date(), 6);
+            map.addItem(date, 6);
 
             map.removeItem({});
-            map.removeItem(new Date());
+            map.removeItem(date);
 
             assert.equal(map.length, 1);
         });
