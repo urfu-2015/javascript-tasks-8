@@ -8,6 +8,7 @@ var FixedArray = lib.FixedArray;
 var Queue = lib.Queue;
 var Set = lib.Set;
 var PriorityQueue = lib.PriorityQueue;
+var Map = lib.Map;
 
 describe('Standard Library', function () {
     describe('Collection', function () {
@@ -232,6 +233,139 @@ describe('Standard Library', function () {
             assert.ok(set3.has('foo'));
             assert.ok(set3.has('bar'));
             assert.ok(set3.has('baz'));
+        });
+    });
+
+    // доп. задание
+
+    describe('PriorityQueue', function () {
+        it('enqueue(item, priority)', function () {
+            var queue = new PriorityQueue();
+
+            assert.equal(queue.length, 0);
+
+            queue.enqueue('foo', 2);
+            queue.enqueue('bar');
+            queue.enqueue('baz', 1);
+
+            assert.equal(queue.length, 3);
+        });
+
+        it('dequeue()', function () {
+            var queue = new PriorityQueue();
+            queue.enqueue('foo', 1);
+            queue.enqueue('bar', 3);
+            queue.enqueue('baz', 2);
+
+            assert.equal(queue.dequeue(), 'bar');
+            assert.equal(queue.dequeue(), 'baz');
+            assert.equal(queue.dequeue(), 'foo');
+        });
+    });
+
+    describe('Map', function () {
+        it('addItem(key, item)', function () {
+            var map = new Map();
+
+            assert.equal(map.length, 0);
+
+            map.addItem({}, 2);
+            map.addItem([], 2);
+            map.addItem(new Date(), 2);
+
+            assert.equal(map.length, 3);
+        });
+
+        it('removeItem(key)', function () {
+            var map = new Map();
+
+            assert.equal(map.length, 0);
+
+            var date = new Date();
+
+            map.addItem({}, 2);
+            map.addItem([], 'aaa');
+            map.addItem(date, 6);
+
+            map.removeItem({});
+            map.removeItem(date);
+
+            assert.equal(map.length, 1);
+        });
+
+        it('getItem(key)', function () {
+            var map = new Map();
+
+            assert.equal(map.length, 0);
+
+            var date = new Date();
+
+            map.addItem({}, 2);
+            map.addItem([], 'aaa');
+            map.addItem(date, 6);
+
+            assert.equal(map.getItem(date), 6);
+        });
+        it('getItem(function)', function () {
+            var map = new Map();
+
+            assert.equal(map.length, 0);
+
+            var f1 = function () {
+                console.log('1');
+            };
+            var f2 = function () {
+                console.log('2');
+            };
+            map.addItem(f1, 1);
+            map.addItem(f2, 2);
+            assert.equal(map.length, 2);
+        });
+        it('empty()', function () {
+            var map = new Map();
+
+            assert.equal(map.length, 0);
+
+            map.addItem({}, 2);
+            map.addItem([], 'aaa');
+            map.addItem(new Date(), 6);
+            map.empty();
+
+            assert.ok(map.isEmpty);
+        });
+    });
+
+    // first возвращает null
+    describe('Collection', function () {
+        it('first', function () {
+            var collection = new Collection();
+            collection.insertLast('foo');
+            collection.pickFirst();
+
+            assert.ok(collection.first === null);
+        });
+    });
+
+    // массив нулевой длины
+    describe('FixedArray', function () {
+        it('length', function () {
+            var arr = new FixedArray(0);
+
+            assert.equal(arr.length, 0);
+        });
+    });
+
+    // одинаковые ключи
+    describe('Map', function () {
+        it('addItem(key, item)', function () {
+            var map = new Map();
+
+            assert.equal(map.length, 0);
+
+            map.addItem({}, 1);
+            map.addItem({}, 2);
+
+            assert.ok(map.getItem({}) === 2);
         });
     });
 });
