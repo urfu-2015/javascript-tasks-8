@@ -23,16 +23,16 @@ class Collection {
     }
 
     get isEmpty() {
-        return this.length < 1;
+        return this.length === 0;
     }
 
     pickFirst() {
-        if (this._first == null) {
+        if (this._first === null) {
             return null;
         }
         var element = this._first.value;
         this._first = this._first.next;
-        if (this._first == null) {
+        if (this._first === null) {
             this._last = null;
         }
         this.length -= 1;
@@ -40,12 +40,12 @@ class Collection {
     }
 
     pickLast() {
-        if (this._last == null) {
+        if (this._last === null) {
             return null;
         }
         var element = this._last.value;
         this._last = this._last.prev;
-        if (this._last == null) {
+        if (this._last === null) {
             this._first = null;
         }
         this.length -= 1;
@@ -193,7 +193,7 @@ class PriorityQueue {
     }
 
     enqueue(item, priority) {
-        if (this.elements[priority] == null) {
+        if (this.elements[priority] === null) {
             this.elements[priority] = new Queue();
         }
         this.elements[priority].enqueue(item);
@@ -229,21 +229,27 @@ class Map {
         this.values.push(item);
     }
 
-    removeItem(key) {
+    hasKey(key) {
         var index = this.keys.indexOf(key);
         if (index === -1) {
-            return;
+            return false;
         }
-        this.keys.splice(index, 1);
-        return this.values.splice(index, 1);
+        return true;
+    }
+
+    removeItem(key) {
+        if (hasKey(key)) {
+            this.keys.splice(index, 1);
+            return this.values.splice(index, 1);
+        }
+        return null;
     }
 
     getItem(key) {
-        var index = this.keys.indexOf(key);
-        if (index === -1) {
-            return;
+        if (hasKey(key)) {
+            return this.values[index];
         }
-        return this.values[index];
+        return null;
     }
 
     empty() {
