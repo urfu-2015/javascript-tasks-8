@@ -272,7 +272,7 @@ PriorityQueue.prototype.enqueue = function (item, priority) {
         this.add(item, priority);
     } else {
         if (this.length === 1) {
-            this.firstItem.priority > priority ?
+            this.firstItem.priority >= priority ?
                 this.add(item, priority) : this.insertAsFirst(item, priority);
         } else {
             var currentNode = this.firstItem;
