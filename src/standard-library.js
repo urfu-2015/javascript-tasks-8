@@ -75,7 +75,7 @@ Queue.prototype.dequeue = function () {
 };
 
 Queue.prototype.empty = function () {
-    this.empty();
+    this.collection = [];
 };
 
 var FixedArray = function (size) {
@@ -187,10 +187,15 @@ PriorityQueue.prototype.dequeue = function () {
 };
 
 var Map = function () {
-    this.length = 0;
     this.keys = [];
     this.values = [];
 };
+
+Object.defineProperty(Map.prototype, 'length', {
+    get: function () {
+        return this.keys.length;
+    }
+});
 
 Map.prototype.addItem = function (key, item) {
     var index = this.keys.indexOf(key);
@@ -199,7 +204,6 @@ Map.prototype.addItem = function (key, item) {
     } else {
         this.keys.push(key);
         this.values.push(item);
-        this.length++;
     }
 };
 
@@ -211,7 +215,6 @@ Map.prototype.removeItem = function (key) {
         this.keys = prevKeys.concat(this.keys.slice(index + 1));
         var prevValues = this.values.slice(0, index);
         this.values = prevValues.concat(this.values.slice(index + 1));
-        this.length--;
     } else {
         return;
     }
@@ -223,7 +226,6 @@ Map.prototype.getItem = function (key) {
 };
 
 Map.prototype.empty = function () {
-    this.length = 0;
     this.keys = [];
     this.values = [];
 };
