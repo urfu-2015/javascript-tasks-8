@@ -332,4 +332,38 @@ describe('Standard Library', function () {
             assert.ok(map.isEmpty);
         });
     });
+
+    // first возвращает null
+    describe('Collection', function () {
+        it('first', function () {
+            var collection = new Collection();
+            collection.insertLast('foo');
+            collection.pickFirst();
+
+            assert.ok(collection.first === null);
+        });
+    });
+
+    // массив нулевой длины
+    describe('FixedArray', function () {
+        it('length', function () {
+            var arr = new FixedArray(0);
+
+            assert.equal(arr.length, 0);
+        });
+    });
+
+    // одинаковые ключи
+    describe('Map', function () {
+        it('addItem(key, item)', function () {
+            var map = new Map();
+
+            assert.equal(map.length, 0);
+
+            map.addItem({}, 1);
+            map.addItem({}, 2);
+
+            assert.ok(map.getItem({}) === 2);
+        });
+    });
 });

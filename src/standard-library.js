@@ -13,8 +13,8 @@ Collection.prototype._init = function () {
 };
 
 Collection.prototype._refresh = function () {
-    this.first = this.collection[0];
-    this.last = this.collection[this.collection.length - 1];
+    this.first = this.collection[0] || null;
+    this.last = this.collection[this.collection.length - 1] || null;
     this.length = this.collection.length;
     this.isEmpty = this.length === 0;
 };
@@ -80,7 +80,7 @@ Queue.prototype.dequeue = function () {
 };
 
 var FixedArray = function (size) {
-    if (size <= 0 || (isNaN(parseFloat(size)) && !isFinite(size)) || size === undefined) {
+    if (size < 0 || (isNaN(parseFloat(size)) && !isFinite(size)) || size === undefined) {
         throw new RangeError('Parameter must be an integer greater than 0');
     }
     this.length = size;
@@ -228,9 +228,7 @@ Map.prototype.addItem = function (key, item) {
     if (item === undefined) {
         throw new RangeError('Missing expected parameter');
     }
-    if (this.getItem(key) === null) {
-        this.elements[this._keyToString(key)] = item;
-    }
+    this.elements[this._keyToString(key)] = item;
     this._refresh();
 };
 
