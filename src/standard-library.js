@@ -229,6 +229,11 @@ Object.defineProperties(Set.prototype, {
             });
             return result;
         }
+    },
+    empty: {
+        value: function () {
+            this._init();
+        }
     }
 });
 
