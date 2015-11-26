@@ -1,67 +1,69 @@
 'use strict';
 
 var Collection = function () {
-    this.first = undefined;
-    this.last = undefined;
     this.container = [];
-    this.length = 0;
-    this.isEmpty = true;
-};
-Collection.prototype.pickFirst = function () {
-    this.length--;
-    this.isEmpty = this.container.length === 0;
-    this.first = this.container[1];
-    this.last = this.container[this.container.length - 1];
-    return (this.container.splice(0, 1))[0];
-};
-Collection.prototype.pickLast = function () {
-    this.length--;
-    this.isEmpty = this.container.length === 0;
-    this.first = this.container[0];
-    this.last = this.container[this.container.length - 2];
-    return (this.container.splice(-1, 1))[0];
-};
-Collection.prototype.insertFirst = function (obj) {
-    this.length++;
-    this.isEmpty = this.container.length === 0;
-    this.container.splice(0, 0, obj);
-    this.last = this.container[this.container.length - 1];
-    this.first = this.container[0];
-};
-Collection.prototype.insertLast = function (obj) {
-    this.length++;
-    this.isEmpty = this.container.length === 0;
-    this.container.splice(this.container.length, 0, obj);
-    this.last = this.container[this.container.length - 1];
-    this.first = this.container[0];
+
 };
 
-Collection.prototype.empty = function () {
-    this.container = [];
-    this.length = 0;
-    this.isEmpty = true;
+Collection.prototype = {
+    pickFirst: function () {
+        return this.container.shift();
+    },
+    pickLast: function () {
+        return this.container.pop();
+    },
+    insertFirst: function (obj) {
+        this.container.unshift(obj);
+    },
+    insertLast: function (obj) {
+        this.container.push(obj);
+    },
+    empty: function () {
+        this.container = [];
+    }
 };
 
-
+Object.defineProperties(Collection.prototype, {
+    first: {
+        get: function () {
+             return this.container[0];
+        }
+    },
+    last: {
+        get: function () {
+            return this.container[this.length - 1];
+        }
+    },
+    length: {
+        get: function () {
+            return this.container.length
+        }
+    },
+    isEmpty: {
+        get: function () {
+            return this.length === 0;
+        }
+    }
+});
 
 
 var Queue = function () {
     this.container = [];
-    this.length = 0;
 };
-Queue.prototype.enqueue = function (item) {
-    this.container.push(item);
-    this.length++;
-};
-Queue.prototype.dequeue = function () {
-    this.length--;
-    return this.container.shift();
-};
-Queue.prototype.empty = function () {
-    this.container = [];
-    this.length = 0;
-};
+Queue.prototype = Object.create(Collection.prototype);
 
+Object.defineProperties(Queue.prototype, {
+    enqueue: {
+        value: function (obj) {
+            this.insertLast(obj);
+        }
+    },
+    dequeue: {
+        value: function () {
+            return this.pickFirst();
+        }
+    }
+});
 
 
 
@@ -71,19 +73,19 @@ var FixedArray = function (size) {
 };
 
 FixedArray.prototype.insertAt = function (index, item) {
-    if (index >= this.length || index < 0) {
-        throw new RangeError('Index ' + index + ' out of range');
-    }
+    checkIndex.call(this, index);
     this.container[index] = item;
 };
 FixedArray.prototype.getAt = function (index) {
-    if (index >= this.length || index < 0) {
-        throw new RangeError('Index ' + index + ' out of range');
-    }
+    checkIndex.call(this, index);
     return this.container[index];
 };
 
-
+function checkIndex(index) {
+    if (index >= this.length || index < 0) {
+        throw new RangeError('Index ' + index + ' out of range');
+    }
+}
 
 
 var Set = function () {
