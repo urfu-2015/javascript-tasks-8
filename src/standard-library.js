@@ -26,7 +26,7 @@ Collection.prototype = {
 Object.defineProperties(Collection.prototype, {
     first: {
         get: function () {
-             return this.container[0];
+            return this.container[0];
         }
     },
     last: {
@@ -36,7 +36,7 @@ Object.defineProperties(Collection.prototype, {
     },
     length: {
         get: function () {
-            return this.container.length
+            return this.container.length;
         }
     },
     isEmpty: {
