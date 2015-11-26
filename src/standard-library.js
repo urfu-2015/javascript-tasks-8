@@ -79,14 +79,24 @@ Queue.prototype.empty = function () {
 };
 
 var FixedArray = function (size) {
+    if (size < 0) {
+        throw new RangeError('Отрицательный размер массива');
+    }
     this.length = size;
-    this.fixedArray = [];
+    this.fixedArray = getFixedArray(size);
+
 };
 
-FixedArray.prototype.insertAt = function (index, item) {
-    if (index < 0 || index >= this.length) {
-        throw new RangeError('Index вышел за границы массива');
+function getFixedArray(size) {
+    var arr = [];
+    for (var i = 0; i < size; i++) {
+        arr.push(null);
     }
+    return arr;
+}
+
+FixedArray.prototype.insertAt = function (index, item) {
+    checkIndex(index, this.length);
     var newFixedArray1 = this.fixedArray.slice(0, index);
     var newFixedArray2 = this.fixedArray.slice(index);
     this.fixedArray = newFixedArray1.concat(item, newFixedArray2);
@@ -94,11 +104,15 @@ FixedArray.prototype.insertAt = function (index, item) {
 };
 
 FixedArray.prototype.getAt = function (index) {
-    if (index < 0 || index >= this.length) {
-        throw new RangeError('Index вышел за границы массива');
-    }
+    checkIndex(index, this.length);
     return this.fixedArray[index];
 };
+
+function checkIndex(index, length) {
+    if (index < 0 || index >= length) {
+        throw new RangeError('Index вышел за границы массива');
+    }
+}
 
 var Set = function () {
     this.collection = [];
@@ -155,13 +169,15 @@ Set.prototype.union = function (set) {
 };
 
 var PriorityQueue = function () {
-    this.length = 0;
     this.collection = [];
 };
 
 PriorityQueue.prototype = Object.create(Collection.prototype);
 
 PriorityQueue.prototype.enqueue = function (item, priority) {
+    if (typeof priority !== 'number') {
+        throw new Error('Приоритет не является числом');
+    }
     var queue = this.collection;
     var obj = {
         item: item,
@@ -175,7 +191,6 @@ PriorityQueue.prototype.enqueue = function (item, priority) {
                 var newQueue1 = queue.slice(0, index);
                 var newQueue2 = queue.slice(index);
                 this.collection = newQueue1.concat(obj, newQueue2);
-                this.length++;
                 break;
             }
         }
@@ -183,7 +198,7 @@ PriorityQueue.prototype.enqueue = function (item, priority) {
 };
 
 PriorityQueue.prototype.dequeue = function () {
-    return this.pickFirst();
+    return this.pickFirst().item;
 };
 
 var Map = function () {
@@ -215,6 +230,7 @@ Map.prototype.removeItem = function (key) {
         this.keys = prevKeys.concat(this.keys.slice(index + 1));
         var prevValues = this.values.slice(0, index);
         this.values = prevValues.concat(this.values.slice(index + 1));
+        return item;
     } else {
         return;
     }
