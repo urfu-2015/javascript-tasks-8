@@ -26,14 +26,14 @@ Object.defineProperties(Collection.prototype, {
         }
     },
     _inEnd: {
-        value: function() {
+        value: function () {
             while (this.collection.next != null) {
                 this.collection = this.collection.next;
             }
         }
     },
     _inBeginning: {
-        value: function() {
+        value: function () {
             while (this.collection.prev != null) {
                 this.collection = this.collection.prev;
             }
