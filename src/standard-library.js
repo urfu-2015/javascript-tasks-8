@@ -7,46 +7,107 @@ var Collection = function () {
 Object.defineProperties(Collection.prototype, {
     _init: {
         value: function () {
-            this.collection = [];
             this.length = 0;
             this.isEmpty = true;
             this.first = null;
             this.last = null;
+            this.collection = null;
         }
     },
     _update: {
         value: function () {
-            this.length = this.collection.length;
             this.isEmpty = this.length === 0;
-            this.first = this.collection[0];
-            this.last = this.collection[this.length - 1];
+            if (!this.isEmpty) {
+                this._inBeginning();
+                this.first = this.collection.data;
+                this._inEnd();
+                this.last = this.collection.data;
+            }
+        }
+    },
+    _inEnd: {
+        value: function() {
+            while (this.collection.next != null) {
+                this.collection = this.collection.next;
+            }
+        }
+    },
+    _inBeginning: {
+        value: function() {
+            while (this.collection.prev != null) {
+                this.collection = this.collection.prev;
+            }
         }
     },
     pickFirst: {
         value: function () {
-            var first = this.first;
-            this.collection.shift();
-            this._update();
-            return first;
+            if (this.collection === null) {
+                return null;
+            } else {
+                this._inBeginning();
+                var dropItem = this.collection.data;
+                this.collection = this.collection.next;
+                if (this.collection !== null) {
+                    this.collection.prev = null;
+                }
+                this.length--;
+                this._update();
+                return dropItem;
+            }
         }
     },
     pickLast: {
         value: function () {
-            var first = this.last;
-            this.collection.pop();
-            this._update();
-            return first;
+            if (this.collection === null) {
+                return null;
+            } else {
+                this._inEnd();
+                var dropItem = this.collection.data;
+                this.collection = this.collection.prev;
+                if (this.collection !== null) {
+                    this.collection.next = null;
+                }
+                this.length--;
+                this._update();
+                return dropItem;
+            }
         }
     },
     insertFirst: {
         value: function (item) {
-            this.collection.unshift(item);
+            var newItem = {
+                data: item,
+                next: null,
+                prev: null
+            };
+            if (this.collection === null) {
+                this.collection = newItem;
+            } else {
+                this._inBeginning();
+                newItem.next = this.collection;
+                this.collection.prev = newItem;
+                this.collection = newItem;
+            }
+            this.length++;
             this._update();
         }
     },
     insertLast: {
         value: function (item) {
-            this.collection.push(item);
+            var newItem = {
+                data: item,
+                next: null,
+                prev: null
+            };
+            if (this.collection === null) {
+                this.collection = newItem;
+            } else {
+                this._inEnd();
+                newItem.prev = this.collection;
+                this.collection.next = newItem;
+                this.collection = newItem;
+            }
+            this.length++;
             this._update();
         }
     },
@@ -85,7 +146,7 @@ Object.defineProperties(FixedArray.prototype, {
     _init: {
         value: function (size) {
             if (size < 0 || !isFinite(size)) {
-                throw RangeError;
+                throw new RangeError();
             }
             this.array = [];
             this.length = size;
@@ -94,7 +155,7 @@ Object.defineProperties(FixedArray.prototype, {
     insertAt: {
         value: function (index, item) {
             if (index < 0 || index >= this.length || item === undefined) {
-                throw new RangeError;
+                throw new RangeError();
             }
             this.array[index] = item;
         }
@@ -102,7 +163,7 @@ Object.defineProperties(FixedArray.prototype, {
     getAt: {
         value: function (index) {
             if (index < 0 || index >= this.length) {
-                throw new RangeError;
+                throw new RangeError();
             }
             return this.array[index] === undefined ? null : this.array[index];
         }
@@ -110,13 +171,21 @@ Object.defineProperties(FixedArray.prototype, {
 });
 
 var Set = function () {
-    Collection.apply(this, arguments);
+    this._init();
 };
 
-Set.prototype = Object.create(Collection.prototype);
-Set.prototype.constructor = Set;
-
 Object.defineProperties(Set.prototype, {
+    _init: {
+        value: function () {
+            this.collection = [];
+            this.length = 0;
+        }
+    },
+    _update: {
+        value: function () {
+            this.length = this.collection.length;
+        }
+    },
     has: {
         value: function (item) {
             return this.collection.indexOf(item) !== -1;
@@ -125,7 +194,8 @@ Object.defineProperties(Set.prototype, {
     insert: {
         value: function (item) {
             if (!this.has(item)) {
-                this.insertLast(item);
+                this.collection.push(item);
+                this._update();
             }
         }
     },
