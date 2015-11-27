@@ -271,20 +271,21 @@ Object.defineProperties(PriorityQueue.prototype, {
                     maxItem = this.collection.data;
                 }
             }
-            this._inBeginning();
-            if (this.collection.priority === maxPriority) {
-                return this.pickFirst();
+            if (this.collection.priority === maxPriority &&
+                this.collection.data === maxItem) {
+                return this.pickLast();
             } else {
-                while (this.collection.next != null) {
-                    this.collection = this.collection.next;
-                    if (this.collection.priority === maxPriority) {
+                while (this.collection.prev != null) {
+                    this.collection = this.collection.prev;
+                    if (this.collection.priority === maxPriority &&
+                        this.collection.data === maxItem) {
                         var prev = this.collection.prev;
                         var next = this.collection.next;
-                        prev.next = next;
-                        if (next != null) {
-                            next.prev = prev;
+                        next.prev = prev;
+                        if (prev != null) {
+                            prev.next = next;
                         }
-                        this.collection = prev;
+                        this.collection = next;
                     }
                 }
                 this.length--;
