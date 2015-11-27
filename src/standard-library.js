@@ -175,6 +175,9 @@ var PriorityQueue = function () {
 PriorityQueue.prototype = Object.create(Collection.prototype);
 
 PriorityQueue.prototype.enqueue = function (item, priority) {
+    if (arguments.length == 1) {
+        priority = 0;
+    }
     if (typeof priority !== 'number') {
         throw new Error('Приоритет не является числом');
     }
