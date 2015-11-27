@@ -3,21 +3,21 @@
 var Collection = function () {
     this.struct = [];
     Object.defineProperties(this, {
-        'first': {
-            'get': function() {
+        first: {
+            get: function () {
                 return this.struct[0];
             },
-            'set': function(val) {
+            set: function (val) {
                 this._first = val;
             }
         }
     });
     Object.defineProperties(this, {
-        'last': {
-            'get': function() {
+        last: {
+            get: function () {
                 return this.struct[this.length - 1];
             },
-            'set': function(val) {
+            set: function (val) {
                 this._last = val;
             }
         }
