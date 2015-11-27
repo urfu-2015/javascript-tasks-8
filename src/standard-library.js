@@ -243,8 +243,54 @@ var PriorityQueue = function () {
 };
 
 var Map = function () {
-
+    this._init();
 };
+
+Object.defineProperties(Map.prototype, {
+    _init: {
+        value: function () {
+            this.collection = {};
+            this.length = 0;
+            this.isEmpty = true;
+        }
+    },
+    _update: {
+        value: function () {
+            this.length = Object.keys(this.collection).length;
+            this.isEmpty = this.length === 0;
+        }
+    },
+    addItem: {
+        value: function (key, item) {
+            if (this.getItem(key) === null) {
+                this.collection[key] = item;
+            }
+            this._update();
+        }
+    },
+    removeItem: {
+        value: function (key) {
+            var item;
+            if (item = this.getItem(key)) {
+                delete this.collection[key];
+                this._update();
+                return item;
+            }
+        }
+    },
+    getItem: {
+        value: function (key) {
+            return this.collection[key] ? this.collection[key] : null;
+        }
+    },
+    empty: {
+        value: function () {
+            this._init();
+        }
+    }
+});
+
+
 
 exports.Collection = Collection;
 exports.Queue = Queue;
