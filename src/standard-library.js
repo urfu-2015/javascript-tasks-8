@@ -242,7 +242,7 @@ Object.defineProperties(Set.prototype, {
 
 
 var PriorityQueue = function () {
-    
+
 };
 
 var Map = function () {
