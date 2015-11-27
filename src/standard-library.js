@@ -213,17 +213,19 @@ Object.defineProperty(Map.prototype, 'length', {
 });
 
 Map.prototype.addItem = function (key, item) {
-    var index = this.keys.indexOf(key);
+    var keyString = JSON.stringify(key);
+    var index = this.keys.indexOf(keyString);
     if (index != -1) {
         this.values[index] = item;
     } else {
-        this.keys.push(key);
+        this.keys.push(keyString);
         this.values.push(item);
     }
 };
 
 Map.prototype.removeItem = function (key) {
-    var index = this.keys.indexOf(key);
+    var keyString = JSON.stringify(key);
+    var index = this.keys.indexOf(keyString);
     if (index != -1) {
         var item = this.values[index];
         var prevKeys = this.keys.slice(0, index);
@@ -237,7 +239,7 @@ Map.prototype.removeItem = function (key) {
 };
 
 Map.prototype.getItem = function (key) {
-    var index = this.keys.indexOf(key);
+    var index = this.keys.indexOf(JSON.stringify(key));
     return index == -1 ? undefined : this.values[index];
 };
 
