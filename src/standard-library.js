@@ -1,7 +1,6 @@
 'use strict';
 
 var Collection = function () {
-    this.struct = [];
     Object.defineProperties(this, {
         first: {
             get: function () {
@@ -29,8 +28,19 @@ var Collection = function () {
             }
         }
     });
-    this._first = null;
-    this._last = null;
+    Object.defineProperties(this, {
+        struct: {
+            get: function () {
+                return this._struct;
+            },
+            set: function (val) {
+                this._struct = val;
+            }
+        }
+    });
+    this.struct = [];
+    this.first = null;
+    this.last = null;
     this._length = 0;
     this.isEmpty = true;
 };
@@ -72,9 +82,26 @@ Collection.prototype.empty = function () {
 };
 
 var Queue = function () {
-    this.struct = [];
-    this.first = null;
-    this.last = null;
+    Object.defineProperties(this, {
+        first: {
+            get: function () {
+                return this.struct[0];
+            },
+            set: function (val) {
+                this._first = val;
+            }
+        }
+    });
+    Object.defineProperties(this, {
+        last: {
+            get: function () {
+                return this.struct[this.length - 1];
+            },
+            set: function (val) {
+                this._last = val;
+            }
+        }
+    });
     Object.defineProperties(this, {
         length: {
             get: function () {
@@ -82,6 +109,19 @@ var Queue = function () {
             }
         }
     });
+    Object.defineProperties(this, {
+        struct: {
+            get: function () {
+                return this._struct;
+            },
+            set: function (val) {
+                this._struct = val;
+            }
+        }
+    });
+    this._struct = [];
+    this._first = null;
+    this._last = null;
     this._length = 0;
     this.isEmpty = true;
 };
@@ -95,6 +135,46 @@ Queue.prototype.dequeue = function (elem) {
 };
 
 var FixedArray = function (size) {
+    Object.defineProperties(this, {
+        first: {
+            get: function () {
+                return this.struct[0];
+            },
+            set: function (val) {
+                this._first = val;
+            }
+        }
+    });
+    Object.defineProperties(this, {
+        last: {
+            get: function () {
+                return this.struct[this.length - 1];
+            },
+            set: function (val) {
+                this._last = val;
+            }
+        }
+    });
+    Object.defineProperties(this, {
+        length: {
+            get: function () {
+                return this.struct.length;
+            },
+            set: function (val) {
+                return this._length = val;
+            }
+        }
+    });
+    Object.defineProperties(this, {
+        struct: {
+            get: function () {
+                return this._struct;
+            },
+            set: function (val) {
+                this._struct = val;
+            }
+        }
+    });
     this.struct = Array(size);
     this.first = null;
     this.last = null;
@@ -118,16 +198,31 @@ FixedArray.prototype.getAt = function (index) {
 };
 
 var Set = function () {
+    Object.defineProperties(this, {
+        length: {
+            get: function () {
+                return this.struct.length;
+            },
+            set: function (val) {
+                return this._length = val;
+            }
+        }
+    });
+    Object.defineProperties(this, {
+        struct: {
+            get: function () {
+                return this._struct;
+            },
+            set: function (val) {
+                this._struct = val;
+            }
+        }
+    });
     this.struct = [];
     this.length = 0;
 };
 Set.prototype = Object.create(Collection.prototype);
 Set.prototype.constructor = Set;
-//Object.defineProperty(Set, "length", {
-//    get: function() {
-//        return this.struct.length;
-//    }
-//});
 Set.prototype.has = function (elem) {
     var didFound = false;
     this.struct.forEach(function (item) {
