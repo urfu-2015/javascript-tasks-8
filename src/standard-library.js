@@ -2,80 +2,79 @@
 
 var Collection = function () {
     this.elements = [];
-    this.first = null;
-    this.last = null;
-    this.length = 0;
-    this.isEmpty = true;
+    Object.defineProperty(this, 'length', {
+        get: function () {
+            return this.elements.length;
+        }
+    });
+
+    Object.defineProperty(this, 'first', {
+        get: function () {
+            return this.elements[0];
+        }
+    });
+
+    Object.defineProperty(this, 'last', {
+        get: function () {
+            return this.elements[this.length - 1];
+        }
+    });
+
+    Object.defineProperty(this, 'isEmpty', {
+        get: function () {
+            return this.length == 0;
+        }
+    });
+
     this.pickFirst = function () {
         if (this.isEmpty) {
             return null;
         }
-        var result = this.elements.shift();
-        this.length--;
-        this.first = this.elements[0];
-        this.last = this.elements[this.length - 1];
-        this.isEmpty = (this.length == 0);
-        return result;
+        return this.elements.shift();
     };
 
     this.pickLast = function () {
         if (this.isEmpty) {
             return null;
         }
-        var result = this.elements.pop();
-        this.length--;
-        this.first = this.elements[0];
-        this.last = this.elements[this.length - 1];
-        this.isEmpty = (this.length == 0);
-        return result;
+        return this.elements.pop();
     };
 
     this.insertFirst = function (element) {
         this.elements.unshift(element);
-        this.length++;
-        this.first = this.elements[0];
-        this.last = this.elements[this.length - 1];
-        this.isEmpty = (this.length == 0);
     };
 
     this.insertLast = function (element) {
         this.elements.push(element);
-        this.length++;
-        this.first = this.elements[0];
-        this.last = this.elements[this.length - 1];
-        this.isEmpty = (this.length == 0);
     };
 
     this.empty = function () {
         this.elements = [];
-        this.first = null;
-        this.last = null;
-        this.length = 0;
-        this.isEmpty = true;
     };
 };
 
 var Queue = function () {
     this.elements = [];
-    this.length = 0;
+
+    Object.defineProperty(this, 'length', {
+        get: function () {
+            return this.elements.length;
+        }
+    });
 
     this.enqueue = function (element) {
         this.elements.push(element);
-        this.length++;
     };
 
     this.dequeue = function () {
         if (this.length == 0) {
             return null;
         }
-        var result = this.elements.shift();
-        this.length--;
-        return result;
+        return this.elements.shift();
     };
 
     this.empty = function () {
         this.elements = [];
-        this.length = 0;
     };
 };
 
@@ -101,10 +100,15 @@ var Set = function () {
     this.length = 0;
     this.elements = [];
 
+    Object.defineProperty(this, 'length', {
+        get: function () {
+            return this.elements.length;
+        }
+    });
+
     this.insert = function (item) {
         if (!this.has(item)) {
             this.elements.push(item);
-            this.length++;
         }
     };
 
@@ -112,7 +116,6 @@ var Set = function () {
         var index = this.elements.indexOf(item);
         if (index != -1) {
             this.elements.splice(index, 1);
-            this.length--;
         }
     };
 
@@ -142,7 +145,6 @@ var Set = function () {
 
     this.empty = function () {
         this.elements = [];
-        this.length = 0;
     };
 };
 
