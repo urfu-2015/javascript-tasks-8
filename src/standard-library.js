@@ -82,6 +82,7 @@ Object.defineProperties(Collection.prototype, {
         value: function (item) {
             var newItem = {
                 data: item,
+                priority: arguments[1] || null,
                 next: null,
                 prev: null
             };
@@ -100,6 +101,7 @@ Object.defineProperties(Collection.prototype, {
         value: function (item) {
             var newItem = {
                 data: item,
+                priority: arguments[1] || null,
                 next: null,
                 prev: null
             };
@@ -242,8 +244,55 @@ Object.defineProperties(Set.prototype, {
 
 
 var PriorityQueue = function () {
-
+    Collection.apply(this, arguments);
 };
+
+PriorityQueue.prototype = Object.create(Collection.prototype);
+PriorityQueue.prototype.constructor = PriorityQueue;
+
+Object.defineProperties(PriorityQueue.prototype, {
+    enqueue: {
+        value: function (item, priority) {
+            if (1 < priority && priority > 100) {
+                throw new RangeError();
+            }
+            this.insertLast(item, priority);
+        }
+    },
+    dequeue: {
+        value: function () {
+            this._inBeginning();
+            var maxItem = this.collection.data;
+            var maxPriority = this.collection.priority;
+            while (this.collection.next != null) {
+                this.collection = this.collection.next;
+                if (this.collection.priority > maxPriority) {
+                    maxPriority = this.collection.priority;
+                    maxItem = this.collection.data;
+                }
+            }
+            this._inBeginning();
+            if (this.collection.priority === maxPriority) {
+                return this.pickFirst();
+            } else {
+                while (this.collection.next != null) {
+                    this.collection = this.collection.next;
+                    if (this.collection.priority === maxPriority) {
+                        var prev = this.collection.prev;
+                        var next = this.collection.next;
+                        prev.next = next;
+                        if (next != null) {
+                            next.prev = prev;
+                        }
+                        this.collection = prev;
+                    }
+                }
+                this.length--;
+                return maxItem;
+            }
+        }
+    }
+});
 
 var Map = function () {
     this._init();
