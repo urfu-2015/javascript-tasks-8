@@ -79,12 +79,12 @@ Queue.prototype.empty = function () {
 };
 
 var FixedArray = function (size) {
-    if (size < 0 && !isFinite(size)) {
+    console.log(isFinite(size));
+    if (size < 0 || !isFinite(size)) {
         throw new RangeError('Некорректный размер массива');
     }
     this.length = size;
     this.fixedArray = getFixedArray(size);
-
 };
 
 function getFixedArray(size) {
