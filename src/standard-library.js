@@ -22,14 +22,20 @@ var Collection = function () {
             }
         }
     });
+    Object.defineProperties(this, {
+        length: {
+            get: function () {
+                return this.struct.length;
+            }
+        }
+    });
     this._first = null;
     this._last = null;
-    this.length = 0;
+    this._length = 0;
     this.isEmpty = true;
 };
 Collection.prototype.pickFirst = function () {
     var firstTmp = this.struct.shift();
-    this.length = this.struct.length;
     if (this.length === 0) {
         this.isEmpty = true;
     }
@@ -38,7 +44,6 @@ Collection.prototype.pickFirst = function () {
 
 Collection.prototype.pickLast = function () {
     var lastTmp = this.struct.pop();
-    this.length = this.struct.length;
     if (this.length === 0) {
         this.isEmpty = true;
     }
@@ -48,7 +53,6 @@ Collection.prototype.pickLast = function () {
 Collection.prototype.insertFirst = function (elem) {
     this.first = elem;
     this.struct.unshift(elem);
-    this.length = this.struct.length;
     this.last = this.struct[this.length - 1];
     this.isEmpty = false;
 };
@@ -56,7 +60,6 @@ Collection.prototype.insertFirst = function (elem) {
 Collection.prototype.insertLast = function (elem) {
     this.last = elem;
     this.struct.push(elem);
-    this.length = this.struct.length;
     this.first = this.struct[0];
     this.isEmpty = false;
 };
@@ -65,7 +68,6 @@ Collection.prototype.empty = function () {
     this.struct = [];
     this.first = null;
     this.last = null;
-    this.length = 0;
     this.isEmpty = true;
 };
 
@@ -73,7 +75,14 @@ var Queue = function () {
     this.struct = [];
     this.first = null;
     this.last = null;
-    this.length = 0;
+    Object.defineProperties(this, {
+        length: {
+            get: function () {
+                return this.struct.length;
+            }
+        }
+    });
+    this._length = 0;
     this.isEmpty = true;
 };
 Queue.prototype = Object.create(Collection.prototype);
