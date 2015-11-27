@@ -26,10 +26,16 @@ class Collection {
     }
 
     insertFirst(item) {
+        if (item === undefined) {
+            throw new Error('item должен быть задан');
+        }
         this.array.unshift(item);
     }
 
     insertLast(item) {
+        if (item === undefined) {
+            throw new Error('item должен быть задан');
+        }
         this.array.push(item);
     }
 
@@ -49,6 +55,9 @@ class Queue extends Collection {
 
 class FixedArray extends Collection {
     constructor(maxLength) {
+        if (maxLength <= 0) {
+            throw RangeError('Максимальный размер массива не может быть меньше 1');
+        }
         super();
         Object.defineProperty(this, 'length', { get: function () {
             return maxLength;
@@ -60,6 +69,9 @@ class FixedArray extends Collection {
     }
 
     insertAt(index, item) {
+        if (item === undefined) {
+            throw new Error('item должен быть задан');
+        }
         if (!this.isIndexCorrect(index)) {
             throw RangeError();
         }
@@ -74,9 +86,12 @@ class FixedArray extends Collection {
     }
 }
 
-class Set extends Collection {
+class Set {
     constructor() {
-        super();
+        this.array = [];
+        Object.defineProperty(this, 'length', { get: function () {
+            return this.array.length;
+        }});
     }
 
     has(item) {
@@ -84,12 +99,18 @@ class Set extends Collection {
     }
 
     insert(item) {
+        if (item === undefined) {
+            throw new Error('item должен быть задан');
+        }
         if (!this.has(item)) {
-            this.insertLast(item);
+            this.array.push(item);
         }
     }
 
     remove(item) {
+        if (item === undefined) {
+            throw new Error('item должен быть задан');
+        }
         if (this.has(item)) {
             this.array.splice(this.array.indexOf(item), 1);
         }
