@@ -145,7 +145,7 @@ var FixedArray = function (size) {
 Object.defineProperties(FixedArray.prototype, {
     _init: {
         value: function (size) {
-            if (size < 0 || !isFinite(size)) {
+            if (size < 0 || isNaN(size)) {
                 throw new RangeError();
             }
             this.array = [];
