@@ -15,13 +15,20 @@ Object.defineProperties(Collection.prototype, {
         }
     },
     _update: {
-        value: function () {
+        value: function (action, position) {
+            action === 'drop' ? this.length-- : this.length++;
             this.isEmpty = this.length === 0;
             if (!this.isEmpty) {
-                this._inBeginning();
-                this.first = this.collection.data;
-                this._inEnd();
-                this.last = this.collection.data;
+                if (this.first === null && this.last === null) {
+                    this.first = this.collection.data;
+                    this.last = this.collection.data;
+                } else {
+                    if (position === 'first') {
+                        this.first = this.collection.data;
+                    } else {
+                        this.last = this.collection.data;
+                    }
+                }
             }
         }
     },
@@ -50,8 +57,7 @@ Object.defineProperties(Collection.prototype, {
                 if (this.collection !== null) {
                     this.collection.prev = null;
                 }
-                this.length--;
-                this._update();
+                this._update('drop', 'first');
                 return dropItem;
             }
         }
@@ -67,8 +73,7 @@ Object.defineProperties(Collection.prototype, {
                 if (this.collection !== null) {
                     this.collection.next = null;
                 }
-                this.length--;
-                this._update();
+                this._update('drop', 'last');
                 return dropItem;
             }
         }
@@ -88,8 +93,7 @@ Object.defineProperties(Collection.prototype, {
                 this.collection.prev = newItem;
                 this.collection = newItem;
             }
-            this.length++;
-            this._update();
+            this._update('add', 'first');
         }
     },
     insertLast: {
@@ -107,8 +111,7 @@ Object.defineProperties(Collection.prototype, {
                 this.collection.next = newItem;
                 this.collection = newItem;
             }
-            this.length++;
-            this._update();
+            this._update('add', 'last');
         }
     },
     empty: {
@@ -239,7 +242,7 @@ Object.defineProperties(Set.prototype, {
 
 
 var PriorityQueue = function () {
-
+    
 };
 
 var Map = function () {
