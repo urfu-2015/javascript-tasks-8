@@ -2,27 +2,47 @@
 
 var Collection = function () {
     this.struct = [];
-    this.first = null;
-    this.last = null;
+    Object.defineProperties(this, {
+        'first': {
+            'get': function() {
+                return this.struct[0];
+            },
+            'set': function(val) {
+                this._first = val;
+            }
+        }
+    });
+    Object.defineProperties(this, {
+        'last': {
+            'get': function() {
+                return this.struct[this.length - 1];
+            },
+            'set': function(val) {
+                this._last = val;
+            }
+        }
+    });
+    this._first = null;
+    this._last = null;
     this.length = 0;
     this.isEmpty = true;
 };
 Collection.prototype.pickFirst = function () {
-    this.first = this.struct.shift();
+    var firstTmp = this.struct.shift();
     this.length = this.struct.length;
     if (this.length === 0) {
         this.isEmpty = true;
     }
-    return this.first;
+    return firstTmp;
 };
 
 Collection.prototype.pickLast = function () {
-    this.last = this.struct.pop();
+    var lastTmp = this.struct.pop();
     this.length = this.struct.length;
     if (this.length === 0) {
         this.isEmpty = true;
     }
-    return this.last;
+    return lastTmp;
 };
 
 Collection.prototype.insertFirst = function (elem) {
