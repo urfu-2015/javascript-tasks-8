@@ -83,9 +83,6 @@ Queue.prototype.empty = function () {
 
 var FixedArray = function (size) {
     this.fixedArray = [];
-    for (var i = 0; i < size; i++) {
-        this.fixedArray.push(undefined);
-    }
     this.length = size;
 };
 
