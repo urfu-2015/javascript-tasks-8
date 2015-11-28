@@ -19,23 +19,26 @@ var Collection = function () {
 
     this.isEmpty = true;
 
-    this.pickFirst = function () {
-        var elem = this._array.shift();
-        this.first = this._array[0];
+    this.setLen = function () {
         this.length = this._array.length;
         if (this.length === 0) {
             this.isEmpty = true;
+        } else {
+            this.isEmpty = false;
         }
+    };
+
+    this.pickFirst = function () {
+        var elem = this._array.shift();
+        this.first = this._array[0];
+        this.setLen();
         return elem;
     };
 
     this.pickLast = function () {
         var elem = this._array.pop();
         this.last = this._array[this._array.length - 1];
-        this.length = this._array.length;
-        if (this.length === 0) {
-            this.isEmpty = true;
-        }
+        this.setLen();
         return elem;
     };
 
@@ -43,16 +46,14 @@ var Collection = function () {
         this._array.unshift(elem);
         this.first = elem;
         this.last = this._array[this._array.length - 1];
-        this.length = this._array.length;
-        this.isEmpty = false;
+        this.setLen();
     };
 
     this.insertLast = function (elem) {
         this._array.push(elem);
         this.first = this._array[0];
         this.last = elem;
-        this.length = this._array.length;
-        this.isEmpty = false;
+        this.setLen();
     };
 
     this.empty = function () {
@@ -63,7 +64,6 @@ var Collection = function () {
         this.isEmpty = true;
     };
 };
-
 
 /**
  * @author Savi
@@ -80,20 +80,24 @@ var Queue = function () {
 
     this.length = 0;
 
+    this.setLen = function () {
+        this.length = this._collection.length;
+    };
+
     this.enqueue = function (elem) {
         this._collection.insertLast(elem);
-        this.length = this._collection.length;
+        this.setLen();
     };
 
     this.dequeue = function (elem) {
         var elem = this._collection.pickFirst();
-        this.length = this._collection.length;
+        this.setLen();
         return elem;
     };
 
     this.empty = function () {
         this._collection.empty();
-        this.length = this._collection.length;
+        this.setLen();
     };
 
 };
@@ -111,10 +115,14 @@ var Queue = function () {
 var FixedArray = function (size) {
     this._array = [];
 
-    this.length = size;
+    if (typeof size === 'number') {
+        this.length = size;
+    } else {
+        throw new RangeError();
+    }
 
     this.insertAt = function (ind, elem) {
-        if (ind === this.length) {
+        if (ind >= this.length) {
             throw new RangeError();
         } else {
             this._array.splice(ind, 0, elem);
@@ -122,7 +130,7 @@ var FixedArray = function (size) {
     };
 
     this.getAt = function (ind) {
-        if (ind == this.length) {
+        if (ind >= this.length) {
             throw new RangeError();
         } else {
             return this._array[ind];
@@ -142,36 +150,35 @@ var Set = function () {
 
     this.length = 0;
 
+    this.setLen = function () {
+        this.length = this._array.length;
+    };
+
     this.insert = function (elem) {
-        if (this._array.indexOf(elem) == -1) {
+        if (!this.has(elem)) {
             this._array.push(elem);
-            this.length = this._array.length;
+            this.setLen();
         }
     };
 
     this.remove = function (elem) {
-        var ind = this._array.indexOf(elem);
-        if (ind != -1) {
-            this._array.splice(ind, 1);
-            this.length = this._array.length;
+        if (this.has(elem)) {
+            this._array.splice(this._array.indexOf(elem), 1);
+            this.setLen();
         }
     };
 
     this.has = function (elem) {
-        if (this._array.indexOf(elem) != -1) {
-            return true;
-        } else {
-            return false;
-        }
+        return this._array.indexOf(elem) != -1;
     };
 
     this.intersect = function (set) {
         // Это легально )? Ведь я создаю экземпляр прямо внутри конструктора этого же объекта
         var temp_array = new Set();
         // Иначе forEach ломает контекст :/
-        var temp_link = this._array;
+        var temp_link = this;
         set._array.forEach(function (elem) {
-            if (temp_link.indexOf(elem) != -1) {
+            if (temp_link.has(elem)) {
                 temp_array.insert(elem);
             }
         });
@@ -196,7 +203,7 @@ var Set = function () {
     };
 };
 
-// Может на неделе...
+// Сорян ...
 
 var PriorityQueue = function () {
 
