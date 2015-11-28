@@ -27,14 +27,14 @@ class Collection {
 
     insertFirst(item) {
         if (item === undefined) {
-            throw new Error('item должен быть задан');
+            throw new Error('item РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ Р·Р°РґР°РЅ');
         }
         this.array.unshift(item);
     }
 
     insertLast(item) {
         if (item === undefined) {
-            throw new Error('item должен быть задан');
+            throw new Error('item РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ Р·Р°РґР°РЅ');
         }
         this.array.push(item);
     }
@@ -55,8 +55,8 @@ class Queue extends Collection {
 
 class FixedArray extends Collection {
     constructor(maxLength) {
-        if (maxLength <= 0) {
-            throw RangeError('Максимальный размер массива не может быть меньше 1');
+        if (maxLength < 0) {
+            throw RangeError('РњР°РєСЃРёРјР°Р»СЊРЅС‹Р№ СЂР°Р·РјРµСЂ РјР°СЃСЃРёРІР° РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РјРµРЅСЊС€Рµ 0');
         }
         super();
         Object.defineProperty(this, 'length', { get: function () {
@@ -70,7 +70,7 @@ class FixedArray extends Collection {
 
     insertAt(index, item) {
         if (item === undefined) {
-            throw new Error('item должен быть задан');
+            throw new Error('item РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ Р·Р°РґР°РЅ');
         }
         if (!this.isIndexCorrect(index)) {
             throw RangeError();
@@ -100,7 +100,7 @@ class Set {
 
     insert(item) {
         if (item === undefined) {
-            throw new Error('item должен быть задан');
+            throw new Error('item РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ Р·Р°РґР°РЅ');
         }
         if (!this.has(item)) {
             this.array.push(item);
@@ -109,7 +109,7 @@ class Set {
 
     remove(item) {
         if (item === undefined) {
-            throw new Error('item должен быть задан');
+            throw new Error('item РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ Р·Р°РґР°РЅ');
         }
         if (this.has(item)) {
             this.array.splice(this.array.indexOf(item), 1);
@@ -136,6 +136,10 @@ class Set {
             newSet.insert(item);
         });
         return newSet;
+    }
+
+    empty() {
+        this.array = [];
     }
 }
 
