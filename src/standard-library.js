@@ -29,6 +29,9 @@ Object.defineProperties(Collection.prototype, {
                         this.last = this.collection.data;
                     }
                 }
+            } else {
+                this.first = null;
+                this.last = null
             }
         }
     },
