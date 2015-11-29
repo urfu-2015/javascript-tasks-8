@@ -2,83 +2,67 @@
 
 var Collection = function () {
     this.values = [];
-    this.first = null;
-    this.last = null;
-    this.length = 0;
-    this.isEmpty = true;
+    Object.defineProperty(this, 'first', {
+        get: function () {
+            return this.length === 0 ? null : this.values[0];
+        }
+    });
+    Object.defineProperty(this, 'last', {
+        get: function () {
+            return this.length === 0 ? null : this.values[this.length - 1];
+        }
+    });
+    Object.defineProperty(this, 'length', {
+        get: function () {
+            return this.values.length;
+        }
+    });
+    Object.defineProperty(this, 'isEmpty', {
+        get: function () {
+            return (this.values.length === 0);
+        }
+    });
 };
 
 Collection.prototype.pickFirst = function () {
-    if (this.length === 0) {
-        return null;
-    }
-    var first = this.values.shift();
-    var newFirst = this.values[0];
-    this.first = (newFirst === undefined) ? null : newFirst;
-    --this.length;
-    this.isEmpty = this.length === 0;
-    return first;
+    return this.length === 0 ? null : this.values.shift();
 };
 
 Collection.prototype.pickLast = function () {
-    if (this.length === 0) {
-        return null;
-    }
-    var last = this.values.pop();
-    var newLast = this.values[this.values.length - 1];
-    this.last = (newLast === undefined) ? null : newLast;
-    --this.length;
-    this.isEmpty = this.length === 0;
-    return last;
+    return this.length === 0 ? null : this.values.pop();
 };
 
 Collection.prototype.insertFirst = function (item) {
     this.values.unshift(item);
-    this.first = item;
-    if (this.length === 0) {
-        this.last = item;
-    }
-    ++this.length;
-    this.isEmpty = false;
 };
 
 Collection.prototype.insertLast = function (item) {
     this.values.push(item);
-    if (this.length === 0) {
-        this.first = item;
-    }
-    this.last = item;
-    ++this.length;
-    this.isEmpty = false;
 };
 
 Collection.prototype.empty = function () {
     this.values = [];
-    this.first = null;
-    this.last = null;
-    this.length = 0;
-    this.isEmpty = true;
 };
 
 var Queue = function () {
     this.values = [];
-    this.length = 0;
+    Object.defineProperty(this, 'length', {
+        get: function () {
+            return this.values.length;
+        }
+    });
 };
 
 Queue.prototype.enqueue = function (item) {
     this.values.push(item);
-    ++this.length;
 };
 
 Queue.prototype.dequeue = function () {
-    var item = this.values.shift();
-    --this.length;
-    return (item === undefined) ? null : item;
+    return this.length === 0 ? null : this.values.shift();
 };
 
 Queue.prototype.empty = function () {
     this.values = [];
-    this.length = 0;
 };
 
 var FixedArray = function (size) {
@@ -87,28 +71,33 @@ var FixedArray = function (size) {
 };
 
 FixedArray.prototype.insertAt = function (index, item) {
-    if (index < 0 || index >= this.length) {
-        throw new RangeError('Error! Out of range!');
-    }
+    checkRange(this.length, index);
     this.values[index] = item;
 };
 
 FixedArray.prototype.getAt = function (index) {
-    if (index < 0 || index >= this.length) {
-        throw new RangeError('Error! Out of range!');
-    }
+    checkRange(this.length, index);
     return this.values[index];
 };
 
+function checkRange(length, index) {
+    if (index < 0 || index >= length) {
+        throw new RangeError('Error! Out of range!');
+    }
+}
+
 var Set = function () {
     this.values = [];
-    this.length = 0;
+    Object.defineProperty(this, 'length', {
+        get: function () {
+            return this.values.length;
+        }
+    });
 };
 
 Set.prototype.insert = function (item) {
     if (this.values.indexOf(item) < 0) {
         this.values.push(item);
-        ++this.length;
     }
 };
 
@@ -117,7 +106,6 @@ Set.prototype.remove = function (item) {
         throw new Error('Error! No element in set!');
     }
     this.values.splice(this.values.indexOf(item), 1);
-    --this.length;
 };
 
 Set.prototype.has = function (item) {
@@ -147,7 +135,6 @@ Set.prototype.union = function (set) {
 
 Set.prototype.empty = function () {
     this.values = [];
-    this.length = 0;
 };
 
 var PriorityQueue = function () {
