@@ -31,7 +31,7 @@ Object.defineProperties(Collection.prototype, {
                 }
             } else {
                 this.first = null;
-                this.last = null
+                this.last = null;
             }
         }
     },
