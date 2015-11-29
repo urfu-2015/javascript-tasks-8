@@ -3,43 +3,40 @@
 var DoubleLinkedList = require('../src/DoubleLinkedList').LinkedList;
 
 var Collection = function () {
-    this.first = null;
-    this.last = null;
-    this.length = 0;
-    this.isEmpty = true;
-    this.list = new DoubleLinkedList();
+    this.empty.call(this);
+};
+Collection.prototype.updateState = function () {
+    this.isEmpty = this.length == 0;
+    this.first = this.list.getFirst();
+    this.last = this.list.getLast();
 };
 Collection.prototype.pickFirst = function () {
     if (this.isEmpty) {
         return null;
     }
     this.length--;
-    this.isEmpty = this.length == 0;
-    this.first = this.list.getFirst();
-    return this.list.removeFirst();
+    var first = this.list.removeFirst();
+    this.updateState();
+    return first;
 };
 Collection.prototype.pickLast = function () {
     if (this.isEmpty) {
         return null;
     }
     this.length--;
-    this.isEmpty = this.length == 0;
-    this.last = this.list.getLast();
-    return this.list.removeLast();
+    var last = this.list.removeLast();
+    this.updateState();
+    return last;
 };
 Collection.prototype.insertFirst = function (element) {
     this.list.addFirst(element);
     this.length++;
-    this.isEmpty = false;
-    this.first = this.list.getFirst();
-    this.last = this.list.getLast();
+    this.updateState();
 };
 Collection.prototype.insertLast = function (element) {
     this.list.addLast(element);
     this.length++;
-    this.isEmpty = false;
-    this.last = this.list.getLast();
-    this.first = this.list.getFirst();
+    this.updateState();
 };
 Collection.prototype.empty = function () {
     this.first = null;
@@ -50,14 +47,16 @@ Collection.prototype.empty = function () {
 };
 
 var Queue = function () {
-    this.list = new DoubleLinkedList();
-    this.length = 0;
+    this.empty.call(this);
 };
 Queue.prototype.enqueue = function (item) {
     this.length++;
     this.list.addLast(item);
 };
 Queue.prototype.dequeue = function () {
+    if (this.length == 0) {
+        return null;
+    }
     this.length--;
     return this.list.removeFirst();
 };
@@ -82,8 +81,7 @@ FixedArray.prototype.getAt = function (index) {
     return this.list[index];
 };
 var Set = function () {
-    this.list = {};
-    this.length = 0;
+    this.empty.call(this);
 };
 Set.prototype.insert = function (item) {
     if (this.list[item] == undefined) {
@@ -129,9 +127,58 @@ Set.prototype.union = function (set) {
 };
 
 var PriorityQueue = function () {
-
+    this.queue = [];
 };
+PriorityQueue.prototype.enqueue = function (item, priority) {
+    this.queue.push({
+        value: priority,
+        item: item
+    });
+    var i = this.queue.length - 1;
+    var parent = parseInt((i - 1) / 2);
+    while (i > 0 && this.queue[parent].value < this.queue[i].value) {
+        var temp = this.queue[i];
+        this.queue[i] = this.queue[parent];
+        this.queue[parent] = temp;
 
+        i = parent;
+        parent = (i - 1) / 2;
+    }
+};
+PriorityQueue.prototype.dequeue = function () {
+    var result = this.queue[0];
+    this.queue[0] = this.queue[this.queue.length - 1];
+    this.queue.pop();
+    this.heapify(0);
+    return result == undefined ? null : result.item;
+};
+PriorityQueue.prototype.heapify = function (i) {
+    while (true) {
+        var leftChild = 2 * i + 1;
+        var rightChild = 2 * i + 2;
+        var largestChild = i;
+        var leftItem = this.queue[leftChild].value;
+        var largestItem = this.queue[largestChild].value;
+        var rightItem = this.queue[rightChild].value;
+
+        if (leftChild < this.queue.length && leftItem > largestItem) {
+            largestChild = leftChild;
+        }
+
+        if (rightChild < this.queue.length && rightItem > largestItem) {
+            largestChild = rightChild;
+        }
+
+        if (largestChild == i) {
+            break;
+        }
+
+        var temp = this.queue[i];
+        this.queue[i] = this.queue[largestChild];
+        this.queue[largestChild] = temp;
+        i = largestChild;
+    }
+};
 var Map = function () {
 
 };
