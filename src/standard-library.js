@@ -7,6 +7,9 @@ var Collection = function () {
     this.isEmpty = true;
 };
 Collection.prototype.pickFirst = function () {
+    if (this.length === 0) {
+        return null;
+    };
     var first = this.first;
     this.items.splice(0, 1);
     this.length--;
@@ -16,6 +19,9 @@ Collection.prototype.pickFirst = function () {
     return first;
 };
 Collection.prototype.pickLast = function () {
+    if (this.length === 0) {
+        return null;
+    };
     var last = this.last;
     this.items.splice(this.items.length - 1, 1);
     this.length--;
@@ -58,6 +64,9 @@ Queue.prototype.enqueue = function (element) {
     return element;
 };
 Queue.prototype.dequeue = function () {
+    if (this.length === 0) {
+        return null;
+    };
     var dequeueElement = this.items[0];
     this.items.splice(0, 1);
     this.length--;
@@ -70,7 +79,11 @@ this.empty = function () {
 
 var FixedArray = function (size) {
     this.items = [];
-    this.length = size;
+    if (size > -1) {
+        this.length = size;
+    } else {
+        this.length = 0;
+    }
 };
 
 FixedArray.prototype.insertAt = function (index, item) {
@@ -79,7 +92,6 @@ FixedArray.prototype.insertAt = function (index, item) {
     } else {
         this.items[index] = item;
     };
-    // this.length++;
 };
 FixedArray.prototype.getAt = function (index) {
     if (index > this.length - 1) {
@@ -173,23 +185,23 @@ var PriorityQueue = function () {
     this.priority = [];
     this.items = [];
 };
-PriorityQueue.prototype.enqueue = function (item, priority) {
-    this.priority.push(priority);
-    this.items.push(item);
-};
-PriorityQueue.prototype.dequeue = function () {
-    var max = Math.max.apply(null, this.priority);
-    this.items.splice(max, 1);
-    this.priority.splice(max, 1);
-
-};
-PriorityQueue.prototype.getMaxIndex = function (max) {
-    for (var i = 0; i < this.priority.length; i++) {
-        if (this.priority[i] === max) {
-            return i;
-        };
-    };
-};
+// PriorityQueue.prototype.enqueue = function (item, priority) {
+//     this.priority.push(priority);
+//     this.items.push(item);
+// };
+// PriorityQueue.prototype.dequeue = function () {
+//     var max = Math.max.apply(null, this.priority);
+//     this.items.splice(max, 1);
+//     this.priority.splice(max, 1);
+//
+// };
+// PriorityQueue.prototype.getMaxIndex = function (max) {
+//     for (var i = 0; i < this.priority.length; i++) {
+//         if (this.priority[i] === max) {
+//             return i;
+//         };
+//     };
+// };
 var Map = function () {
 
 };
