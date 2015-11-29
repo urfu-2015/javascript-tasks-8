@@ -157,15 +157,14 @@ PriorityQueue.prototype.heapify = function (i) {
         var leftChild = 2 * i + 1;
         var rightChild = 2 * i + 2;
         var largestChild = i;
-        var leftItem = this.queue[leftChild].value;
-        var largestItem = this.queue[largestChild].value;
-        var rightItem = this.queue[rightChild].value;
 
-        if (leftChild < this.queue.length && leftItem > largestItem) {
+        if (leftChild < this.queue.length &&
+            this.queue[leftChild].value > this.queue[largestChild].value) {
             largestChild = leftChild;
         }
 
-        if (rightChild < this.queue.length && rightItem > largestItem) {
+        if (rightChild < this.queue.length &&
+            this.queue[rightChild].value > this.queue[largestChild].value) {
             largestChild = rightChild;
         }
 
