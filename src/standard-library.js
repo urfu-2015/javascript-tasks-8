@@ -4,54 +4,54 @@ var Collection = function () {
     this.empty();
 };
 
+Object.defineProperty(Collection.prototype, 'length', {
+    get: function () {
+        return this.storage.length;
+    }
+});
+
+Object.defineProperty(Collection.prototype, 'isEmpty', {
+    get: function () {
+        return this.storage.length === 0;
+    }
+});
+
+Object.defineProperty(Collection.prototype, 'first', {
+    get: function () {
+        return this.storage[0];
+    }
+});
+
+Object.defineProperty(Collection.prototype, 'last', {
+    get: function () {
+        return this.storage[this.length - 1];
+    }
+});
+
 Collection.prototype.pickFirst = function () {
-    this.length--;
-    if (this.length == 0) {
-        this.isEmpty = true;
-        this.first = undefined;
-    } else {
-        this.first = this.storage[1];
+    if (this.storage.length === 0) {
+        throw new Error('Коллекция пуста');
     }
     return this.storage.shift();
 };
 
 Collection.prototype.pickLast = function () {
-    this.length--;
-    if (this.length == 0) {
-        this.isEmpty = true;
-        this.first = undefined;
-    } else {
-        this.first = this.storage[this.length - 1];
+    if (this.storage.length === 0) {
+        throw new Error('Коллекция пуста');
     }
     return this.storage.pop();
 };
 
 Collection.prototype.insertFirst = function (element) {
-    if (this.length === 0) {
-        this.last = element;
-        this.isEmpty = false;
-    }
-    this.length++;
     this.storage.unshift(element);
-    this.first = element;
 };
 
 Collection.prototype.insertLast = function (element) {
-    if (this.length === 0) {
-        this.first = element;
-        this.isEmpty = false;
-    }
-    this.length++;
     this.storage.push(element);
-    this.last = element;
 };
 
 Collection.prototype.empty = function () {
     this.storage = [];
-    this.first = undefined;
-    this.last = undefined;
-    this.length = 0;
-    this.isEmpty = true;
 };
 
 var Queue = function () {
@@ -75,50 +75,50 @@ var FixedArray = function (size) {
 };
 
 FixedArray.prototype.insertAt = function (index, item) {
-    if (index >= this.length || index < 0) {
-        throw new RangeError();
+    if (!this._isValidIndex(index)) {
+        throw new RangeError('Указан недопустимый индекс');
     }
     this.storage[index] = item;
 };
 
 FixedArray.prototype.getAt = function (index) {
-    if (index >= this.length || index < 0) {
-        throw new RangeError();
+    if (!this._isValidIndex(index)) {
+        throw new RangeError('Указан недопустимый индекс');
     }
     return this.storage[index];
+};
+
+FixedArray.prototype._isValidIndex = function (index) {
+    return index < this.length && index >= 0;
 };
 
 var Set = function () {
     this.empty();
 };
 
+Object.defineProperty(Set.prototype, 'length', {
+    get: function () {
+        return this.storage.length;
+    }
+});
+
+
 Set.prototype.insert = function (item) {
     if (this.has(item)) {
         return;
     }
     this.storage.push(item);
-    this.length++;
 };
 
 Set.prototype.remove = function (item) {
     if (!this.has(item)) {
         return;
     }
-    this.storage.splice(this._indexOf(item), 1);
-    this.length--;
+    this.storage.splice(this.storage.indexOf(item), 1);
 };
 
 Set.prototype.has = function (item) {
-    return this._indexOf(item) === -1 ? false : true;
-};
-
-Set.prototype._indexOf = function (item) {
-    for (var i = 0; i < this.length; i++) {
-        if (this.storage[i] === item) {
-            return i;
-        }
-    }
-    return -1;
+    return this.storage.indexOf(item) !== -1;
 };
 
 Set.prototype.intersect = function (set) {
@@ -126,11 +126,6 @@ Set.prototype.intersect = function (set) {
     for (var i = 0; i < this.length; i++) {
         if (set.has(this.storage[i])) {
             resultSet.insert(this.storage[i]);
-        }
-    }
-    for (i = 0; i < set.length; i++) {
-        if (this.has(set.storage[i])) {
-            resultSet.insert(set.storage[i]);
         }
     }
     return resultSet;
@@ -149,7 +144,6 @@ Set.prototype.union = function (set) {
 
 Set.prototype.empty = function () {
     this.storage = [];
-    this.length = 0;
 };
 
 var PriorityQueue = function () {
