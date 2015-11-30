@@ -316,10 +316,15 @@ Object.defineProperties(Map.prototype, {
             this.isEmpty = this.length === 0;
         }
     },
+    _toKey: {
+        value: function(key) {
+            return JSON.stringify(key);
+        }
+    },
     addItem: {
         value: function (key, item) {
             if (this.getItem(key) === null) {
-                this.collection[key] = item;
+                this.collection[this._toKey(key)] = item;
             }
             this._update();
         }
@@ -328,7 +333,7 @@ Object.defineProperties(Map.prototype, {
         value: function (key) {
             var item;
             if (item = this.getItem(key)) {
-                delete this.collection[key];
+                delete this.collection[this._toKey(key)];
                 this._update();
                 return item;
             }
@@ -336,7 +341,7 @@ Object.defineProperties(Map.prototype, {
     },
     getItem: {
         value: function (key) {
-            return this.collection[key] ? this.collection[key] : null;
+            return this.collection[this._toKey(key)] ? this.collection[this._toKey(key)] : null;
         }
     },
     empty: {
