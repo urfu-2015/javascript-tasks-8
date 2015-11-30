@@ -2,24 +2,24 @@
 
 var Collection = function () {
     Object.defineProperty(this, 'first', {
-       writable: true,
-       value: null,
-       enumerable: false
+        writable: true,
+        value: null,
+        enumerable: false
     });
     Object.defineProperty(this, 'last', {
-      writable: true,
-      value: null,
-      enumerable: false
+        writable: true,
+        value: null,
+        enumerable: false
     });
     Object.defineProperty(this, 'length', {
-      writable: true,
-      value: 0,
-      enumerable: false
+        writable: true,
+        value: 0,
+        enumerable: false
     });
     Object.defineProperty(this, 'isEmpty', {
         enumerable: false,
-        get: function() {
-            return this.length === 0; 
+        get: function () {
+            return this.length === 0;
         }
     });
 };
@@ -44,7 +44,7 @@ Collection.prototype.pickFirst = function () {
             continue;
         }
         if (this[prop] === 0) {
-            var firstElement = prop; 
+            var firstElement = prop;
             delete this[prop];
             this.length--;
             continue;
@@ -55,7 +55,7 @@ Collection.prototype.pickFirst = function () {
     return firstElement;
 };
 
-Collection.prototype.pickLast = function () {       
+Collection.prototype.pickLast = function () {
     for (var prop in this) {
         if (this[prop] === this.length - 1) {
             var lastElement = prop;
@@ -66,7 +66,7 @@ Collection.prototype.pickLast = function () {
         }
     }
 };
-    
+
 Collection.prototype.insertFirst = function (element) {
     for (var prop in this) {
         if (!this.hasOwnProperty(prop)) {
@@ -78,12 +78,12 @@ Collection.prototype.insertFirst = function (element) {
     this.length++;
     setFirstAndLast.call(this);
 };
-        
+
 Collection.prototype.insertLast = function (element) {
     this[element] = this.length++;
     setFirstAndLast.call(this);
 };
-        
+
 Collection.prototype.empty = function () {
     for (var prop in this) {
         if (!this.hasOwnProperty(prop)) {
@@ -96,9 +96,9 @@ Collection.prototype.empty = function () {
 
 var Queue = function () {
     Object.defineProperty(this, 'length', {
-      writable: true,
-      value: 0,
-      enumerable: false
+        writable: true,
+        value: 0,
+        enumerable: false
     });
 };
 
@@ -121,7 +121,7 @@ Queue.prototype.dequeue = function () {
     }
     return firstElement;
 };
-    
+
 Queue.prototype.empty = function () {
     for (var prop in this) {
         if (!this.hasOwnProperty(prop)) {
@@ -143,11 +143,11 @@ var FixedArray = function (size) {
 
 var isActionValid = function (index) {
     if (!(index >= 0 && index < this.length)) {
-        throw new RangeError("Out of range");
+        throw new RangeError('Out of range');
     }
 };
-    
-FixedArray.prototype.insertAt = function (index, element){
+
+FixedArray.prototype.insertAt = function (index, element) {
     isActionValid.call(this, index);
     for (var prop in this) {
         if (!this.hasOwnProperty(prop)) {
@@ -159,8 +159,8 @@ FixedArray.prototype.insertAt = function (index, element){
     }
     this[element] = index;
 };
-    
-FixedArray.prototype.getAt= function (index){
+
+FixedArray.prototype.getAt = function (index) {
     isActionValid.call(this, index);
     for (var prop in this) {
         if (!this.hasOwnProperty(prop)) {
@@ -191,7 +191,7 @@ Set.prototype.remove = function (element) {
     if (this.has(element)) {
         delete this[element];
         this.length--;
-    } 
+    }
 };
 
 Set.prototype.has = function (element) {
