@@ -16,6 +16,12 @@ var Collection = function () {
       value: 0,
       enumerable: false
     });
+    Object.defineProperty(this, 'isEmpty', {
+        enumerable: false,
+        get: function() {
+            return this.length === 0; 
+        }
+    });
 };
 
 var setFirstAndLast = function () {
@@ -31,8 +37,6 @@ var setFirstAndLast = function () {
         }
     }
 };
-
-Collection.prototype.isEmpty = this.length === 0;
 
 Collection.prototype.pickFirst = function () {
     for (var prop in this) {
@@ -156,6 +160,7 @@ FixedArray.prototype.insertAt = function (index, element){
         }
         if (this[prop] >= index) {
             this[prop]++;
+            this.length++;
         }
     }
     this[element] = index;
@@ -182,11 +187,17 @@ var Set = function () {
 };
 
 Set.prototype.insert = function (element) {
-    this[element] = null;
+    if (!(this.has(element))) {
+        this[element] = null;
+        this.length++;
+    }
 };
 
 Set.prototype.remove = function (element) {
-    delete this[element];
+    if (this.has(element)) {
+        delete this[element];
+        this.length--;
+    } 
 };
 
 Set.prototype.has = function (element) {
@@ -200,7 +211,7 @@ Set.prototype.intersect = function (set) {
             continue;
         }
         if (set.has(prop)) {
-            newSet[prop] = null;
+            newSet.insert(prop);
         }
     }
     return newSet;
@@ -212,13 +223,13 @@ Set.prototype.union = function (set) {
         if (!this.hasOwnProperty(prop)) {
             continue;
         }
-        newSet[prop] = null;
+        newSet.insert(prop);
     }
     for (var prop in set) {
         if (!set.hasOwnProperty(prop)) {
             continue;
         }
-        newSet[prop] = null;
+        newSet.insert(prop);
     }
     return newSet;
 };
