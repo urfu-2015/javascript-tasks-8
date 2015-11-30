@@ -134,20 +134,15 @@ Queue.prototype.empty = function () {
 
 
 var FixedArray = function (size) {
-    Object.defineProperty(this, 'size', {
-        writable: false,
-        value: size,
-        enumerable: false
-    });
     Object.defineProperty(this, 'length', {
         writable: true,
-        value: 0,
+        value: size,
         enumerable: false
     });
 };
 
 var isActionValid = function (index) {
-    if (!(index >= 0 && index < this.size)) {
+    if (!(index >= 0 && index < this.length)) {
         throw new RangeError("Out of range");
     }
 };
@@ -163,7 +158,6 @@ FixedArray.prototype.insertAt = function (index, element){
         }
     }
     this[element] = index;
-    this.length++;
 };
     
 FixedArray.prototype.getAt= function (index){
