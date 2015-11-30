@@ -86,6 +86,7 @@ Collection.prototype.empty = function () {
             continue;
         }
         delete this[prop];
+        this.length--;
     }
 };
 
@@ -123,6 +124,7 @@ Queue.prototype.empty = function () {
             continue;
         }
         delete this[prop];
+        this.length--;
     };
 };
 
@@ -227,6 +229,7 @@ Set.prototype.empty = function () {
             continue;
         }
         delete this[prop];
+        this.length--;
     }
 };
 
