@@ -15,10 +15,16 @@ class Collection {
     }
 
     get first() {
+        if (this._first === null) {
+            return null;
+        }
         return this._first.value;
     }
 
     get last() {
+        if (this._last === null) {
+            return null;
+        }
         return this._last.value;
     }
 
@@ -111,22 +117,23 @@ class Queue {
 //  FixedArray
 class FixedArray {
     constructor(size) {
-        this.elements = new Array(size);
+        this.elements = [];
+        this._length = size;
     }
 
     get length() {
-        return this.elements.length;
+        return this._length;
     }
 
     insertAt(index, item) {
-        if (index < 0 || index >= this.elements.length) {
+        if (index < 0 || index >= this._length) {
             throw new RangeError('Элемент за пределами массива');
         }
         this.elements[index] = item;
     }
 
     getAt(index) {
-        if (index < 0 || index >= this.elements.length) {
+        if (index < 0 || index >= this._length) {
             throw new RangeError('Элемент за пределами массива');
         }
         return this.elements[index];
