@@ -4,30 +4,31 @@ var Collection = function () {
     this.collection = [];
     this.first = null;
     this.last = null;
-    this.length = 0;
     this.isEmpty = true;
+    Object.defineProperty(this, 'length', {
+        get: function () {
+            return this.collection.length;
+        }
+    });
 };
 
 Collection.prototype.insertFirst = function (e) {
     this.collection.unshift(e);
     this.first = e;
-    this.length++;
     this.last = this.collection[this.length - 1];
-    this.isEmpty = this.length === 0;
+    this.isEmpty = false;
 };
 
 Collection.prototype.insertLast = function (e) {
     this.collection.push(e);
     this.first = this.collection[0];
-    this.length++;
     this.last = e;
-    this.isEmpty = this.length === 0;
+    this.isEmpty = false;
 };
 
 Collection.prototype.pickFirst = function () {
     var e = this.collection.shift();
     this.first = this.collection[0];
-    this.length--;
     this.last = this.collection[this.length - 1];;
     this.isEmpty = this.length === 0;
     return e;
@@ -36,7 +37,6 @@ Collection.prototype.pickFirst = function () {
 Collection.prototype.pickLast = function () {
     var e = this.collection.pop();
     this.first = this.collection[0];
-    this.length--;
     this.last = this.collection[this.length - 1];
     this.isEmpty = this.length === 0;
     return e;
@@ -45,38 +45,42 @@ Collection.prototype.pickLast = function () {
 Collection.prototype.empty = function () {
     this.collection = [];
     this.first = null;
-    this.length = 0;
     this.last = null;
     this.isEmpty = true;
 };
 
 var Queue = function () {
     this.queue = [];
-    this.length = 0;
+    Object.defineProperty(this, 'length', {
+        get: function () {
+            return this.queue.length;
+        }
+    });
 };
 
 Queue.prototype.enqueue = function (item) {
     this.queue.push(item);
-    this.length++;
 };
 
 Queue.prototype.dequeue = function () {
-    this.length--;
     return this.queue.shift();
 };
 
 Queue.prototype.empty = function () {
     this.queue = [];
-    this.length = 0;
 };
 
 var FixedArray = function (size) {
-    this.array = [];
-    this.length = size;
+    if ((size ^ 0) === Math.abs(size) && typeof size === 'number') {
+        this.array = [];
+        this.length = size;
+    } else {
+        throw new Error('unvalid size');
+    }
 };
 
 FixedArray.prototype.insertAt = function (index, item) {
-    if (index < this.length) {
+    if (index < this.length && index >= 0) {
         this.array[index] = item;
     } else {
         throw new RangeError();
@@ -84,7 +88,7 @@ FixedArray.prototype.insertAt = function (index, item) {
 };
 
 FixedArray.prototype.getAt = function (index) {
-    if (index < this.length) {
+    if (index < this.length && index >= 0) {
         return this.array[index];
     } else {
         throw new RangeError();
@@ -93,13 +97,15 @@ FixedArray.prototype.getAt = function (index) {
 
 var Set = function () {
     this.set = [];
-    this.length = 0;
+    Object.defineProperty(this, 'length', {
+        get: function () {
+            return this.set.length;
+        }
+    });
 };
 
 Set.prototype.insert = function (item) {
-    var i = this.set.indexOf(item);
-    if (i < 0) {
-        this.length++;
+    if (!this.has(item)) {
         this.set.push(item);
     }
 };
@@ -108,7 +114,6 @@ Set.prototype.remove = function (item) {
     var i = this.set.indexOf(item);
     if (i >= 0) {
         this.set.splice(i, 1);
-        this.length--;
     }
 };
 
@@ -129,7 +134,6 @@ Set.prototype.intersect = function (set) {
 Set.prototype.union = function (set) {
     var union = new Set();
     union.set = this.set.concat();
-    union.length = this.length;
     for (var i = 0; i < set.length; i++) {
         union.insert(set.set[i]);
     }
@@ -138,7 +142,6 @@ Set.prototype.union = function (set) {
 
 Set.prototype.empty = function () {
     this.set = [];
-    this.length = 0;
 };
 
 var PriorityQueue = function () {
