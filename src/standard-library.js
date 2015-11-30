@@ -236,10 +236,62 @@ Set.prototype.empty = function () {
     }
 };
 
-
 var PriorityQueue = function () {
-
+    Object.defineProperty(this, 'maxPriority', {
+        writable: true,
+        value: 0,
+        enumerable: false
+    });
+    Object.defineProperty(this, 'maxPriorityElements', {
+        writable: true,
+        value: 0,
+        enumerable: false
+    });
 };
+
+PriorityQueue.prototype.enqueue = function (item, priority) {
+    if (priority > this.maxPriority) {
+        this.maxPriority = priority;
+        this.maxPriorityElements = 1;
+    }
+    else {
+        if (priority === this.maxPriority) {
+            this.maxPriorityElements++;
+        }
+    }
+    this[item] = priority;
+}
+
+PriorityQueue.prototype.dequeue = function () {
+    for (var item in this) {
+        if (!this.hasOwnProperty(item)) {
+            continue;
+        }
+        if (this[item] === this.maxPriority) {
+            var element = item;
+            delete this[item];
+            this.maxPriorityElements--;
+            if (this.maxPriorityElements === 0) {
+                this.maxPriority = 0;
+                for (var item in this) {
+                    if (!this.hasOwnProperty(item)) {
+                        continue;
+                    }
+                    if (this[item] > this.maxPriority) {
+                        this.maxPriority = this[item];
+                        this.maxPriorityElements = 1;
+                    }
+                    else {
+                        if (this[item] === this.maxPriority) {
+                            this.maxPriorityElements++;
+                        }
+                    }
+                }
+            }
+            return element;
+        }
+    }
+}
 
 var Map = function () {
 
