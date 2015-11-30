@@ -115,8 +115,11 @@ var Queue = function () {
 var FixedArray = function (size) {
     this._array = [];
 
-    if (typeof size === 'number') {
+    if (typeof size === 'number' && size > 0) {
         this.length = size;
+        for (var i = 0; i < this.length; i++) {
+            this._array.push(undefined);
+        }
     } else {
         throw new RangeError();
     }
@@ -125,7 +128,7 @@ var FixedArray = function (size) {
         if (ind >= this.length) {
             throw new RangeError();
         } else {
-            this._array.splice(ind, 0, elem);
+            this._array[ind] = elem;
         }
     };
 
