@@ -10,25 +10,25 @@ var Collection = function () {
 Collection.prototype.refreshProperties = function () {
     this.first = this.collection[0];
     this.last = this.collection[this.collection.length - 1];
-    this.length = this.collection.length;
+    this.length = this.collection.length ? this.collection.length : 0;
     this.isEmpty = this.length > 0 ? false : true;
 };
 Collection.prototype.pickFirst = function () {
     if (this.isEmpty) {
         return undefined;
     }
-    var res = this.collection.shift();
+    var result = this.collection.shift();
     this.refreshProperties();
-    return res;
+    return result;
 
 };
 Collection.prototype.pickLast = function () {
     if (this.isEmpty) {
         return undefined;
     }
-    var res = this.collection.pop();
+    var result = this.collection.pop();
     this.refreshProperties();
-    return res;
+    return result;
 
 };
 Collection.prototype.insertFirst = function (item) {
@@ -40,7 +40,7 @@ Collection.prototype.insertLast = function (item) {
     this.refreshProperties();
 };
 Collection.prototype.empty = function () {
-    this.collection = Object.create(null);
+    this.collection = [];
     this.refreshProperties();
 };
 
@@ -129,4 +129,3 @@ exports.FixedArray = FixedArray;
 exports.Set = Set;
 exports.PriorityQueue = PriorityQueue;
 exports.Map = Map;
-
