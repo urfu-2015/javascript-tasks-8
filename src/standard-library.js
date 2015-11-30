@@ -7,26 +7,28 @@ var Collection = function () {
     this.isEmpty = true;
 };
 Collection.prototype.pickFirst = function () {
-    if (this.length === 0) {
-        return null;
-    };
     var first = this.first;
     this.items.splice(0, 1);
     this.length--;
     this.first = this.items[0];
     this.last = this.items[this.length - 1];
+    if (this.length < 1) {
+        this.first = null;
+        this.last = null;
+    }
     this.isEmpty = this.length < 1 ? true : false;
     return first;
 };
 Collection.prototype.pickLast = function () {
-    if (this.length === 0) {
-        return null;
-    };
     var last = this.last;
     this.items.splice(this.items.length - 1, 1);
     this.length--;
     this.last = this.items[this.length - 1];
     this.first = this.items[0];
+    if (this.length < 1) {
+        this.last = null;
+        this.first = null;
+    }
     this.isEmpty = this.length < 1 ? true : false;
     return last;
 };
@@ -72,7 +74,7 @@ Queue.prototype.dequeue = function () {
     this.length--;
     return dequeueElement;
 };
-this.empty = function () {
+Queue.prototype.empty = function () {
     this.items = [];
     this.length = 0;
 };
@@ -205,6 +207,7 @@ var PriorityQueue = function () {
 var Map = function () {
 
 };
+
 
 exports.Collection = Collection;
 exports.Queue = Queue;
