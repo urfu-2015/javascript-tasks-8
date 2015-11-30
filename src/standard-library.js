@@ -130,7 +130,6 @@ Queue.prototype.empty = function () {
     };
 };
 
-
 var FixedArray = function (size) {
     Object.defineProperty(this, 'length', {
         writable: true,
@@ -253,14 +252,13 @@ PriorityQueue.prototype.enqueue = function (item, priority) {
     if (priority > this.maxPriority) {
         this.maxPriority = priority;
         this.maxPriorityElements = 1;
-    }
-    else {
+    } else {
         if (priority === this.maxPriority) {
             this.maxPriorityElements++;
         }
     }
     this[item] = priority;
-}
+};
 
 PriorityQueue.prototype.dequeue = function () {
     for (var item in this) {
@@ -280,8 +278,7 @@ PriorityQueue.prototype.dequeue = function () {
                     if (this[item] > this.maxPriority) {
                         this.maxPriority = this[item];
                         this.maxPriorityElements = 1;
-                    }
-                    else {
+                    } else {
                         if (this[item] === this.maxPriority) {
                             this.maxPriorityElements++;
                         }
@@ -291,11 +288,9 @@ PriorityQueue.prototype.dequeue = function () {
             return element;
         }
     }
-}
-
-var Map = function () {
-
 };
+
+var Map = function () {};
 
 exports.Collection = Collection;
 exports.Queue = Queue;
