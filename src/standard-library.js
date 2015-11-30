@@ -2,14 +2,30 @@
 
 var Collection = function () {
     Object.defineProperty(this, 'first', {
-        writable: true,
-        value: null,
-        enumerable: false
+        enumerable: false,
+        get: function () {
+            for (var prop in this) {
+                if (!this.hasOwnProperty(prop)) {
+                    continue;
+                }
+                if (this[prop] === 0) {
+                    return prop;
+                }
+            }
+        }
     });
     Object.defineProperty(this, 'last', {
-        writable: true,
-        value: null,
-        enumerable: false
+        enumerable: false,
+        get: function () {
+            for (var prop in this) {
+                if (!this.hasOwnProperty(prop)) {
+                    continue;
+                }
+                if (this[prop] === this.length - 1) {
+                    return prop;
+                }
+            }
+        }
     });
     Object.defineProperty(this, 'length', {
         writable: true,
@@ -22,20 +38,6 @@ var Collection = function () {
             return this.length === 0;
         }
     });
-};
-
-var setFirstAndLast = function () {
-    for (var prop in this) {
-        if (!this.hasOwnProperty(prop)) {
-            continue;
-        }
-        if (this[prop] === 0) {
-            this.first = prop;
-        }
-        if (this[prop] === this.length - 1) {
-            this.last = prop;
-        }
-    }
 };
 
 Collection.prototype.pickFirst = function () {
@@ -51,7 +53,6 @@ Collection.prototype.pickFirst = function () {
         }
         this[prop]--;
     }
-    setFirstAndLast.call(this);
     return firstElement;
 };
 
@@ -61,7 +62,6 @@ Collection.prototype.pickLast = function () {
             var lastElement = prop;
             delete this[prop];
             this.length--;
-            setFirstAndLast.call(this);
             return lastElement;
         }
     }
@@ -76,12 +76,10 @@ Collection.prototype.insertFirst = function (element) {
     }
     this[element] = 0;
     this.length++;
-    setFirstAndLast.call(this);
 };
 
 Collection.prototype.insertLast = function (element) {
     this[element] = this.length++;
-    setFirstAndLast.call(this);
 };
 
 Collection.prototype.empty = function () {
