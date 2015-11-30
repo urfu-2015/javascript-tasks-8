@@ -1,9 +1,9 @@
 'use strict';
 
 var Abstract = function (size) {
-    if (size === undefined) {
+    if (size === undefined || size === Infinity) {
         this.array = [];
-        this.length = 0;
+        this.length = size || 0;
     } else {
         this.array = new Array(size);
         this.length = size;
@@ -25,6 +25,9 @@ Collection.prototype.pickFirst = function () {
     var first = this.array.splice(0, 1)[0];
     this.first = this.array[0];
     this.length -= 1;
+    if (this.length === 0) {
+        this.isEmpty = false;
+    }
     return first;
 };
 Collection.prototype.pickLast = function () {
@@ -33,6 +36,9 @@ Collection.prototype.pickLast = function () {
     }
     var first = this.array.splice(-1, 1)[0];
     this.length -= 1;
+    if (this.length === 0) {
+        this.isEmpty = true;
+    }
     this.last = this.array[this.array.length - 1];
     return first;
 };
@@ -68,7 +74,6 @@ var Queue = function () {
 Queue.prototype = Object.create(Abstract.prototype);
 Queue.prototype.constructor = Queue;
 Queue.prototype.enqueue = function (element) {
-    //this.array.splice(-1, 0, element);
     this.array.push(element);
     this.length += 1;
 };
