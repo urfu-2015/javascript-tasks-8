@@ -223,45 +223,45 @@ class PriorityQueue {
 //  Map
 class Map {
     constructor() {
-        this.keys = [];
-        this.values = [];
+        this._keys = [];
+        this._values = [];
     }
 
     get length() {
-        return this.keys.length;
+        return this._keys.length;
     }
 
     addItem(key, item) {
-        this.keys.push(key);
-        this.values.push(item);
+        key = JSON.stringify(key);
+        this._keys.push(key);
+        this._values.push(item);
     }
 
-    hasKey(key) {
-        var index = this.keys.indexOf(key);
-        if (index === -1) {
-            return false;
-        }
-        return true;
+    indexKey(key) {
+        key = JSON.stringify(key);
+        return this._keys.indexOf(key);
     }
 
     removeItem(key) {
-        if (hasKey(key)) {
-            this.keys.splice(index, 1);
-            return this.values.splice(index, 1);
+        var index = indexKey(key);
+        if (index !== -1) {
+            this._keys.splice(index, 1);
+            return this._values.splice(index, 1);
         }
         return null;
     }
 
     getItem(key) {
-        if (hasKey(key)) {
-            return this.values[index];
+        var index = indexKey(key);
+        if (index !== -1) {
+            return this._values[index];
         }
         return null;
     }
 
     empty() {
-        this.keys = [];
-        this.values = [];
+        this._keys = [];
+        this._values = [];
     }
 }
 
