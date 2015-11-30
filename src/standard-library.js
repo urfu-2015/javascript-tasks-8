@@ -160,10 +160,10 @@ FixedArray.prototype.insertAt = function (index, element){
         }
         if (this[prop] >= index) {
             this[prop]++;
-            this.length++;
         }
     }
     this[element] = index;
+    this.length++;
 };
     
 FixedArray.prototype.getAt= function (index){
