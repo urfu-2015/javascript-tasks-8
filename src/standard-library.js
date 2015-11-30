@@ -317,7 +317,7 @@ Object.defineProperties(Map.prototype, {
         }
     },
     _toKey: {
-        value: function(key) {
+        value: function (key) {
             return JSON.stringify(key);
         }
     },
