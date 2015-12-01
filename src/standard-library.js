@@ -1,48 +1,64 @@
 'use strict';
 
-var Container = function (obj, prev, next) {
-    this.value = obj;
-    this.prev = prev;
-    this.next = next;
+var Container = function (element) {
+    this.value = element.value;
+    this.prev = element.prev;
+    this.next = element.next;
 };
 
 var Collection = function () {
-    this.length = 0;
-    this.last = undefined;
-    this.first = undefined;
-    this.firstElement = null;
-    this.lastElement = null;
-    this.isEmpty = true;
+    this.empty();
 };
 
-Collection.prototype.insertLast = function (obj) {
-    var newObj = new Container(obj, this.lastElement, null);
+Object.defineProperty(Collection.prototype, 'isEmpty', {
+    get: function () {
+        return this.length === 0;
+    }
+});
+
+Object.defineProperty(Collection.prototype, 'first', {
+    get: function () {
+        return getElement(this.firstElement);
+    }
+});
+
+Object.defineProperty(Collection.prototype, 'last', {
+    get: function () {
+        return getElement(this.lastElement);
+    }
+});
+
+
+Collection.prototype.insertLast = function (value) {
+    var container = new Container({
+        value: value,
+        prev: this.lastElement,
+        next: null
+    });
     if (this.lastElement !== null) {
-        this.lastElement.next = newObj;
+        this.lastElement.next = container;
     }
     if (this.firstElement === null) {
-        this.firstElement = newObj;
-        this.first = getElement(this.firstElement);
+        this.firstElement = container;
     }
-    this.lastElement = newObj;
-    this.last = getElement(this.lastElement);
+    this.lastElement = container;
     this.length++;
-    this.isEmpty = false;
 };
 
-Collection.prototype.insertFirst = function (obj) {
-    var newObj = new Container(obj, null, this.firstElement);
+Collection.prototype.insertFirst = function (value) {
+    var container = new Container({
+        value: value,
+        prev: null,
+        next: this.firstElement
+    });
     if (this.firstElement !== null) {
-        this.firstElement.prev = newObj;
+        this.firstElement.prev = container;
     }
     if (this.lastElement === null) {
-        this.lastElement = newObj;
-        this.last = getElement(this.lastElement);
+        this.lastElement = container;
     }
-    this.firstElement = newObj;
-    this.first = getElement(this.firstElement);
+    this.firstElement = container;
     this.length++;
-    this.isEmpty = false;
 };
 
 Collection.prototype.pickFirst = function () {
@@ -51,28 +67,20 @@ Collection.prototype.pickFirst = function () {
     if (this.firstElement !== null) {
         this.firstElement.prev = null;
     }
-    this.first = getElement(this.firstElement);
-    this.isEmpty = --this.length === 0;
-    if (this.length === 0) {
-        this.empty();
-    }
+    --this.length;
     return res.value;
 };
 
 Collection.prototype.pickLast = function () {
     var res = this.lastElement;
     if (res === null) {
-        return undefined;
+        return;
     }
     this.lastElement = this.lastElement.prev;
     if (this.lastElement !== null) {
         this.lastElement.next = null;
     }
-    this.last = getElement(this.lastElement);
-    this.isEmpty = --this.length === 0;
-    if (this.length === 0) {
-        this.empty();
-    }
+    --this.length;
     return res.value;
 };
 
@@ -80,28 +88,17 @@ Collection.prototype.empty = function () {
     this.length = 0;
     this.firstElement = null;
     this.lastElement = null;
-    this.isEmpty = true;
-    this.first = undefined;
-    this.last = undefined;
 };
 
-function getElement(obj) {
-    if (obj === null) {
-        return undefined;
+function getElement(container) {
+    if (container === null) {
+        return;
     }
-    if ('value' in obj) {
-        return obj.value;
-    }
-    return undefined;
+    return container.value;
 }
 
 var Queue = function () {
-    this.last = undefined;
-    this.first = undefined;
-    this.firstElement = null;
-    this.lastElement = null;
-    this.isEmpty = true;
-    this.length = 0;
+    this.empty();
 };
 
 Queue.prototype = Object.create(Collection.prototype);
@@ -115,22 +112,16 @@ Queue.prototype.dequeue = function () {
 };
 
 var FixedArray = function (size) {
-    this.last = undefined;
-    this.first = undefined;
-    this.firstElement = null;
-    this.lastElement = null;
-    this.isEmpty = true;
-    this.length = 0;
-
+    this.empty();
     for (var i = 0; i < size; i++) {
-        this.insertLast(undefined);
+        this.insertLast();
     }
 };
 
 FixedArray.prototype = Object.create(Collection.prototype);
 
 FixedArray.prototype.insertAt = function (index, item) {
-    if (this.length <= index) {
+    if (this.length <= index || index < 0) {
         throw new RangeError('Index out of range');
     }
     var element = getElementByIndex(index, this);
@@ -146,13 +137,17 @@ FixedArray.prototype.insertAt = function (index, item) {
 
         return;
     }
-    var newElement = new Container(item, element.prev, element.next);
+    var newElement = new Container({
+        value: item,
+        prev: element.prev,
+        next: element.next
+    });
     element.prev.next = newElement;
     element.next.prev = newElement;
 };
 
 FixedArray.prototype.getAt = function (index) {
-    if (this.length <= index) {
+    if (this.length <= index || index < 0) {
         throw new RangeError('Index out of range');
     }
     return getElementByIndex(index, this).value;
@@ -181,12 +176,7 @@ function getElementByValue(item, collection) {
 }
 
 var Set = function () {
-    this.length = 0;
-    this.firstElement = null;
-    this.lastElement = null;
-    this.isEmpty = true;
-    this.first = undefined;
-    this.last = undefined;
+    this.empty();
 };
 
 Set.prototype = Object.create(Collection.prototype);
