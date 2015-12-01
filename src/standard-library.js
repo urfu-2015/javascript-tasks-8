@@ -154,23 +154,32 @@ FixedArray.prototype.getAt = function (index) {
 };
 
 function getElementByIndex(index, collection) {
-    var element = collection.firstElement;
-    for (var i = 0; i < index; i++) {
-        if (element === null) {
-            return null;
+    if (index > collection.length / 2) {
+        var element = collection.lastElement;
+        for (var i = collection.length - 1; i > index; i--) {
+            element = element.prev;
         }
+        return element;
+    }
+    element = collection.firstElement;
+    for (i = 0; i < index; i++) {
         element = element.next;
     }
     return element;
 }
 
 function getElementByValue(item, collection) {
-    var element = collection.firstElement;
-    for (var i = 0; i < collection.length; i++) {
-        if (element.value === item) {
-            return element;
+    var right = collection.firstElement;
+    var left = collection.lastElement;
+    for (var i = 0; i < Math.ceil(collection.length / 2); i++) {
+        if (left.value === item) {
+            return left;
         }
-        element = element.next;
+        if (right.value === item) {
+            return right;
+        }
+        right = right.next;
+        left = left.prev;
     }
     return null;
 }
