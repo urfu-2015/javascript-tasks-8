@@ -27,6 +27,7 @@ Collection.prototype.pickFirst = function () {
     this.length -= 1;
     if (this.length === 0) {
         this.isEmpty = false;
+        this.last = this.array[0];
     }
     return first;
 };
@@ -34,13 +35,14 @@ Collection.prototype.pickLast = function () {
     if (this.isEmpty) {
         return undefined;
     }
-    var first = this.array.splice(-1, 1)[0];
+    var last = this.array.splice(-1, 1)[0];
     this.length -= 1;
     if (this.length === 0) {
         this.isEmpty = true;
+        this.first = this.array[0];
     }
     this.last = this.array[this.array.length - 1];
-    return first;
+    return last;
 };
 Collection.prototype.insertFirst = function (element) {
     this.array.splice(0, 0, element);
