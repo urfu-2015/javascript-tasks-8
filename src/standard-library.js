@@ -1,5 +1,7 @@
 'use strict';
 
+var MAX_FIXED_ARRAY_SIZE = 3000000;
+
 var Node = function (value) {
     this.value = value;
     this.next = null;
@@ -100,6 +102,9 @@ DoublyLinkedList.prototype.deleteByIndex = function (index) {
     if (index < 0 || index > this.length - 1) {
         throw new RangeError;
     }
+    if (!this.length) {
+        throw new RangeError();
+    }
     if (this.length === 1) {
         this.empty();
         return;
@@ -124,6 +129,10 @@ DoublyLinkedList.prototype.deleteByIndex = function (index) {
 };
 
 DoublyLinkedList.prototype.deleteFirst = function () {
+    if (!this.length) {
+        throw new RangeError();
+        return;
+    }
     if (this.length === 1) {
         this.empty();
         return;
@@ -133,6 +142,9 @@ DoublyLinkedList.prototype.deleteFirst = function () {
 };
 
 DoublyLinkedList.prototype.deleteLast = function () {
+    if (!this.length) {
+        throw new RangeError();
+    }
     if (this.length === 1) {
         this.empty();
         return;
@@ -154,19 +166,22 @@ DoublyLinkedList.prototype.getNext = function () {
 
 var Collection = function () {
     DoublyLinkedList.call(this);
-
 };
 Collection.prototype = Object.create(DoublyLinkedList.prototype);
 Collection.prototype.constructor = Collection;
 Collection.prototype.pickFirst = function () {
     var item = this.first;
-    this.deleteFirst();
+    if (this.length) {
+        this.deleteFirst();
+    }
     return item;
 };
 
 Collection.prototype.pickLast = function () {
     var item = this.last;
-    this.deleteLast();
+    if (this.length) {
+        this.deleteLast();
+    }
     return item;
 };
 
@@ -186,6 +201,9 @@ Queue.prototype.dequeue = function () {
 
 var FixedArray = function (size) {
     DoublyLinkedList.call(this);
+    if (size < 1 || size > MAX_FIXED_ARRAY_SIZE) {
+        throw new RangeError();
+    }
     for (var i = 0; i < size; i++) {
         this.insertLast(undefined);
     }
@@ -193,6 +211,9 @@ var FixedArray = function (size) {
 FixedArray.prototype = Object.create(DoublyLinkedList.prototype);
 FixedArray.prototype.constructor = FixedArray;
 FixedArray.prototype.insertAt = function (index, item) {
+    if (!item) {
+        throw new Error();
+    }
     this.findByIndex(index).value = item;
 };
 FixedArray.prototype.getAt = function (index) {
@@ -306,6 +327,9 @@ var PriorityQueue = function () {
 PriorityQueue.prototype = Object.create(Heap.prototype);
 PriorityQueue.prototype.constructor = PriorityQueue;
 PriorityQueue.prototype.enqueue = function (item, priority) {
+    if (!priority) {
+        throw new Error();
+    }
     this.heapInsert(item, priority);
 };
 PriorityQueue.prototype.dequeue = function () {
