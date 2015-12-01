@@ -11,7 +11,7 @@ Collection.prototype.refreshProperties = function () {
     this.first = this.collection[0];
     this.last = this.collection[this.collection.length - 1];
     this.length = this.collection.length ? this.collection.length : 0;
-    this.isEmpty = this.length > 0 ? false : true;
+    this.isEmpty = this.length <= 0;
 };
 Collection.prototype.pickFirst = function () {
     if (this.isEmpty) {
@@ -78,10 +78,10 @@ var Set = function () {
     this.length = 0;
 };
 Set.prototype.insert = function (item) {
-    var index = this.collection.indexOf(item);
-
-    index = index < 0 ? this.collection.length : index;
-    this.collection[index] = item;
+    if (this.collection.indexOf(item) >= 0) {
+        return;
+    }
+    this.collection.push(item);
     this.length = this.collection.length;
 };
 Set.prototype.remove = function (item) {
@@ -109,11 +109,17 @@ Set.prototype.intersect = function (set) {
 Set.prototype.union = function (set) {
     var resultSet = new Set();
 
-    resultSet.collection = Object.assign([], this.collection);
+    this.collection.forEach(function (item) {
+        resultSet.insert(item);
+    });
     set.collection.forEach(function (item) {
         resultSet.insert(item);
     });
     return resultSet;
+};
+Set.prototype.empty = function () {
+    this.collection = [];
+    this.length = 0;
 };
 var PriorityQueue = function () {
 
