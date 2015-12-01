@@ -4,8 +4,13 @@ var Collection = function () {
     this.elements = [];
     this.first;
     this.last;
-    this.isEmpty = true;
     this.length = 0;
+    Object.defineProperty(this, 'isEmpty', {
+        get: function () {
+            return this.elements.length === 0;
+        }
+    });
+
     this.pickFirst = function () {
         if (this.length != 0) {
             this.length--;
@@ -19,7 +24,6 @@ var Collection = function () {
         }
     };
     this.insertFirst = function (element) {
-        this.isEmpty = false;
         this.first = element;
         this.length++;
         this.elements.unshift(element);
@@ -28,7 +32,6 @@ var Collection = function () {
         }
     };
     this.insertLast = function (element) {
-        this.isEmpty = false;
         this.last = element;
         this.length++;
         this.elements.push(element);
@@ -37,7 +40,6 @@ var Collection = function () {
         }
     };
     this.empty = function () {
-        this.isEmpty = true;
         this.elements = [];
         this.first = undefined;
         this.last = undefined;
@@ -149,13 +151,13 @@ var PriorityQueue = function () {
         if (this.length === 0) {
             return;
         }
-        var minPriority = 100;
+        var maxPriority = 1;
         for (var item in this.priority) {
-            minPriority = this.priority[item] < minPriority ? this.priority[item] : minPriority;
+            maxPriority = this.priority[item] > maxPriority ? this.priority[item] : maxPriority;
         }
 
         for (var item of this.elements) {
-            if (this.priority[item] === minPriority) {
+            if (this.priority[item] === maxPriority) {
                 var element = item;
                 break;
             }

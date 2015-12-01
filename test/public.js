@@ -151,9 +151,9 @@ describe('Standard Library', function () {
             queue.enqueue('bar', 2);
             queue.enqueue('baz', 1);
 
-            assert.equal(queue.dequeue(), 'baz');
-            assert.equal(queue.dequeue(), 'bar');
             assert.equal(queue.dequeue(), 'foo');
+            assert.equal(queue.dequeue(), 'bar');
+            assert.equal(queue.dequeue(), 'baz');
         });
     });
     describe('Map', function () {
