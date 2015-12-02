@@ -250,7 +250,7 @@ var PriorityQueue = function () {
 
 PriorityQueue.prototype.enqueue = function (item, priority) {
     if (!(priority > 1 && priority < 100)) {
-        priority = 0;
+        priority = 1;
     }
     if (priority > this.maxPriority) {
         this.maxPriority = priority;
