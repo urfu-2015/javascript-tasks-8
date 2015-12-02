@@ -249,6 +249,9 @@ var PriorityQueue = function () {
 };
 
 PriorityQueue.prototype.enqueue = function (item, priority) {
+    if (!(priority > 1 && priority < 100)) {
+        priority = 0;
+    }
     if (priority > this.maxPriority) {
         this.maxPriority = priority;
         this.maxPriorityElements = 1;
@@ -285,9 +288,9 @@ PriorityQueue.prototype.dequeue = function () {
                     }
                 }
             }
-            return element;
         }
     }
+    return element === undefined ? null : element;
 };
 
 var Map = function () {};
