@@ -1,10 +1,6 @@
 'use strict';
 
 var Collection = function () {
-    this.first = null;
-    this.last = null;
-    this.isEmpty = true;
-    this.length = 0;
     this._head = null;
     this._tail = null;
 };
@@ -15,22 +11,13 @@ function ItemCollection(val) {
     this.prev = null;
 }
 
-ItemCollection.prototype = Collection.prototype;
-ItemCollection.prototype.constructor = ItemCollection;
-
 Collection.prototype = {
-    _updateValues: function () {
-        this.length++;
-        this.first = this._head.value;
-        this.last = this._tail.value;
-        this.isEmpty = !(this._head !== null || this._tail !== null);
-    },
     _isValid: function (obj) {
         return obj.hasOwnProperty('next') && obj.hasOwnProperty('prev');
     },
     _pick: function (obj) {
         if (!this._isValid(obj)) {
-            return undefined;
+            return null;
         }
         if (obj.next && obj.prev === null) {
             obj.next.prev = null;
@@ -39,11 +26,8 @@ Collection.prototype = {
             obj.prev.next = null;
             obj = obj.prev;
         } else {
-            obj.value = null;
-            this.isEmpty = true;
+            return null;
         }
-        this.length--;
-        this.isEmpty = !(this._head !== null || this._tail !== null);
         return obj;
     },
     pickFirst: function () {
@@ -62,8 +46,7 @@ Collection.prototype = {
         this._tail = this._pick(this._tail);
         return val;
     },
-    _insert: function (val, index, isFixed) {
-        isFixed = isFixed || null;
+    _insert: function (val, index) {
         var temp = new ItemCollection(val);
         if (this._head === null) {
             this._head = temp;
@@ -76,9 +59,6 @@ Collection.prototype = {
             temp.prev = this._tail;
             this._tail.next = temp;
             this._tail = temp;
-        }
-        if (!isFixed) {
-            this._updateValues();
         }
     },
     insertFirst: function (val) {
@@ -96,17 +76,43 @@ Collection.prototype = {
             this._head = temp;
         }
         this._tail = null;
-        this.first = null;
-        this.last = null;
-        this.length = 0;
-        this.isEmpty = !(this._head !== null || this._tail !== null);
     }
 };
+
+Object.defineProperties(Collection.prototype, {
+    first: {
+        get: function () {
+            return this._head ? this._head.value : null;
+        }
+    },
+    last: {
+        get: function () {
+            return this._tail ? this._tail.value : null;
+        }
+    },
+    isEmpty: {
+        get: function () {
+            return this._head === null && this._tail === null;
+        }
+    },
+    length: {
+        get: function () {
+            var pointer = this._head;
+            var len = 0;
+            while (pointer) {
+                len++;
+                pointer = pointer.next;
+            }
+            return len;
+        }
+    }
+});
 
 
 var Queue = function () {
     Collection.call(this);
 };
+
 Queue.prototype = Object.create(Collection.prototype);
 Queue.prototype.constructor = Queue;
 
@@ -125,9 +131,8 @@ var FixedArray = function (size) {
     }
     size = Math.min(100, size);
     Collection.call(this);
-    this.length = size;
     while (size--) {
-        this._insert(null, null, true);
+        this._insert(null, null);
     }
 };
 FixedArray.prototype = Object.create(Collection.prototype);
@@ -162,24 +167,23 @@ FixedArray.prototype.getAt = function (index) {
     return obj.value;
 };
 
+
 var Set = function () {
-    this.length = 0;
     this.list = [];
 };
+
 Set.prototype = {
     insert: function (item) {
         if (this.has(item)) {
             return;
         }
         this.list.push(item);
-        this.length++;
     },
     remove: function (item) {
         if (!this.has(item)) {
             return;
         }
         this.list = this.list.filter(value => value !== item);
-        this.length--;
     },
     has: function (item) {
         return Boolean(this.list.indexOf(item) + 1);
@@ -187,7 +191,6 @@ Set.prototype = {
     intersect: function (set) {
         var res = new Set();
         res.list = this.list.filter(value => Boolean(set.list.indexOf(value) + 1));
-        res.length = res.list.length;
         return res;
     },
     union: function (set) {
@@ -195,14 +198,19 @@ Set.prototype = {
         res.list = this.list
             .concat(set.list)
             .filter((value, index, arr) => !Boolean(arr.indexOf(value, index + 1) + 1));
-        res.length = res.list.length;
         return res;
     },
     empty: function () {
         this.list.length = 0;
-        this.length = 0;
     }
 };
+
+Object.defineProperty(Set.prototype, 'length', {
+    get: function () {
+        return this.list.length;
+    }
+});
+
 
 var PriorityQueue = function () {
     this.list = [];
@@ -227,8 +235,8 @@ PriorityQueue.prototype = {
     }
 };
 
+
 var Map = function () {
-    this.length = 0;
     this.keys = [];
     this.items = [];
 };
@@ -241,7 +249,6 @@ Map.prototype = {
         }
         this.keys.push(strKey);
         this.items.push(item);
-        this.length++;
     },
     hasItem: function (key) {
         return Boolean(this.keys.indexOf(key) + 1);
@@ -249,30 +256,36 @@ Map.prototype = {
     isValidKey: function (key) {
         return (typeof key === 'string' || typeof key === 'object') && !(key instanceof Array);
     },
+    getKeyIndex: function (key) {
+        key = JSON.stringify(key);
+        return this.keys.indexOf(key);
+    },
     removeItem: function (key) {
-        var strKey = JSON.stringify(key);
-        if (!this.hasItem(strKey) || !this.isValidKey(key)) {
+        var index = this.getKeyIndex(key);
+        if (index === -1 || !this.isValidKey(key)) {
             return;
         }
-        var index = this.keys.indexOf(strKey);
         this.keys.splice(index, 1);
         this.items.splice(index, 1);
-        this.length--;
     },
     getItem: function (key) {
-        var strKey = JSON.stringify(key);
-        if (!this.hasItem(strKey) || !this.isValidKey(key)) {
+        var index = this.getKeyIndex(key);
+        if (index === -1 || !this.isValidKey(key)) {
             return null;
         }
-        var index = this.keys.indexOf(strKey);
         return this.items[index];
     },
     empty: function () {
         this.keys.length = 0;
         this.items.length = 0;
-        this.length = 0;
     }
 };
+
+Object.defineProperty(Map.prototype, 'length', {
+    get: function () {
+        return this.keys.length;
+    }
+});
 
 
 exports.Collection = Collection;
