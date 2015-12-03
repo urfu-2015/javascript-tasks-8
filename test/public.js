@@ -8,6 +8,7 @@ var FixedArray = lib.FixedArray;
 var Queue = lib.Queue;
 var Set = lib.Set;
 var PriorityQueue = lib.PriorityQueue;
+var Map = lib.Map;
 
 describe('Standard Library', function () {
     describe('Collection', function () {
@@ -127,7 +128,76 @@ describe('Standard Library', function () {
             assert.equal(queue.dequeue(), 'baz');
         });
     });
+    describe('PriorityQueue', function () {
+        it('enqueue(item)', function () {
+            var queue = new PriorityQueue();
 
+            assert.equal(queue.length, 0);
+
+            queue.enqueue('foo', 1);
+            queue.enqueue('bar', 2);
+            queue.enqueue('baz', 3);
+            assert.equal(queue.length, 3);
+
+            assert.throws(function () {
+                queue.enqueue('bat', 101);
+            }, RangeError);
+            assert.equal(queue.length, 3);
+        });
+
+        it('dequeue()', function () {
+            var queue = new PriorityQueue();
+            queue.enqueue('foo', 5);
+            queue.enqueue('bar', 2);
+            queue.enqueue('baz', 1);
+
+            assert.equal(queue.dequeue(), 'foo');
+            assert.equal(queue.dequeue(), 'bar');
+            assert.equal(queue.dequeue(), 'baz');
+        });
+    });
+    describe('Map', function () {
+        it('addItem(key, item)', function () {
+            var map = new Map();
+
+            assert.equal(map.length, 0);
+
+            map.addItem('foo', 'a2');
+            map.addItem('bar', 'a3');
+            map.addItem('baz', '4a');
+            assert.equal(map.length, 3);
+
+            map.addItem('baz', '4tt');
+            assert.equal(map.length, 3);
+        });
+
+        it('removeItem(key)', function () {
+            var map = new Map();
+            map.addItem('foo', 'a2');
+            map.addItem('bar', 'a3');
+            map.addItem('baz', '4a');
+
+            map.removeItem('baz', '4a');
+            assert.equal(map.length, 2);
+        });
+        it('getItem(key)', function () {
+            var map = new Map();
+            map.addItem('foo', 'a2');
+            map.addItem('bar', 'a3');
+            map.addItem('baz', '4a');
+
+            assert.equal(map.getItem('bar'), 'a3');
+        });
+        it('empty()', function () {
+            var map = new Map();
+            map.addItem('foo', 'a2');
+            map.addItem('bar', 'a3');
+            map.addItem('baz', '4a');
+
+            map.empty();
+            assert.equal(map.length, 0);
+        });
+    });
     describe('FixedArray', function () {
         it('length', function () {
             var arr = new FixedArray(5);
