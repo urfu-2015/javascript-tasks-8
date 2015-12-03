@@ -144,6 +144,7 @@ DoublyLinkedList.prototype.deleteFirst = function () {
 DoublyLinkedList.prototype.deleteLast = function () {
     if (!this.length) {
         throw new RangeError();
+        return;
     }
     if (this.length === 1) {
         this.empty();
@@ -195,7 +196,9 @@ Queue.prototype.enqueue = function (item) {
 };
 Queue.prototype.dequeue = function () {
     var item = this.first;
-    this.deleteFirst();
+    if (this.length) {
+        this.deleteFirst();
+    }
     return item;
 };
 
@@ -333,7 +336,9 @@ PriorityQueue.prototype.enqueue = function (item, priority) {
     this.heapInsert(item, priority);
 };
 PriorityQueue.prototype.dequeue = function () {
-    return this.extractMax();
+    if (this.length) {
+        return this.extractMax();
+    }
 };
 
 var Map = function () {
