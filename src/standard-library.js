@@ -49,7 +49,7 @@ DoublyLinkedList.prototype.setLast = function (node) {
 };
 
 DoublyLinkedList.prototype.insertFirst = function (value) {
-    if (this.length === 0) {
+    if (!this.length) {
         this.addFirst(value);
         return;
     }
@@ -61,7 +61,7 @@ DoublyLinkedList.prototype.insertFirst = function (value) {
 };
 
 DoublyLinkedList.prototype.insertLast = function (value) {
-    if (this.length === 0) {
+    if (!this.length) {
         this.addFirst(value);
         return;
     }
@@ -130,34 +130,34 @@ DoublyLinkedList.prototype.deleteByIndex = function (index) {
 
 DoublyLinkedList.prototype.deleteFirst = function () {
     if (!this.length) {
-        throw new RangeError();
-        return;
+        return null;
     }
+    var firstElem = this.first;
     if (this.length === 1) {
         this.empty();
-        return;
+    } else {
+        this.setFirst(this.firstNode.next);
+        this.length--;
     }
-    this.setFirst(this.firstNode.next);
-    this.length--;
+    return firstElem;
 };
 
 DoublyLinkedList.prototype.deleteLast = function () {
     if (!this.length) {
-        throw new RangeError();
-        return;
+        return null;
     }
+    var lastElem = this.last;
     if (this.length === 1) {
         this.empty();
-        return;
+    } else {
+        this.setLast(this.lastNode.prev);
+        this.length--;
     }
-    this.setLast(this.lastNode.prev);
-    this.length--;
+    return lastElem;
 };
 
 DoublyLinkedList.prototype.getNext = function () {
-    if (!this.current) {
-        this.current = this.firstNode;
-    }
+    this.current = this.current || this.firstNode;
     if (this.current != this.lastNode) {
         this.current = this.current.next;
         return this.current.value;
@@ -171,19 +171,11 @@ var Collection = function () {
 Collection.prototype = Object.create(DoublyLinkedList.prototype);
 Collection.prototype.constructor = Collection;
 Collection.prototype.pickFirst = function () {
-    var item = this.first;
-    if (this.length) {
-        this.deleteFirst();
-    }
-    return item;
+    return this.deleteFirst();
 };
 
 Collection.prototype.pickLast = function () {
-    var item = this.last;
-    if (this.length) {
-        this.deleteLast();
-    }
-    return item;
+    return this.deleteLast();
 };
 
 var Queue = function () {
@@ -195,15 +187,17 @@ Queue.prototype.enqueue = function (item) {
     this.insertLast(item);
 };
 Queue.prototype.dequeue = function () {
-    var item = this.first;
-    if (this.length) {
-        this.deleteFirst();
-    }
-    return item;
+    return this.deleteFirst();
 };
 
 var FixedArray = function (size) {
     DoublyLinkedList.call(this);
+    try {
+        size = Number(size).toFixed();
+    } catch (err) {
+        throw new TypeError();
+        return;
+    }
     if (size < 1 || size > MAX_FIXED_ARRAY_SIZE) {
         throw new RangeError();
     }
@@ -216,6 +210,11 @@ FixedArray.prototype.constructor = FixedArray;
 FixedArray.prototype.insertAt = function (index, item) {
     if (!item) {
         throw new Error();
+    }
+    try {
+        index = Number(index).toFixed();
+    } catch (err) {
+        throw new TypeError();
     }
     this.findByIndex(index).value = item;
 };
@@ -279,21 +278,18 @@ var Heap = function () {
 Heap.prototype.heapify = function (i) {
     var left = 2 * i + 1;
     var right = 2 * i + 2;
-    if (left < this.length) {
-        if (this.array[i].priority < this.array[left].priority) {
-            var temp = this.array[i];
-            this.array[i] = this.array[left];
-            this.array[left] = temp;
-            this.heapify(left);
-        }
+    var largest = this.array[i];
+    if (left < this.length && largest.priority < this.array[left].priority) {
+        largest = left;
     }
-    if (right < this.length) {
-        if (this.array[i].priority < this.array[right].priority) {
-            var temp = this.array[i];
-            this.array[i] = this.array[right];
-            this.array[right] = temp;
-            this.heapify(right);
-        }
+    if (right < this.length && largest.priority < this.array[right].priority) {
+        largest = right;
+    }
+    if (largest != this.array[i]) {
+        var temp = this.array[i];
+        this.array[i] = this.array[largest];
+        this.array[largest] = temp;
+        this.heapify(largest);
     }
 };
 
@@ -330,8 +326,12 @@ var PriorityQueue = function () {
 PriorityQueue.prototype = Object.create(Heap.prototype);
 PriorityQueue.prototype.constructor = PriorityQueue;
 PriorityQueue.prototype.enqueue = function (item, priority) {
-    if (!priority) {
-        throw new Error();
+    priority = priority || 0;
+    try {
+        priority = Number(priority).toFixed();
+    } catch (err) {
+        throw new TypeError();
+        return;
     }
     this.heapInsert(item, priority);
 };
