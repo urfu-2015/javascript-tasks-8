@@ -26,6 +26,8 @@ Collection.prototype = {
             obj.prev.next = null;
             obj = obj.prev;
         } else {
+            this._head = null;
+            this._tail = null;
             return null;
         }
         return obj;
@@ -126,10 +128,9 @@ Queue.prototype.dequeue = function () {
 
 
 var FixedArray = function (size) {
-    if (size < 0) {
-        throw new RangeError('Size must be more than 0 or equal 0');
+    if (size < 0 || size === Infinity) {
+        throw new RangeError('Size must be equal or more than 0 and not equal to Infinity');
     }
-    size = Math.min(100, size);
     Collection.call(this);
     while (size--) {
         this._insert(null, null);
@@ -244,11 +245,12 @@ var Map = function () {
 Map.prototype = {
     addItem: function (key, item) {
         var strKey = JSON.stringify(key);
-        if (this.hasItem(strKey) || !this.isValidKey(key)) {
+        if (!this.isValidKey(key)) {
             return;
         }
-        this.keys.push(strKey);
-        this.items.push(item);
+        var index = this.hasItem(strKey) ? this.keys.indexOf(strKey) : this.keys.length;
+        this.keys[index] = strKey;
+        this.items[index] = item;
     },
     hasItem: function (key) {
         return Boolean(this.keys.indexOf(key) + 1);
