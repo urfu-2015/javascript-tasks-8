@@ -1,12 +1,17 @@
 'use strict';
+var Data = function () {
+    this.data = [];
+    this.length = 0;
+};
 
 var Collection = function () {
-    this.data = [];
-    this.first = undefined;
-    this.last = undefined;
-    this.length = 0;
+    Data.call(this);
+    this.first = null;
+    this.last = null;
     this.isEmpty = true;
 };
+
+Collection.prototype = Object.create(Data.prototype);
 
 Collection.prototype.insertLast = function (item) {
     this.data.push(item);
@@ -29,8 +34,8 @@ Collection.prototype.pickFirst = function () {
     this.length = this.data.length;
     this.isEmpty = this.length == 0;
     if (this.isEmpty) {
-        this.first = undefined;
-        this.last = undefined;
+        this.first = null;
+        this.last = null;
     } else {
         this.first = this.data[0];
     }
@@ -42,28 +47,28 @@ Collection.prototype.pickLast = function () {
     this.length = this.data.length;
     this.isEmpty = this.length == 0;
     if (this.isEmpty) {
-        this.first = undefined;
-        this.last = undefined;
+        this.first = null;
+        this.last = null;
     } else {
-        this.last = this.data[this.length];
+        console.log(this.length);
+        this.last = this.data[this.length - 1];
     }
     return last;
 };
 
 Collection.prototype.empty = function () {
     this.data = [];
-    this.first = undefined;
-    this.last = undefined;
+    this.first = null;
+    this.last = null;
     this.length = 0;
     this.isEmpty = true;
 };
 
-
-
 var Queue = function () {
-    this.data = [];
-    this.length = 0;
+    Data.call(this);
 };
+
+Queue.prototype = Object.create(Data.prototype);
 
 Queue.prototype.enqueue = function (item) {
     this.data.push(item);
@@ -140,14 +145,11 @@ Set.prototype.union = function (set) {
     this.data.forEach(function (item) {
         res.insert(item);
     });
-    console.log(this);
-    //thisArg не сработал -_-
     set.data.forEach(function (item) {
-        console.log(this);
         if (!this.has(item)) {
             res.insert(item);
         }
-    }.bind(this));
+    }, this);
     return res;
 };
 
