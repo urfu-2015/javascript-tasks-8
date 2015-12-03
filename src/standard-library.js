@@ -17,7 +17,7 @@ Collection.prototype.pickFirst = function () {
         this.last = null;
         this.isEmpty = true;
     }
-    this.collection.splice(0, 1);
+    this.collection.shift();
     this.length -= 1;
     return result;
 };
@@ -31,7 +31,7 @@ Collection.prototype.pickLast = function () {
         this.last = null;
         this.isEmpty = true;
     }
-    this.collection.splice(-1, 1);
+    this.collection.pop();
     this.length -= 1;
     return result;
 };
@@ -39,13 +39,13 @@ Collection.prototype.pickLast = function () {
 Collection.prototype.insertFirst = function (item) {
     this.first = item;
     this.length += 1;
-    this.collection = [item].concat(this.collection);
+    this.collection.unshift(item);
     this.last = this.collection[this.length - 1];
     this.isEmpty = false;
 };
 
 Collection.prototype.insertLast = function (item) {
-    this.collection = this.collection.concat(item);
+    this.collection.push(item);
     this.length += 1;
     this.first = this.collection[0];
     this.last = item;
@@ -79,8 +79,10 @@ var FixedArray = function (size) {
     this.length = size;
     this.collection = [];
     this.checkIndex = function (index) {
-        if ((index > this.length - 1) || (index < 0)) {
-            throw new RangeError('индекс вышел за границы массива');
+        if (0 > index || index >= this.length) {
+            throw new RangeError('индекс вышел за границы массива\n' +
+                'индекс должен принадлежать отрезку [0;' + String(this.length - 1) + ']\n' +
+                'переданный индекс равен ' + String(index));
         }
     };
 };
@@ -95,9 +97,9 @@ FixedArray.prototype.getAt = function (index) {
     return this.collection[index];
 };
 
-var Set = function () {
-    this.collection = [];
-    this.length = 0;
+var Set = function (collection) {
+    this.collection = collection || [];
+    this.length = collection ? collection.length : 0;
 };
 
 Set.prototype.insert = function (item) {
@@ -120,26 +122,21 @@ Set.prototype.has = function (item) {
 };
 
 Set.prototype.intersect = function (set) {
-    var found_intersect = this.collection.filter(function (item) {
-        console.log(set);
+    var foundIntersect = this.collection.filter(function (item) {
         return set.collection.indexOf(item) !== -1;
     });
-    var resultSet = new Set();
-    resultSet.collection = found_intersect;
-    resultSet.length = found_intersect.length;
-    return resultSet;
+    return new Set(foundIntersect);
 };
 
 Set.prototype.union = function (set) {
-    var resultSet = new Set();
+    var resultCollection = [];
     set.collection.forEach(function (item) {
         if (this.collection.indexOf(item) === -1) {
-            resultSet.insert(item);
+            resultCollection.push(item);
         }
     }, this);
-    resultSet.collection = resultSet.collection.concat(this.collection);
-    resultSet.length = resultSet.collection.length;
-    return resultSet;
+    resultCollection = resultCollection.concat(this.collection);
+    return new Set(resultCollection);
 };
 
 Set.prototype.empty = function () {
@@ -147,18 +144,7 @@ Set.prototype.empty = function () {
     this.length = 0;
 };
 
-
-var PriorityQueue = function () {
-
-};
-
-var Map = function () {
-
-};
-
 exports.Collection = Collection;
 exports.Queue = Queue;
 exports.FixedArray = FixedArray;
 exports.Set = Set;
-exports.PriorityQueue = PriorityQueue;
-exports.Map = Map;
