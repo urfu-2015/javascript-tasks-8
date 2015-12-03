@@ -187,29 +187,77 @@ var PriorityQueue = function () {
         return element;
     };
 };
-
-var Map = function () {
+//Первая редакция, с одинаковыми обьектами
+var MapObjects = function () {
     Collection.call(this);
-    this.elements = {};
     this._length = 0;
     this.addItem = function (key, item) {
-        if (!this.elements.hasOwnProperty(key)) {
-            this._length++;
-            this.elements[key] = item;
+        if (key === undefined) {
+            return false;
         }
+        for (var element of this.elements) {
+            if (element.key === key) {
+                this.elements[element].value = item;
+                return;
+            }
+        }
+        this._length++;
+        this.elements.push({key: key, value: item});
     };
     this.removeItem = function (key) {
-        if (this.elements.hasOwnProperty(key)) {
-            delete this.elements[key];
-            this._length--;
+        for (var element of this.elements) {
+            if (element.key === key) {
+                delete this.elements[valueKey];
+                this._length--;
+                return;
+            }
         }
     };
     this.getItem = function (key) {
-        return this.elements[key];
+        for (var element of this.elements) {
+            if (element.key === key) {
+                return element.value;
+            }
+        }
     };
     this.empty = function () {
         this._length = 0;
-        this.elements = {};
+        this.elements = [];
+    };
+};
+//Вторая редакция, обьекты с одинаковыми методами и значениями, в том же порядке
+var Map = function () {
+    Collection.call(this);
+    this._length = 0;
+    this.addItem = function (key, item) {
+        if (key === undefined) {
+            return false;
+        }
+        var keyString = JSON.stringify(key);
+        if (keyString in this.elements) {
+            this.elements[keyString] = item;
+            return;
+        }
+        this._length++;
+        this.elements[keyString] = item;
+    };
+    this.removeItem = function (key) {
+        var keyString = JSON.stringify(key);
+        if (keyString in this.elements) {
+            delete this.elements[keyString];
+            this._length--;
+            return;
+        }
+    };
+    this.getItem = function (key) {
+        var keyString = JSON.stringify(key);
+        if (keyString in this.elements) {
+            return this.elements[keyString];
+        }
+    };
+    this.empty = function () {
+        this._length = 0;
+        this.elements = [];
     };
 };
 
@@ -219,3 +267,4 @@ exports.FixedArray = FixedArray;
 exports.Set = Set;
 exports.PriorityQueue = PriorityQueue;
 exports.Map = Map;
+exports.MapObjects = MapObjects;
