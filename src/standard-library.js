@@ -1,65 +1,55 @@
 'use strict';
 
 var Collection = function () {
-    this.collection = [];
-    this.first = null;
-    this.last = null;
-    this.length = 0;
-    this.isEmpty = true;
+    this.empty();
 };
 
+Object.defineProperties(Collection.prototype,
+    {
+        length: {
+            get: function () {
+                return this.collection.length;
+            }
+        },
+
+        isEmpty: {
+            get: function () {
+                return this.collection.length === 0;
+            }
+        },
+
+        first: {
+            get: function () {
+                return this.collection[0];
+            }
+        },
+
+        last: {
+            get: function () {
+                return this.collection[this.length - 1];
+            }
+        }
+    });
+
+
 Collection.prototype.pickFirst = function () {
-    if (this.length === 1) {
-        this.length -= 1;
-        this.isEmpty = true;
-        this.first = null;
-        this.last = null;
-    }
-    if (this.length > 1) {
-        this.length -= 1;
-        this.first = this.collection[1];
-    }
     return this.collection.shift();
 };
 
 Collection.prototype.pickLast = function () {
-    if (this.length === 1) {
-        this.length -= 1;
-        this.isEmpty = true;
-        this.first = null;
-        this.last = null;
-    }
-    if (this.length > 1) {
-        this.last = this.collection[this.length - 2];
-        this.length -= 1;
-    }
     return this.collection.pop();
 };
 
 Collection.prototype.insertFirst = function (element) {
-    this.length = this.collection.unshift(element);
-    this.first = element;
-    if (this.length === 1) {
-        this.last = element;
-    }
-    this.isEmpty = false;
+    this.collection.unshift(element);
 };
 
 Collection.prototype.insertLast = function (element) {
-    this.length = this.collection.push(element);
-    this.last = element;
-    if (this.length === 1) {
-        this.first = element;
-    }
-    this.isEmpty = false;
+    this.collection.push(element);
 };
 
 Collection.prototype.empty = function () {
     this.collection = [];
-    this.first = null;
-    this.last = null;
-    this.length = 0;
-    this.isEmpty = true;
 };
 
 var Queue = function () {
@@ -79,33 +69,32 @@ Queue.prototype.dequeue = function () {
 var FixedArray = function (size) {
     Collection.call(this);
     this.collection = new Array(size);
-    this.length = size;
 };
 
 FixedArray.prototype = Object.create(Collection.prototype);
 
-FixedArray.prototype.insertAt = function (index, item) {
+FixedArray.prototype.checkIndex = function (index) {
     if (index < this.length && index >= 0) {
-        this.collection[index] = item;
+        return true;
     } else {
         throw new RangeError('list index out of bounds');
+    }
+};
+
+FixedArray.prototype.insertAt = function (index, item) {
+    if (this.checkIndex(index)) {
+        this.collection[index] = item;
     }
 };
 
 FixedArray.prototype.getAt = function (index) {
-    if (index < this.length && index >= 0) {
+    if (this.checkIndex(index)) {
         return this.collection[index];
-    } else {
-        throw new RangeError('list index out of bounds');
     }
 };
 
-var Set = function (set, size) {
+var Set = function () {
     Collection.call(this);
-    if (set && size) {
-        this.collection = set;
-        this.length = size;
-    }
 };
 
 Set.prototype = Object.create(Collection.prototype);
@@ -117,12 +106,9 @@ Set.prototype.insert = function (item) {
 };
 
 Set.prototype.remove = function (item) {
-    for (var index = 0; index < this.length; index++) {
-        if (this.collection[index] === item) {
-            this.collection.splice(index, 1);
-            this.length -= 1;
-            break;
-        }
+    var index = this.collection.indexOf(item);
+    if (index !== -1) {
+        this.collection.splice(index, 1);
     }
 };
 
@@ -141,15 +127,12 @@ Set.prototype.intersect = function (otherSet) {
 };
 
 Set.prototype.union = function (otherSet) {
-    var resultSet = Object.create(this);
+    var resultSet = new Set();
+    resultSet.collection = this.collection.slice();
     otherSet.collection.forEach(function (item) {
         resultSet.insert(item);
     });
     return resultSet;
-};
-
-Set.prototype.empty = function () {
-    this.empty();
 };
 
 var PriorityQueue = function () {
