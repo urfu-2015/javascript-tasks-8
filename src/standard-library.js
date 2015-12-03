@@ -339,6 +339,7 @@ PriorityQueue.prototype.dequeue = function () {
     if (this.length) {
         return this.extractMax();
     }
+    return null;
 };
 
 var Map = function () {
