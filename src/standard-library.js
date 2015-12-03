@@ -12,7 +12,7 @@ var Collection = function () {
 Collection.prototype.pickFirst = function () {
     if (this.length > 0) {
         this.length -= 1;
-        this.isEmpty = this.length == 0;
+        this.isEmpty = this.length === 0;
         this.first = this._data[1];
         this.last = this.isEmpty ? undefined : this.last;
         return this._data.shift();
@@ -102,7 +102,7 @@ FixedArray.prototype.insertAt = function (index, item) {
 
 FixedArray.prototype.getAt = function (index) {
     if (index >= this.length || index < 0) {
-        throw RangeError('Данный элемент не лежит в диапозоне от %s до %s.', 0, this.length - 1);
+        return RangeError('Данный элемент не лежит в диапозоне от %s до %s.', 0, this.length - 1)
     }
     return this._data[index];
 };
@@ -114,22 +114,14 @@ var Set = function () {
 Set.prototype = Object.create(Collection.prototype);
 
 Set.prototype.insert = function (item) {
-    var elemInData = this._data.find(
-        function (elem) {
-            return elem === item;
-        }
-    );
-    if (elemInData == undefined) {
+    var exist = Boolean(this._data.find(elem => elem === item));
+    if (exist) {
         this.insertLast(item);
     }
 };
 
 Set.prototype.remove = function (item) {
-    var indexElemInData = this._data.findIndex(
-        function (elem) {
-            return elem === item;
-        }
-    );
+    var indexElemInData = this._data.findIndex(elem => elem === item);
     if (indexElemInData != -1) {
         this.pickSome(indexElemInData);
     }
