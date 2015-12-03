@@ -95,14 +95,14 @@ var FixedArray = function (size) {
 FixedArray.prototype.insertAt = function (index, item) {
     if (index >= this.length || index < 0) {
         throw RangeError('Данный объект имеет фиксированную длину,' +
-            ' индекс не входит в диапозон от %s до %s', 0, this.length);
+            ' индекс не входит в диапозон от %s до %s', 0, this.length - 1);
     }
     this._data[index] = item;
 };
 
 FixedArray.prototype.getAt = function (index) {
     if (index >= this.length || index < 0) {
-        return undefined;
+        return RangeError('Данный элемент не лежит в диапозоне от %s до %s.', 0, this.length - 1);
     }
     return this._data[index];
 };
