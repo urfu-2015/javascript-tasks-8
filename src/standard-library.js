@@ -9,25 +9,24 @@ var Collection = function () {
     this.isEmpty = true;
 };
 
-Collection.prototype = Object.create(Object.prototype);
-
 Collection.prototype.pickFirst = function () {
     if (this.length > 0) {
         this.length -= 1;
         this.isEmpty = this.length == 0;
-        this.first = this.isEmpty ? null : this._data[1];
-        this.last = this.isEmpty ? null : this.last;
-        return this._data.splice(0, 1)[0];
+        this.first = this._data[1];
+        this.last = this.isEmpty ? undefined : this.last;
+        return this._data.shift();
     } else {
         return undefined;
     }
 };
+
 Collection.prototype.pickLast = function () {
     if (this.length > 0) {
         this.length -= 1;
-        this.isEmpty = this.length == 0;
-        this.first = this.isEmpty ? null : this.first;
-        this.last = this.isEmpty ? null : this._data[this.length - 1];
+        this.isEmpty = this.length === 0;
+        this.first = this.isEmpty ? undefined : this.first;
+        this.last = this._data[this.length - 1];
         return this._data.pop();
     } else {
         return undefined;
@@ -35,22 +34,20 @@ Collection.prototype.pickLast = function () {
 };
 
 Collection.prototype.pickSome = function (index) {
-    if (index == 0) {
-        this.pickFirst();
+    if (index === 0) {
+        return this.pickFirst();
+    } else if (index === this.length - 1) {
+        return this.pickLast();
+    } else if (this.length > index && index > 0) {
+        this.length -= 1;
+        this.isEmpty = this.length === 0;
+        return this._data.splice(index, 1)[0];
     } else {
-        if (index == this.length) {
-            this.pickLast();
-        } else {
-            if (this.length > index && index > 0) {
-                this._data.splice(index, 1);
-                this.length -= 1;
-                this.isEmpty = this.length == 0;
-            }
-        }
+        return undefined;
     }
 };
 Collection.prototype.insertFirst = function (elem) {
-    this._data.splice(0, 0, elem);
+    this._data.unshift(elem);
     this.length += 1;
     this.last = this.isEmpty ? elem : this.last;
     this.isEmpty = false;
@@ -95,18 +92,17 @@ var FixedArray = function (size) {
     this.length = size;
 };
 
-FixedArray.prototype = Object.create(Object.prototype);
-
 FixedArray.prototype.insertAt = function (index, item) {
     if (index >= this.length || index < 0) {
-        throw RangeError();
+        throw RangeError('Данный объект имеет фиксированную длину,' +
+            ' индекс не входит в диапозон от %s до %s', 0, this.length);
     }
     this._data[index] = item;
 };
 
 FixedArray.prototype.getAt = function (index) {
     if (index >= this.length || index < 0) {
-        throw RangeError();
+        return undefined;
     }
     return this._data[index];
 };
