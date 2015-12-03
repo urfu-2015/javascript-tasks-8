@@ -102,7 +102,7 @@ FixedArray.prototype.insertAt = function (index, item) {
 
 FixedArray.prototype.getAt = function (index) {
     if (index >= this.length || index < 0) {
-        return RangeError('Данный элемент не лежит в диапозоне от %s до %s.', 0, this.length - 1)
+        throw RangeError('Данный элемент не лежит в диапозоне от %s до %s.', 0, this.length - 1);
     }
     return this._data[index];
 };
@@ -114,14 +114,18 @@ var Set = function () {
 Set.prototype = Object.create(Collection.prototype);
 
 Set.prototype.insert = function (item) {
-    var exist = Boolean(this._data.find(elem => elem === item));
-    if (exist) {
+    var elemInData = this._data.find(elem => elem === item);
+    if (elemInData == undefined) {
         this.insertLast(item);
     }
 };
 
 Set.prototype.remove = function (item) {
-    var indexElemInData = this._data.findIndex(elem => elem === item);
+    var indexElemInData = this._data.findIndex(
+        function (elem) {
+            return elem === item;
+        }
+    );
     if (indexElemInData != -1) {
         this.pickSome(indexElemInData);
     }
