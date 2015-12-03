@@ -102,7 +102,7 @@ FixedArray.prototype.insertAt = function (index, item) {
 
 FixedArray.prototype.getAt = function (index) {
     if (index >= this.length || index < 0) {
-        return RangeError('Данный элемент не лежит в диапозоне от %s до %s.', 0, this.length - 1);
+        throw RangeError('Данный элемент не лежит в диапозоне от %s до %s.', 0, this.length - 1);
     }
     return this._data[index];
 };
