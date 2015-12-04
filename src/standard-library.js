@@ -1,299 +1,163 @@
 'use strict';
 
 var Collection = function () {
-    Object.defineProperty(this, 'first', {
+    var collection = new Array();
+    Object.defineProperty(collection, 'first', {
         enumerable: false,
         get: function () {
-            for (var prop in this) {
-                if (!this.hasOwnProperty(prop)) {
-                    continue;
-                }
-                if (this[prop] === 0) {
-                    return prop;
-                }
-            }
+            return this[0];
         }
     });
-    Object.defineProperty(this, 'last', {
+    Object.defineProperty(collection, 'last', {
         enumerable: false,
         get: function () {
-            for (var prop in this) {
-                if (!this.hasOwnProperty(prop)) {
-                    continue;
-                }
-                if (this[prop] === this.length - 1) {
-                    return prop;
-                }
-            }
+            return this[this.length - 1];
         }
     });
-    Object.defineProperty(this, 'length', {
-        writable: true,
-        value: 0,
-        enumerable: false
-    });
-    Object.defineProperty(this, 'isEmpty', {
+    Object.defineProperty(collection, 'isEmpty', {
         enumerable: false,
         get: function () {
             return this.length === 0;
         }
     });
-};
-
-Collection.prototype.pickFirst = function () {
-    for (var prop in this) {
-        if (!this.hasOwnProperty(prop)) {
-            continue;
+    Object.defineProperty(collection, 'pickFirst', {
+        enumerable: false,
+        value: function () {
+            return this.shift();
         }
-        if (this[prop] === 0) {
-            var firstElement = prop;
-            delete this[prop];
-            this.length--;
-            continue;
+    });
+    Object.defineProperty(collection, 'pickLast', {
+        enumerable: false,
+        value: function () {
+             return this.pop();
         }
-        this[prop]--;
-    }
-    return firstElement;
-};
-
-Collection.prototype.pickLast = function () {
-    for (var prop in this) {
-        if (this[prop] === this.length - 1) {
-            var lastElement = prop;
-            delete this[prop];
-            this.length--;
-            return lastElement;
+    });
+    Object.defineProperty(collection, 'insertFirst', {
+        enumerable: false,
+        value: function (element) {
+            this.unshift(element);
         }
-    }
-};
-
-Collection.prototype.insertFirst = function (element) {
-    for (var prop in this) {
-        if (!this.hasOwnProperty(prop)) {
-            continue;
+    });
+    Object.defineProperty(collection, 'insertLast', {
+        enumerable: false,
+        value: function (element) {
+            this.push(element);
         }
-        this[prop]++;
-    }
-    this[element] = 0;
-    this.length++;
-};
-
-Collection.prototype.insertLast = function (element) {
-    this[element] = this.length++;
-};
-
-Collection.prototype.empty = function () {
-    for (var prop in this) {
-        if (!this.hasOwnProperty(prop)) {
-            continue;
+    });
+    Object.defineProperty(collection, 'empty', {
+        enumerable: false,
+        value: function () {
+            this.splice(0, this.length);
         }
-        delete this[prop];
-        this.length--;
-    }
+    });
+    return collection;
 };
 
 var Queue = function () {
-    Object.defineProperty(this, 'length', {
-        writable: true,
-        value: 0,
-        enumerable: false
+    var collection = [];
+    Object.defineProperty(collection, 'enqueue', {
+        enumerable: false,
+        value: function (element) {
+            if (this.indexOf(element) === -1) {
+                this.unshift(element);
+            }
+        }
     });
-};
-
-Queue.prototype.enqueue = function (element) {
-    this[element] = this.length++;
-};
-
-Queue.prototype.dequeue = function () {
-    for (var prop in this) {
-        if (!this.hasOwnProperty(prop)) {
-            continue;
+    Object.defineProperty(collection, 'dequeue', {
+        enumerable: false,
+        value: function () {
+            return this.shift();
         }
-        if (this[prop] === 0) {
-            var firstElement = prop;
-            delete this[prop];
-            this.length--;
-            continue;
+    });
+    Object.defineProperty(collection, 'empty', {
+        enumerable: false,
+        value: function () {
+            this.splice(0, this.length);
         }
-        this[prop]--;
-    }
-    return firstElement;
-};
-
-Queue.prototype.empty = function () {
-    for (var prop in this) {
-        if (!this.hasOwnProperty(prop)) {
-            continue;
-        }
-        delete this[prop];
-        this.length--;
-    };
+    });
+    return collection;
 };
 
 var FixedArray = function (size) {
-    Object.defineProperty(this, 'length', {
-        writable: true,
+    var collection = new Array(size);
+    var isActionValid = function (index) {
+        if (!(index >= 0 && index < this.length)) {
+            throw new RangeError('Out of range');
+        }
+    };
+    Object.defineProperty(collection, 'length', {
         value: size,
         enumerable: false
     });
-};
-
-var isActionValid = function (index) {
-    if (!(index >= 0 && index < this.length)) {
-        throw new RangeError('Out of range');
-    }
-};
-
-FixedArray.prototype.insertAt = function (index, element) {
-    isActionValid.call(this, index);
-    for (var prop in this) {
-        if (!this.hasOwnProperty(prop)) {
-            continue;
+    Object.defineProperty(collection, 'insertAt', {
+        enumerable: false,
+        value: function (index, element) {
+            this[index] = element;
         }
-        if (this[prop] >= index) {
-            this[prop]++;
+    });
+    Object.defineProperty(collection, 'getAt', {
+        enumerable: false,
+        value: function (index) {
+            return this[index];
         }
-    }
-    this[element] = index;
-};
-
-FixedArray.prototype.getAt = function (index) {
-    isActionValid.call(this, index);
-    for (var prop in this) {
-        if (!this.hasOwnProperty(prop)) {
-            continue;
-        }
-        if (this[prop] === index) {
-            return prop;
-        }
-    }
+    });
+    return collection;
 };
 
 var Set = function () {
-    Object.defineProperty(this, 'length', {
-        writable: true,
-        value: 0,
-        enumerable: false
-    });
-};
-
-Set.prototype.insert = function (element) {
-    if (!(this.has(element))) {
-        this[element] = null;
-        this.length++;
-    }
-};
-
-Set.prototype.remove = function (element) {
-    if (this.has(element)) {
-        delete this[element];
-        this.length--;
-    }
-};
-
-Set.prototype.has = function (element) {
-    return element in this;
-};
-
-Set.prototype.intersect = function (set) {
-    var newSet = new Set();
-    for (var prop in this) {
-        if (!this.hasOwnProperty(prop)) {
-            continue;
-        }
-        if (set.has(prop)) {
-            newSet.insert(prop);
-        }
-    }
-    return newSet;
-};
-
-Set.prototype.union = function (set) {
-    var newSet = new Set();
-    for (var prop in this) {
-        if (!this.hasOwnProperty(prop)) {
-            continue;
-        }
-        newSet.insert(prop);
-    }
-    for (var prop in set) {
-        if (!set.hasOwnProperty(prop)) {
-            continue;
-        }
-        newSet.insert(prop);
-    }
-    return newSet;
-};
-
-Set.prototype.empty = function () {
-    for (var prop in this) {
-        if (!this.hasOwnProperty(prop)) {
-            continue;
-        }
-        delete this[prop];
-        this.length--;
-    }
-};
-
-var PriorityQueue = function () {
-    Object.defineProperty(this, 'maxPriority', {
-        writable: true,
-        value: 0,
-        enumerable: false
-    });
-    Object.defineProperty(this, 'maxPriorityElements', {
-        writable: true,
-        value: 0,
-        enumerable: false
-    });
-};
-
-PriorityQueue.prototype.enqueue = function (item, priority) {
-    if (!(priority > 1 && priority < 100)) {
-        priority = 1;
-    }
-    if (priority > this.maxPriority) {
-        this.maxPriority = priority;
-        this.maxPriorityElements = 1;
-    } else {
-        if (priority === this.maxPriority) {
-            this.maxPriorityElements++;
-        }
-    }
-    this[item] = priority;
-};
-
-PriorityQueue.prototype.dequeue = function () {
-    for (var item in this) {
-        if (!this.hasOwnProperty(item)) {
-            continue;
-        }
-        if (this[item] === this.maxPriority) {
-            var element = item;
-            delete this[item];
-            this.maxPriorityElements--;
-            if (this.maxPriorityElements === 0) {
-                this.maxPriority = 0;
-                for (var item in this) {
-                    if (!this.hasOwnProperty(item)) {
-                        continue;
-                    }
-                    if (this[item] > this.maxPriority) {
-                        this.maxPriority = this[item];
-                        this.maxPriorityElements = 1;
-                    } else {
-                        if (this[item] === this.maxPriority) {
-                            this.maxPriorityElements++;
-                        }
-                    }
-                }
+    var collection = [];
+    Object.defineProperty(collection, 'insert', {
+        enumerable: false,
+        value: function (element) {
+            if (this.indexOf(element) === -1) {
+                this.push(element);
             }
         }
-    }
-    return element === undefined ? null : element;
+    });
+    Object.defineProperty(collection, 'remove', {
+        enumerable: false,
+        value: function (element) {
+            this.splice(this.indexOf(element), 1);
+        }
+    });
+    Object.defineProperty(collection, 'has', {
+        enumerable: false,
+        value: function (element) {
+            return this.infexOf(element) !== -1;
+        }
+    });
+    Object.defineProperty(collection, 'intersect', {
+        enumerable: false,
+        value: function (set) {
+            var newSet = new Set();
+            newSet = newSet.concat(this.filter(function (element) {
+                return set.indexOf(element) !== -1;
+            }));
+            return newSet;
+        }
+    });
+    Object.defineProperty(collection, 'union', {
+        enumerable: false,
+        value: function (set) {
+            var newSet = new Set();
+            newSet = newSet.concat(this);
+            newSet = newSet.concat(set.filter(item => {
+                return this.indexOf(item) === -1;
+            }));
+            return newSet;
+        }
+    });
+    Object.defineProperty(collection, 'empty', {
+        enumerable: false,
+        value: function () {
+            this.splice(0, this.length);
+        }
+    });
+    return collection;
 };
 
 var Map = function () {};
+var PriorityQueue = function () {};
 
 exports.Collection = Collection;
 exports.Queue = Queue;
