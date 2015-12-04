@@ -90,6 +90,9 @@ Queue.prototype.empty = function () {
 };
 
 var FixedArray = function (size) {
+    if (isNaN(size) || size < 0) {
+        throw new SyntaxError();
+    }
     Collection.call(this);
     this.length = size;
     this.collection = new Array(size);
@@ -97,6 +100,9 @@ var FixedArray = function (size) {
 
 //  записывает элемент в массив по заданному индексу
 FixedArray.prototype.insertAt = function (index, item) {
+    if (item === undefined || index === undefined) {
+        throw new SyntaxError();
+    }
     if (index < this.length && index >= 0) {
         this.collection[index] = item;
     } else {
