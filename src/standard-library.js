@@ -9,7 +9,7 @@ Collection.prototype.pickFirst = function () {
     if (this.length > 1) {
         this.first = this.collection[1];
         this.length--;
-        this.collection.splice(0, 1);
+        this.collection.shift();
     } else {
         Collection.prototype.empty.call(this);
     }
@@ -35,7 +35,7 @@ Collection.prototype.insertFirst = function (item) {
     }
     this.length++;
     this.isEmpty = false;
-    this.collection = [item].concat(this.collection);
+    this.collection.unshift(item);
 };
 
 Collection.prototype.insertLast = function (item) {
@@ -45,7 +45,7 @@ Collection.prototype.insertLast = function (item) {
     }
     this.length++;
     this.isEmpty = false;
-    this.collection = this.collection.concat([item]);
+    this.collection.push(item);
 };
 
 Collection.prototype.empty = function () {
@@ -67,8 +67,9 @@ Queue.prototype.enqueue = function (item) {
 
 Queue.prototype.dequeue = function () {
     if (this.length !== 0) {
+        this.length--;
         var item = this.queue[0];
-        this.queue.splice(0, 1);
+        this.queue.shift();
         return item;
     }
 };
@@ -84,6 +85,9 @@ var FixedArray = function (size) {
 };
 
 FixedArray.prototype.insertAt = function (index, item) {
+    if (item === undefined) {
+        throw new Error('Argument item is not defined!');
+    }
     if (index > this.length - 1) {
         throw new RangeError;
     }
@@ -116,7 +120,7 @@ Set.prototype.remove = function (item) {
 };
 
 Set.prototype.has = function (item) {
-    return this.set.hasOwnProperty(item) ? true : false;
+    return this.set.hasOwnProperty(item);
 };
 
 Set.prototype.intersect = function (set) {
