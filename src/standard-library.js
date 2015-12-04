@@ -16,9 +16,7 @@ Collection.prototype.pickFirst = function () {
     var firstElement = this.collection.shift();
     --this.length;
     if (this.length === 0) {
-        this.isEmpty = true;
-        this.first = null;
-        this.last = null;
+        this.empty();
     } else {
         this.first = this.collection[0];
         this.last = this.collection[this.length - 1];
@@ -34,9 +32,7 @@ Collection.prototype.pickLast = function () {
     var lastElement = this.collection.pop();
     --this.length;
     if (this.length === 0) {
-        isEmpty = true;
-        this.first = null;
-        this.last = null;
+        this.empty();
     } else {
         this.first = this.collection[0];
         this.last = this.collection[this.length - 1];
@@ -87,6 +83,10 @@ Queue.prototype.enqueue = function (item) {
 
 Queue.prototype.dequeue = function () {
     return Collection.prototype.pickFirst.call(this);
+};
+
+Queue.prototype.empty = function () {
+    return Collection.prototype.empty.call(this);
 };
 
 var FixedArray = function (size) {
@@ -162,6 +162,10 @@ Set.prototype.union = function (set) {
         unionSet.insert(item);
     });
     return unionSet;
+};
+
+Set.prototype.empty = function () {
+    return Collection.prototype.empty.call(this);
 };
 
 var PriorityQueue = function () {
