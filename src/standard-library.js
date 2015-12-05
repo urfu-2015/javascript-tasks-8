@@ -29,7 +29,7 @@ var Collection = function () {
     Object.defineProperty(collection, 'pickLast', {
         enumerable: false,
         value: function () {
-             return this.pop();
+            return this.pop();
         }
     });
     Object.defineProperty(collection, 'insertFirst', {
