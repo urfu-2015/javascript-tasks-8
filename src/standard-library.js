@@ -59,7 +59,7 @@ var Queue = function () {
         enumerable: false,
         value: function (element) {
             if (this.indexOf(element) === -1) {
-                this.unshift(element);
+                this.push(element);
             }
         }
     });
@@ -92,12 +92,14 @@ var FixedArray = function (size) {
     Object.defineProperty(collection, 'insertAt', {
         enumerable: false,
         value: function (index, element) {
+            isActionValid.call(this, index);
             this[index] = element;
         }
     });
     Object.defineProperty(collection, 'getAt', {
         enumerable: false,
         value: function (index) {
+            isActionValid.call(this, index);
             return this[index];
         }
     });
@@ -123,16 +125,18 @@ var Set = function () {
     Object.defineProperty(collection, 'has', {
         enumerable: false,
         value: function (element) {
-            return this.infexOf(element) !== -1;
+            return this.indexOf(element) !== -1;
         }
     });
     Object.defineProperty(collection, 'intersect', {
         enumerable: false,
         value: function (set) {
             var newSet = new Set();
-            newSet = newSet.concat(this.filter(function (element) {
-                return set.indexOf(element) !== -1;
-            }));
+            this.forEach(function (element) {
+                if (set.has(element)) {
+                    newSet.insert(element);
+                }
+            });
             return newSet;
         }
     });
@@ -140,10 +144,12 @@ var Set = function () {
         enumerable: false,
         value: function (set) {
             var newSet = new Set();
-            newSet = newSet.concat(this);
-            newSet = newSet.concat(set.filter(item => {
-                return this.indexOf(item) === -1;
-            }));
+            this.forEach(item => {
+                newSet.insert(item);
+            });
+            set.forEach(item => {
+                newSet.insert(item);
+            });
             return newSet;
         }
     });
