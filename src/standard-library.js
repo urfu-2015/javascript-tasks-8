@@ -14,13 +14,7 @@ Collection.prototype.pickFirst = function () {
         return null;
     }
     var firstElement = this.collection.shift();
-    --this.length;
-    if (this.length === 0) {
-        this.empty();
-    } else {
-        this.first = this.collection[0];
-        this.last = this.collection[this.length - 1];
-    }
+    checkAndPick(this);
     return firstElement;
 };
 
@@ -30,39 +24,40 @@ Collection.prototype.pickLast = function () {
         return null;
     }
     var lastElement = this.collection.pop();
-    --this.length;
-    if (this.length === 0) {
-        this.empty();
-    } else {
-        this.first = this.collection[0];
-        this.last = this.collection[this.length - 1];
-    }
+    checkAndPick(this);
     return lastElement;
 };
+
+function checkAndPick(collection) {
+    --collection.length;
+    if (collection.length === 0) {
+        collection.empty();
+    } else {
+        collection.first = collection.collection[0];
+        collection.last = collection.collection[collection.length - 1];
+    }
+}
 
 // вставляет элемент в начало колекции
 Collection.prototype.insertFirst = function (item) {
     this.collection.unshift(item);
-    ++this.length;
-    this.first = this.collection[0];
-    if (this.isEmpty) {
-        this.last = this.collection[0];
-        this.isEmpty = false;
-    } else {
-        this.last = this.collection[this.length - 1];
-    }
+    checkAndInsert(this);
 };
 
 // вставляет элемент в конец коллекции
 Collection.prototype.insertLast = function (item) {
     this.collection.push(item);
-    ++this.length;
-    if (this.isEmpty) {
-        this.isEmpty = false;
-        this.first = this.collection[0];
-    }
-    this.last = this.collection[this.length - 1];
+    checkAndInsert(this);
 };
+
+function checkAndInsert(collection) {
+    ++collection.length;
+    collection.first = collection.collection[0];
+    collection.last = collection.collection[collection.length - 1];
+    if (collection.isEmpty) {
+        collection.isEmpty = false;
+    }
+}
 
 // очищает коллекцию
 Collection.prototype.empty = function () {
