@@ -200,7 +200,7 @@ class PriorityQueue {
     }
 
     enqueue(item, priority) {
-        if (this.elements[priority] === null) {
+        if (!(priority in this.elements)) {
             this.elements[priority] = new Queue();
         }
         this.elements[priority].enqueue(item);
@@ -208,9 +208,6 @@ class PriorityQueue {
 
     dequeue() {
         var max_priority = Math.max.apply(this, Object.keys(this.elements));
-        if (max_priority === -Infinity) {
-            return null;
-        }
         var element = this.elements[max_priority].dequeue();
         if (this.elements[max_priority].length === 0) {
             delete this.elements[max_priority];
@@ -243,7 +240,7 @@ class Map {
     }
 
     removeItem(key) {
-        var index = indexKey(key);
+        var index = this.indexKey(key);
         if (index !== -1) {
             this._keys.splice(index, 1);
             return this._values.splice(index, 1);
@@ -252,7 +249,7 @@ class Map {
     }
 
     getItem(key) {
-        var index = indexKey(key);
+        var index = this.indexKey(key);
         if (index !== -1) {
             return this._values[index];
         }
