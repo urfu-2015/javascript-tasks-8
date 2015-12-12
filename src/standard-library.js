@@ -36,7 +36,7 @@ Collection.prototype.insertLast = function (item) {
     this.update('insert');
 };
 
-Collection.prototype.update = function(method) {
+Collection.prototype.update = function (method) {
     if (method === 'insert') {
         ++this.length;
         this.updateLinks();
@@ -49,15 +49,15 @@ Collection.prototype.update = function(method) {
         if (this.length === 0) {
             this.empty();
         } else {
-            this.updateLinks()
+            this.updateLinks();
         }
     }
 };
 
-Collection.prototype.updateLinks = function() {
+Collection.prototype.updateLinks = function () {
     this.first = this.collection[0];
     this.last = this.collection[this.length - 1];
-}
+};
 
 // очищает коллекцию
 Collection.prototype.empty = function () {
