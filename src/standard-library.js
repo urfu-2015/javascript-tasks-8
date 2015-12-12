@@ -1,11 +1,7 @@
 'use strict';
 
 var Collection = function () {
-    this.collection = [];
-    this.first = null;
-    this.last = null;
-    this.length = 0;
-    this.isEmpty = true;
+    this.empty();
 };
 
 // извлекает первый элемент из коллекции и возвращает его
@@ -14,7 +10,7 @@ Collection.prototype.pickFirst = function () {
         return null;
     }
     var firstElement = this.collection.shift();
-    checkAndPick(this);
+    this.update('pick');
     return firstElement;
 };
 
@@ -24,39 +20,43 @@ Collection.prototype.pickLast = function () {
         return null;
     }
     var lastElement = this.collection.pop();
-    checkAndPick(this);
+    this.update('pick');
     return lastElement;
 };
-
-function checkAndPick(collection) {
-    --collection.length;
-    if (collection.length === 0) {
-        collection.empty();
-    } else {
-        collection.first = collection.collection[0];
-        collection.last = collection.collection[collection.length - 1];
-    }
-}
 
 // вставляет элемент в начало колекции
 Collection.prototype.insertFirst = function (item) {
     this.collection.unshift(item);
-    checkAndInsert(this);
+    this.update('insert');
 };
 
 // вставляет элемент в конец коллекции
 Collection.prototype.insertLast = function (item) {
     this.collection.push(item);
-    checkAndInsert(this);
+    this.update('insert');
 };
 
-function checkAndInsert(collection) {
-    ++collection.length;
-    collection.first = collection.collection[0];
-    collection.last = collection.collection[collection.length - 1];
-    if (collection.isEmpty) {
-        collection.isEmpty = false;
+Collection.prototype.update = function(method) {
+    if (method === 'insert') {
+        ++this.length;
+        this.updateLinks();
+        if (this.isEmpty) {
+            this.isEmpty = false;
+        }
     }
+    if (method === 'pick') {
+        --this.length;
+        if (this.length === 0) {
+            this.empty();
+        } else {
+            this.updateLinks()
+        }
+    }
+};
+
+Collection.prototype.updateLinks = function() {
+    this.first = this.collection[0];
+    this.last = this.collection[this.length - 1];
 }
 
 // очищает коллекцию
@@ -72,6 +72,8 @@ var Queue = function () {
     Collection.call(this);
 };
 
+Queue.prototype = Object.create(Collection.prototype);
+
 Queue.prototype.enqueue = function (item) {
     return Collection.prototype.insertLast.call(this, item);
 };
@@ -80,18 +82,15 @@ Queue.prototype.dequeue = function () {
     return Collection.prototype.pickFirst.call(this);
 };
 
-Queue.prototype.empty = function () {
-    return Collection.prototype.empty.call(this);
-};
-
 var FixedArray = function (size) {
     if (isNaN(size) || size < 0) {
         throw new SyntaxError();
     }
     Collection.call(this);
     this.length = size;
-    this.collection = new Array(size);
 };
+
+FixedArray.prototype = Object.create(Collection.prototype);
 
 //  записывает элемент в массив по заданному индексу
 FixedArray.prototype.insertAt = function (index, item) {
@@ -117,6 +116,8 @@ FixedArray.prototype.getAt = function (index) {
 var Set = function () {
     Collection.call(this);
 };
+
+Set.prototype = Object.create(Collection.prototype);
 
 // добавляет элемент в множество
 Set.prototype.insert = function (item) {
@@ -163,10 +164,6 @@ Set.prototype.union = function (set) {
         unionSet.insert(item);
     });
     return unionSet;
-};
-
-Set.prototype.empty = function () {
-    return Collection.prototype.empty.call(this);
 };
 
 var PriorityQueue = function () {
