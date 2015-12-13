@@ -90,6 +90,9 @@ FixedArray.prototype.insertAt = function (index, item) {
     if ((index >= this.length) || (index < 0)) {
         throw new RangeError();
     }
+    if (typeof item === 'undefined') {
+        throw new Error('Can not insert empty item');
+    }
     return this.fixedArray[index] = item;
 };
 
