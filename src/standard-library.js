@@ -22,7 +22,7 @@ Collection.prototype.pickFirst = function () {
         }
         return res;
     }
-    return 'Коллекция пуста';
+    return undefined;
 };
 
 Collection.prototype.pickLast = function () {
@@ -40,7 +40,7 @@ Collection.prototype.pickLast = function () {
         }
         return res;
     }
-    return 'Коллекция пуста';
+    return undefined;
 };
 
 Collection.prototype.insertFirst = function (elem) {
@@ -130,14 +130,11 @@ Set.prototype.remove = function (item) {
     }
 };
 Set.prototype.has = function (item) {
-
-    var validFind = new RegExp(item,'i');
-    if (!validFind.exec(this.array)) {
+    if (this.array.indexOf(item) < 0) {
         return false;
     } else {
         return true;
     }
-
 };
 
 Set.prototype.intersect = function (set) {
